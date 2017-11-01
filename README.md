@@ -80,7 +80,7 @@ By default, reactor structures support the following power source blocks (all Va
 	</tr>
 	<tr>
 		<td>Emerald Ore</td>
-		<td32</td>
+		<td>32</td>
 	</tr>
 	<tr>
 		<td>Emerald Block</td>
