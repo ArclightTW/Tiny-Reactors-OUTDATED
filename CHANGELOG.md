@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.4.1
+
+* Reactors now produce heat when they are running and drain heat when inactive/invalid.
+* Reactor Controller Tier 2 now outputs redstone in relation to temperature, not energy filled.
+* Meltdowns are dependent on the temperature of the Reactor, not the energy buffer.
+* Configurable delay between Reactor reaching critical heat and a meltdown triggering.
+* Reactors running at 125C are 100% efficient, whilst running hotter increases efficiency.
+* Reactor Heat Sinks increase Reactor Controller heat cap by 50C.
+* Reactor Vents can be used to slow, stop or even reverse heat gain in a reactor.
+* Removed Redstone Flux dependency.
+
 ## Version 0.4.0
 
 __WARNING: Version 0.4.0 is incompatible with all previous versions of Tiny Reactors.__

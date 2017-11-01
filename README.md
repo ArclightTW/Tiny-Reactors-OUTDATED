@@ -1,6 +1,8 @@
 # Tiny Reactors
 Build a tiny reactor... Or a massive one!
 
+[Check out the Trello board for an accurate situation update!](https://trello.com/b/hpjBhZXp/tiny-reactors)
+
 < Insert Image Here >
 
 
@@ -12,7 +14,7 @@ Build a tiny reactor... Or a massive one!
 
 # About
 
-__Tiny Reactors__ is a Minecraft mod developed for Minecraft 1.12+.  It is a power generation mod that can either be used passively or actively, depending on several configuration settings modifiable by the mod user.  Valid reactor structures must contain one Reactor Controller and at least one Energy Port of any tier; the frame of the structure must be built from Reactor Casing blocks with the four side faces constructable from either Reactor Casing or Reactor Glass.
+__Tiny Reactors__ is a Minecraft mod developed for Minecraft 1.12+.  It is a power generation mod that can either be used passively or actively, depending on several configuration settings modifiable by the mod user.  Valid reactor structures must contain one Reactor Controller and at least one Energy Port of any tier; the frame of the structure must be built from Reactor Casing blocks with the four side faces constructable from either Reactor Casing or Reactor Glass.  The top face of the structure can be built from either Reactor Casing blocks or Reactor Vents, which can be used to slow the temperature gain inside the reactor structure.
 
 To get started with Tiny Reactors, you will need to construct a 3 x 3 x 3 reactor structure, meeting the above specified criteria.  This is the smallest a reactor structure can be made, as it provides 1 internal block for the power source.  The reactor structure can be increased or decreased to any size (with the minimum of 3 x 3 x 3); there is no maximum size for a reactor structure.
 
@@ -98,5 +100,5 @@ By default, reactor structures support the following power source blocks (all Va
 
 This default values can be modified, however, or removed entirely from the reactant registry.  They can also be configured to support additional blocks, whether these be from Vanilla Minecraft or another installed mod.  Reactants can be added to the registry using one of the two below lines in the configuration file (I would recommend using the in-game Mod Options to add/remove entries as these can be tested on the fly):
 * [mod_id:block_name:rf/tick] (e.g. 'minecraft:furnace:8' or 'tp:netherstar_block:1024')
-* [mod_id:block_name:metadata:rf/tick] (e.g. 'minecraft:wool:0:4')
+* [mod_id:block_name:metadata:rf/tick] (e.g. 'minecraft:wool:0:4')  
 Omitting the metadata value when adding entries will permit any variant (e.g. 'minecraft:wool:4' will permit any Wool block).
