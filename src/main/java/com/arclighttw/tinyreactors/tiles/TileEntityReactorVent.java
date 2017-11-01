@@ -38,8 +38,10 @@ public class TileEntityReactorVent extends TileEntitySync
 	{
 		super.update();
 		
-		if(controller != null)
+		if(controller != null && controller.getMultiblock().isValid())
+		{
 			controller.getTemperature().modifyHeat(-tier.getHeatOffset());
+		}
 	}
 	
 	@Override

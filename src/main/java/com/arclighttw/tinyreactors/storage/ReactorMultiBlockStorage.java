@@ -7,6 +7,7 @@ import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
+import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
@@ -69,8 +70,14 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		TileEntity tile = world.getTileEntity(pos);
 		
-		if(tile != null && tile instanceof TileEntityReactorEnergyPort)
-			energyPorts.add((TileEntityReactorEnergyPort)tile);
+		if(tile != null)
+		{
+			if(tile instanceof TileEntityReactorEnergyPort)
+				energyPorts.add((TileEntityReactorEnergyPort)tile);
+			
+			if(tile instanceof TileEntityReactorVent)
+				((TileEntityReactorVent)tile).setController(controller);
+		}
 	}
 	
 	@Override
