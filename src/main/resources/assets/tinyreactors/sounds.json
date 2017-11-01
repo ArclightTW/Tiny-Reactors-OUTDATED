@@ -7,5 +7,15 @@
 		[
 			"tinyreactors:reactor_klaxon"
 		]
+	},
+	
+	"reactor_active":
+	{
+		"category": "block",
+		
+		"sounds":
+		[
+			"tinyreactors:reactor_active"
+		]
 	}
 }

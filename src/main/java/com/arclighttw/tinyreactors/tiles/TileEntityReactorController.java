@@ -27,6 +27,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 	private boolean meltdownInitiated;
 	private int meltdownTimer;
 	
+	private int timer;
+	
 	public TileEntityReactorController()
 	{
 		this(EnumControllerTier.I);
@@ -131,9 +133,20 @@ public class TileEntityReactorController extends TileEntityEnergy
 				{
 					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
 					temperature.modifyHeat(multiblock.getReactorSize() * 0.25F);
+					
+					timer++;
+					
+					if(timer <= 36)
+					{
+						world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
+						timer = 0;
+					}
 				}
 				else
+				{
 					temperature.modifyHeat(multiblock.getReactorSize() * -0.25F);
+					timer = 0;
+				}
 				
 				int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
 				
@@ -212,6 +225,9 @@ public class TileEntityReactorController extends TileEntityEnergy
 	{
 		this.active = active;
 		sync();
+		
+		if(active)
+			world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
 	}
 	
 	public boolean isActive()

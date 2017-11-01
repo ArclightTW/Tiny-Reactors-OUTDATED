@@ -11,6 +11,7 @@ import net.minecraft.util.SoundEvent;
 public class TRSounds
 {
 	public static final SoundEvent REACTOR_KLAXON = new SoundEvent(new ResourceLocation(Reference.ID, "reactor_klaxon"));
+	public static final SoundEvent REACTOR_ACTIVE = new SoundEvent(new ResourceLocation(Reference.ID, "reactor_active"));
 	
 	public static void onRegister()
 	{
