@@ -15,7 +15,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -60,8 +59,8 @@ public class WailaIntegration implements IWailaDataProvider
 			if(tile instanceof TileEntityEnergy)
 			{
 				TileEntityEnergy energy = (TileEntityEnergy)tile;
-				text.add(String.format("Energy: %,d RF", energy.getEnergyStored(EnumFacing.NORTH)));
-				text.add(String.format("Capacity: %,d RF", energy.getMaxEnergyStored(EnumFacing.NORTH)));
+				text.add(String.format("Energy: %,d RF", energy.getEnergyStored()));
+				text.add(String.format("Capacity: %,d RF", energy.getMaxEnergyStored()));
 			}
 		}
 		

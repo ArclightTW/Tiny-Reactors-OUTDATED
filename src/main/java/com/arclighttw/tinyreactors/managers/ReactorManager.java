@@ -77,19 +77,27 @@ public class ReactorManager
 		return getReactantRate(state) > 0;
 	}
 	
+	public static boolean isValidRoof(Block block)
+	{
+		return block == TRBlocks.REACTOR_CASING ||
+				block == TRBlocks.REACTOR_VENT;
+	}
+	
 	public static boolean isValidCasing(Block block)
 	{
 		return block instanceof BlockReactorController ||
 				block instanceof BlockReactorEnergyPort ||
 				block == TRBlocks.REACTOR_CASING ||
-				block == TRBlocks.REACTOR_GLASS;
+				block == TRBlocks.REACTOR_GLASS ||
+				block == TRBlocks.REACTOR_HEAT_SINK;
 	}
 	
 	public static boolean isValidStructure(Block block)
 	{
 		return block instanceof BlockReactorController ||
 				block instanceof BlockReactorEnergyPort ||
-				block == TRBlocks.REACTOR_CASING;
+				block == TRBlocks.REACTOR_CASING ||
+				block == TRBlocks.REACTOR_HEAT_SINK;
 	}
 	
 	public static int getReactantRate(IBlockState state)

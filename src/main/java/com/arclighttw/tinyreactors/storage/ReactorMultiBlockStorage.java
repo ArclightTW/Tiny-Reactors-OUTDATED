@@ -3,6 +3,7 @@ package com.arclighttw.tinyreactors.storage;
 import java.util.List;
 
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
+import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
@@ -20,6 +21,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	final TileEntityReactorController controller;
 	
 	int availableYield, maximumYield;
+	int heatSinkCount;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
 	
@@ -30,6 +32,12 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		this.controller = controller;
 		
 		energyPorts = Lists.newArrayList();
+	}
+	
+	@Override
+	public boolean isValidRoof(IBlockState state)
+	{
+		return ReactorManager.isValidRoof(state.getBlock());
 	}
 	
 	@Override
@@ -56,6 +64,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		if(state.getBlock() instanceof BlockReactorController)
 			hasController = true;
 		
+		if(state.getBlock() == TRBlocks.REACTOR_HEAT_SINK)
+			heatSinkCount++;
+		
 		TileEntity tile = world.getTileEntity(pos);
 		
 		if(tile != null && tile instanceof TileEntityReactorEnergyPort)
@@ -79,6 +90,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		availableYield = 0;
 		maximumYield = 0;
+		heatSinkCount = 0;
 	
 		energyPorts = Lists.newArrayList();
 	}
@@ -117,6 +129,11 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()
 	{
 		return energyPorts;
+	}
+	
+	public int getHeatSinkCount()
+	{
+		return heatSinkCount;
 	}
 	
 	public int getAvailableYield()

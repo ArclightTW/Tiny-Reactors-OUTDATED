@@ -7,9 +7,15 @@ tile.reactor_energy_port_1.name=Reactor Energy Port
 tile.reactor_energy_port_2.name=Reactor Energy Port
 tile.reactor_energy_port_3.name=Reactor Energy Port
 
-tile.capacitor_1.name=Capacitor
-tile.capacitor_2.name=Capacitor
-tile.capacitor_3.name=Capacitor
+tile.reactor_heat_sink.name=Reactor Heat Sink
 
 tile.reactor_casing.name=Reactor Casing
 tile.reactor_glass.name=Reactor Glass
+
+tile.reactor_vent.0.name=Iron Reactor Vent
+tile.reactor_vent.1.name=Gold Reactor Vent
+tile.reactor_vent.2.name=Diamond Reactor Vent
+
+tile.capacitor_1.name=Capacitor
+tile.capacitor_2.name=Capacitor
+tile.capacitor_3.name=Capacitor

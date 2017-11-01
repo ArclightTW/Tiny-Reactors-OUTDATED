@@ -43,6 +43,7 @@ public class TileEntitySync extends TileEntity implements ITickable
 		{
 			onInitialLoad();
 			firstLoad = true;
+			sync();
 		}
 	}
 	

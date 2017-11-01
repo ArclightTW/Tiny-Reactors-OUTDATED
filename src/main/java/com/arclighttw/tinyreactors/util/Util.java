@@ -6,12 +6,14 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.arclighttw.tinyreactors.storage.EnergyStorageRF;
+import com.arclighttw.tinyreactors.storage.TemperatureStorage;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,12 +26,46 @@ public class Util
 {
 	public static int getEnergyFilledScaled(EnergyStorageRF energy, int scale)
 	{
+		if(energy.getMaxEnergyStored() == 0)
+			return 0;
+		
 		return (int)(scale * (float)energy.getEnergyStored() / (float)energy.getMaxEnergyStored());
 	}
 	
 	public static int getEnergyFilledScaled(IEnergyStorage energy, int scale)
 	{
+		if(energy.getMaxEnergyStored() == 0)
+			return 0;
+		
 		return (int)(scale * (float)energy.getEnergyStored() / (float)energy.getMaxEnergyStored());
+	}
+	
+	public static int getTemperatureScaled(TemperatureStorage temperature, int scale)
+	{
+		if(temperature.getMaximumTemperature() == 0)
+			return 0;
+		
+		return (int)(scale * temperature.getCurrentTemperature() / temperature.getMaximumTemperature());
+	}
+	
+	public static double getDistanceAtoB(double x1, double y1, double z1, double x2, double y2, double z2)
+	{
+		double dx = x1 - x2;
+		double dy = y1 - y2;
+		double dz = z1 - z2;
+		return Math.sqrt((dx * dx + dy * dy + dz * dz));
+	}
+	
+	public static double getDistanceAtoB(double x1, double z1, double x2, double z2)
+	{
+		double dx = x1 - x2;
+		double dz = z1 - z2;
+		return Math.sqrt((dx * dx + dz * dz));
+	}
+
+	public static double getDistanceAtoB(Vec3d pos1, Vec3d pos2)
+	{
+		return getDistanceAtoB(pos1.x, pos1.y, pos1.z, pos2.x, pos2.y, pos2.z);
 	}
 	
 	@SideOnly(Side.CLIENT)

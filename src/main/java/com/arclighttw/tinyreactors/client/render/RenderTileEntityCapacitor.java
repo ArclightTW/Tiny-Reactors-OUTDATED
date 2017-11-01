@@ -62,9 +62,9 @@ public class RenderTileEntityCapacitor extends TileEntitySpecialRenderer<TileEnt
 		Util.drawTextInWorld(
 				Arrays.asList(
 						"Stored:",
-						String.format("%,d RF", tile.getEnergyStored(EnumFacing.NORTH)),
+						String.format("%,d RF", tile.getEnergyStored()),
 						"Capacity:",
-						String.format("%,d RF", tile.getMaxEnergyStored(EnumFacing.NORTH))
+						String.format("%,d RF", tile.getMaxEnergyStored())
 					),
 				0.6F, 128, 22, EnumTextAlignment.CENTER
 			);

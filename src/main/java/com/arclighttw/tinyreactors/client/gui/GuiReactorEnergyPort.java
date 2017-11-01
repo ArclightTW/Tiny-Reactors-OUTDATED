@@ -14,7 +14,6 @@ import com.arclighttw.tinyreactors.util.Util;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiReactorEnergyPort extends GuiContainerMulti
@@ -91,8 +90,8 @@ public class GuiReactorEnergyPort extends GuiContainerMulti
 		
 		if(mouseX >= guiLeft + 80 && mouseX <= guiLeft + 84 + 12 && mouseY >= guiTop + 8 && mouseY <= guiTop + 12 + 60)
 			drawHoveringText(Arrays.asList(
-					String.format("Energy: %,d RF", energyPort.getEnergyStored(EnumFacing.NORTH)),
-					String.format("Capacity: %,d RF", energyPort.getMaxEnergyStored(EnumFacing.NORTH))
+					String.format("Energy: %,d RF", energyPort.getEnergyStored()),
+					String.format("Capacity: %,d RF", energyPort.getMaxEnergyStored())
 				), mouseX - guiLeft, mouseY - guiTop);
 		
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);

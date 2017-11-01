@@ -1,9 +1,12 @@
 package com.arclighttw.tinyreactors.tiles;
 
+import com.arclighttw.tinyreactors.config.TRConfig;
 import com.arclighttw.tinyreactors.properties.EnumControllerTier;
 import com.arclighttw.tinyreactors.properties.EnumRedstoneMode;
 import com.arclighttw.tinyreactors.storage.ReactorMultiBlockStorage;
+import com.arclighttw.tinyreactors.storage.TemperatureStorage;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.WorldServer;
@@ -15,7 +18,12 @@ public class TileEntityReactorController extends TileEntityEnergy
 	private int previousRedstone;
 	
 	private ReactorMultiBlockStorage multiblock;
+	private TemperatureStorage temperature;
+	
 	private boolean active;
+	
+	private boolean meltdownInitiated;
+	private int meltdownTimer;
 	
 	public TileEntityReactorController()
 	{
@@ -30,6 +38,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 		
 		multiblock = new ReactorMultiBlockStorage(this);
 		multiblock.setValidityListener(() -> {
+			temperature.setHeatSinkCount(multiblock.getHeatSinkCount());
+			
 			if(!multiblock.isValid())
 			{
 				setActive(false);
@@ -37,6 +47,23 @@ public class TileEntityReactorController extends TileEntityEnergy
 			}
 			
 			sync();
+		});
+		
+		temperature = new TemperatureStorage(0);
+		temperature.setChangeListener(() -> {
+			sync();
+		});
+		temperature.setPeakListener(
+			() -> {
+				if(!TRConfig.REACTOR_MELTDOWN)
+					return;
+				
+				meltdownInitiated = true;
+				meltdownTimer = 20 * TRConfig.REACTOR_MELTDOWN_DELAY;
+		},
+			() -> {
+				meltdownInitiated = false;
+				meltdownTimer = -1;
 		});
 	}
 	
@@ -54,8 +81,22 @@ public class TileEntityReactorController extends TileEntityEnergy
 		if(!world.isRemote)
 		{
 			((WorldServer)world).addScheduledTask(() -> {
+				if(meltdownInitiated)
+				{
+					meltdownTimer--;
+					
+					if(meltdownTimer <= 0)
+					{
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
+						return;
+					}
+				}
+				
 				if(!multiblock.isValid())
+				{
+					temperature.modifyHeat(-0.5F);
 					return;
+				}
 				
 				int redstone = world.getBlockState(pos).getWeakPower(world, pos, EnumFacing.NORTH);
 				
@@ -80,27 +121,38 @@ public class TileEntityReactorController extends TileEntityEnergy
 				}
 				
 				if(isActive())
-					energy.receiveEnergy(multiblock.getAvailableYield(), false);
+				{
+					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
+					temperature.modifyHeat(0.25F);
+				}
+				else
+					temperature.modifyHeat(-0.25F);
 				
-				int average = (int)(getEnergyStored(EnumFacing.NORTH) / (float)multiblock.getEnergyPorts().size());
+				int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
 				
 				for(TileEntityReactorEnergyPort energyPort : multiblock.getEnergyPorts())
 				{
-					int extracted = energyPort.receiveEnergy(EnumFacing.NORTH, average, false);
-					extractEnergy(EnumFacing.NORTH, extracted, false);
+					int extracted = energyPort.receiveEnergy(average, false);
+					extractEnergy(extracted, false);
 				}
 			});
 		}
 	}
 	
 	@Override
-	public boolean canConnectEnergy(EnumFacing from)
+	public boolean canReceive()
 	{
 		return false;
 	}
 	
 	@Override
-	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+	public boolean canExtract()
+	{
+		return false;
+	}
+	
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate)
 	{
 		return 0;
 	}
@@ -109,6 +161,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 	public void writeToNBTInternal(NBTTagCompound compound)
 	{
 		multiblock.writeToNBT(compound);
+		temperature.writeToNBT(compound);
+		
 		compound.setInteger("tier", tier.ordinal());
 		compound.setInteger("redstoneMode", redstoneMode.ordinal());
 		
@@ -119,6 +173,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 	public void readFromNBTInternal(NBTTagCompound compound)
 	{
 		multiblock.readFromNBT(compound);
+		temperature.readFromNBT(compound);
+		
 		tier = EnumControllerTier.values()[compound.getInteger("tier")];
 		redstoneMode = EnumRedstoneMode.values()[compound.getInteger("redstoneMode")];
 		
@@ -128,6 +184,11 @@ public class TileEntityReactorController extends TileEntityEnergy
 	public ReactorMultiBlockStorage getMultiblock()
 	{
 		return multiblock;
+	}
+	
+	public TemperatureStorage getTemperature()
+	{
+		return temperature;
 	}
 	
 	public EnumControllerTier getTier()

@@ -257,7 +257,15 @@ public abstract class MultiBlockStorage
 						
 						onBlockDetected(world, pos, b);
 						
-						if(y == yStart || y == yEnd || (x == xStart && z == zStart) || (x == xEnd && z == zEnd) || (x == xStart && z == zEnd) || (x == xEnd && z == zStart))
+						if(y == yStart)
+						{
+							if(b.getBlock() == Blocks.AIR || !isValidRoof(b))
+							{
+								invalidate();
+								return;
+							}
+						}
+						else if(y == yEnd || (x == xStart && z == zStart) || (x == xEnd && z == zEnd) || (x == xStart && z == zEnd) || (x == xEnd && z == zStart))
 						{
 							if(b.getBlock() == Blocks.AIR || !isValidStructure(b))
 							{
@@ -310,6 +318,7 @@ public abstract class MultiBlockStorage
 	{
 	}
 	
+	public abstract boolean isValidRoof(IBlockState state);
 	public abstract boolean isValidCasing(IBlockState state);
 	public abstract boolean isValidStructure(IBlockState state);
 	public abstract boolean isValidInternalBlock(IBlockState state);

@@ -7,6 +7,7 @@ import com.arclighttw.tinyreactors.blocks.BlockCapacitor;
 import com.arclighttw.tinyreactors.blocks.BlockReactorComponent;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
+import com.arclighttw.tinyreactors.blocks.BlockReactorVent;
 import com.arclighttw.tinyreactors.properties.EnumCapacitorTier;
 import com.arclighttw.tinyreactors.properties.EnumControllerTier;
 import com.arclighttw.tinyreactors.properties.EnumEnergyPortTier;
@@ -25,6 +26,10 @@ public class TRBlocks
 	
 	public static Block REACTOR_CASING = new BlockReactorComponent(Material.IRON, "reactor_casing").setHardness(50F).setResistance(50F);
 	public static Block REACTOR_GLASS = new BlockReactorComponent(Material.GLASS, "reactor_glass").setHardness(10F).setResistance(50F);
+	
+	public static Block REACTOR_HEAT_SINK = new BlockReactorComponent(Material.IRON, "reactor_heat_sink").setHardness(50F).setResistance(50F);
+	
+	public static Block REACTOR_VENT = new BlockReactorVent().setHardness(50F).setResistance(50F);
 	
 	public static Block CAPACITOR_1 = new BlockCapacitor(EnumCapacitorTier.I).setHardness(50F).setResistance(50F);
 	public static Block CAPACITOR_2 = new BlockCapacitor(EnumCapacitorTier.II).setHardness(50F).setResistance(50F);

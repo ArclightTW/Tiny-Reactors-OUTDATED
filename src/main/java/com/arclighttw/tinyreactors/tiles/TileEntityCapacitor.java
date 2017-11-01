@@ -37,7 +37,7 @@ public class TileEntityCapacitor extends TileEntityEnergy
 	@Override
 	public void update()
 	{
-		if(getEnergyStored(EnumFacing.NORTH) <= 0 || world == null || world.isRemote)
+		if(getEnergyStored() <= 0 || world == null || world.isRemote)
 			return;
 		
 		((WorldServer)world).addScheduledTask(() -> {
@@ -45,12 +45,12 @@ public class TileEntityCapacitor extends TileEntityEnergy
 			
 			for(Map.Entry<EnumFacing, IEnergyStorage> receiver : receivers.entrySet())
 			{
-				int extracted = extractEnergy(receiver.getKey(), energy.getCurrentExtract() / receivers.size(), true);
+				int extracted = extractEnergy(energy.getCurrentExtract() / receivers.size(), true);
 				
 				if(extracted > 0)
 				{
 					int received = receiver.getValue().receiveEnergy(extracted, false);
-					extractEnergy(receiver.getKey(), received, false);
+					extractEnergy(received, false);
 				}
 			}
 		});

@@ -22,4 +22,10 @@ public class TRConfig
 			"minecraft:quartz_block:32"		
 	};
 	public static String REACTANT_REGISTRY_LABEL = "Entries should be input in the format (rate is specified per tick):\nmod_id:block_name:rate or\nmod_id:block_name:metadata:rate";
+	
+	public static boolean REACTOR_MELTDOWN = true;
+	public static String REACTOR_MELTDOWN_LABEL = "Whether a Reactor should go into meltdown if it peaks in temperature.";
+	
+	public static int REACTOR_MELTDOWN_DELAY = 30;
+	public static String REACTOR_MELTDOWN_DELAY_LABEL = "The amount of time (in seconds) a Reactor can be at maximum heat before a meltdown occurs.";
 }

@@ -2,24 +2,13 @@ package com.arclighttw.tinyreactors.tiles;
 
 import com.arclighttw.tinyreactors.storage.EnergyStorageRF;
 
-import blusunrize.immersiveengineering.api.energy.immersiveflux.IFluxProvider;
-import blusunrize.immersiveengineering.api.energy.immersiveflux.IFluxReceiver;
-import cofh.redstoneflux.api.IEnergyProvider;
-import cofh.redstoneflux.api.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.common.Optional;
 
-@Optional.InterfaceList({
-	@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux"),
-	@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux"),
-	@Optional.Interface(iface = "blusunrize.immersiveengineering.api.energy.immersiveflux.IFluxProvider", modid = "immersiveengineering"),
-	@Optional.Interface(iface = "blusunrize.immersiveengineering.api.energy.immersiveflux.IFluxReceiver", modid = "immersiveengineering")
-})
-public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage, IEnergyReceiver, IEnergyProvider, IFluxReceiver, IFluxProvider
+public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage
 {	
 	protected EnergyStorageRF energy;
 	
@@ -46,23 +35,11 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage, 
 	}
 	
 	@Override
-	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
-	{
-		return receiveEnergy(maxReceive, simulate);
-	}
-	
-	@Override
 	public int extractEnergy(int maxExtract, boolean simulate)
 	{
 		int extract = energy.extractEnergy(maxExtract, simulate);
 		sync();
 		return extract;
-	}
-	
-	@Override
-	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
-	{
-		return extractEnergy(maxExtract, simulate);
 	}
 	
 	@Override
@@ -72,21 +49,9 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage, 
 	}
 	
 	@Override
-	public int getEnergyStored(EnumFacing facing)
-	{
-		return getEnergyStored();
-	}
-	
-	@Override
 	public int getMaxEnergyStored()
 	{
 		return energy.getMaxEnergyStored();
-	}
-	
-	@Override
-	public int getMaxEnergyStored(EnumFacing facing)
-	{
-		return getMaxEnergyStored();
 	}
 	
 	@Override
@@ -99,12 +64,6 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage, 
 	public boolean canExtract()
 	{
 		return energy.getMaxExtract() > 0;
-	}
-	
-	@Override
-	public boolean canConnectEnergy(EnumFacing from)
-	{
-		return true;
 	}
 	
 	@Override

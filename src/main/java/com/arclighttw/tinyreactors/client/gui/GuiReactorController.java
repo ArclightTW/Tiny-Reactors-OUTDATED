@@ -21,7 +21,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiReactorController extends GuiContainerMulti
@@ -47,8 +46,8 @@ public class GuiReactorController extends GuiContainerMulti
 	{
 		super.initGui();
 		
-		addButton(buttonOn = new GuiButtonDrawable(0, guiLeft + 137, guiTop + 60, TEXTURE, 189, 56, 12, 12).setHoverTextureLocation(189, 67).setDisabledTextureLocation(177, 78).setLabel("Enable"));
-		addButton(buttonOff = new GuiButtonDrawable(1, guiLeft + 137, guiTop + 60, TEXTURE, 177, 56, 12, 12).setHoverTextureLocation(177, 67).setDisabledTextureLocation(177, 78).setLabel("Disable"));
+		addButton(buttonOn = new GuiButtonDrawable(0, guiLeft + 118, guiTop + 60, TEXTURE, 189, 56, 12, 12).setHoverTextureLocation(189, 67).setDisabledTextureLocation(177, 78).setLabel("Enable"));
+		addButton(buttonOff = new GuiButtonDrawable(1, guiLeft + 118, guiTop + 60, TEXTURE, 177, 56, 12, 12).setHoverTextureLocation(177, 67).setDisabledTextureLocation(177, 78).setLabel("Disable"));
 		
 		addButton(buttonRedstoneIgnore = new GuiButtonItemStack(2, guiLeft - 20, guiTop, TEXTURE, 177, 89, 20, 20, this).setIcon(new ItemStack(Blocks.BARRIER)).setLabel(Arrays.asList("Mode: Ignore", "Click to Cycle")));
 		addButton(buttonRedstoneDisable = new GuiButtonItemStack(3, guiLeft - 20, guiTop, TEXTURE, 177, 89, 20, 20, this).setIcon(new ItemStack(Items.REDSTONE)).setLabel(Arrays.asList("Mode: Disable on Redstone", "Click to Cycle")));
@@ -135,6 +134,9 @@ public class GuiReactorController extends GuiContainerMulti
 		
 		int progress = Util.getEnergyFilledScaled(controller, 56);
 		drawTexturedModalRect(guiLeft + 155, guiTop + 68 - progress, 177, 56 - progress, 8, progress);
+		
+		int temperature = Util.getTemperatureScaled(controller.getTemperature(), 56);
+		drawTexturedModalRect(guiLeft + 134, guiTop + 68 - temperature - 1, 185, 0, 14, 3);
 	}
 	
 	@Override
@@ -144,29 +146,40 @@ public class GuiReactorController extends GuiContainerMulti
 		{
 			if(controller.isPowered() && controller.getRedstoneMode() == EnumRedstoneMode.DISABLE_ON_REDSTONE)
 			{
-				drawString(fontRenderer, "Disabled", 5, 5, 0xFFFFFF);
-				drawString(fontRenderer, "Reactor is Powered", 5, 15, 0xFFFFFF);
+				drawString(fontRenderer, "Disabled", 5, 7, 0xFFFFFF);
+				drawString(fontRenderer, "Reactor is Powered", 5, 17, 0xFFFFFF);
 			}
 			else if(!controller.isPowered() && controller.getRedstoneMode() == EnumRedstoneMode.ENABLE_ON_REDSTONE)
 			{
-				drawString(fontRenderer, "Disabled", 5, 5, 0xFFFFFF);
-				drawString(fontRenderer, "Reactor is Unpowered", 5, 15, 0xFFFFFF);
+				drawString(fontRenderer, "Disabled", 5, 7, 0xFFFFFF);
+				drawString(fontRenderer, "Reactor is Unpowered", 5, 17, 0xFFFFFF);
 			}
 			else
 			{
-				drawString(fontRenderer, "Producing", 5, 5, 0xFFFFFF);
-				drawString(fontRenderer, String.format("%,d RF/t", controller.getMultiblock().getAvailableYield()), 5, 15, 0xFFFFFF);
+				drawString(fontRenderer, "Base Output:", 5, 7, 0xFFFFFF);
+				drawString(fontRenderer, String.format("%,d RF/t", controller.getMultiblock().getAvailableYield()), 5, 17, 0xFFFFFF);
+				
+				drawString(fontRenderer, "Efficiency:", 5, 32, 0xFFFFFF);
+				drawString(fontRenderer, String.format("%.0f", controller.getTemperature().getEfficiency() * 100) + " %", 5, 42, 0xFFFFFF);
+				
+				drawString(fontRenderer, "Producing:", 5, 57, 0xFFFFFF);
+				drawString(fontRenderer, String.format("%,d RF/t", (int)(controller.getMultiblock().getAvailableYield() * controller.getTemperature().getEfficiency())), 5, 67, 0xFFFFFF);
 			}
 		}
 		else if(controller.getMultiblock().isValid())
-			drawString(fontRenderer, "Inactive", 5, 5, 0xFFFFFF);
+			drawString(fontRenderer, "Inactive", 5, 7, 0xFFFFFF);
 		else
-			drawString(fontRenderer, "Invalid Structure", 5, 5, 0xFFFFFF);
+			drawString(fontRenderer, "Invalid Structure", 5, 7, 0xFFFFFF);
 		
 		if(mouseX >= guiLeft + 153 && mouseX <= guiLeft + 153 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 12 + 60)
 			drawHoveringText(Arrays.asList(
-					String.format("Energy: %,d RF", controller.getEnergyStored(EnumFacing.NORTH)),
-					String.format("Capacity: %,d RF", controller.getMaxEnergyStored(EnumFacing.NORTH))
+					String.format("Energy: %,d RF", controller.getEnergyStored()),
+					String.format("Capacity: %,d RF", controller.getMaxEnergyStored())
+				), mouseX - guiLeft, mouseY - guiTop);
+		
+		if(mouseX >= guiLeft + 133 && mouseX <= guiLeft + 133 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 8 + 64)
+			drawHoveringText(Arrays.asList(
+					String.format("Temperature: %,.0f C", controller.getTemperature().getCurrentTemperature())
 				), mouseX - guiLeft, mouseY - guiTop);
 		
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);

@@ -82,7 +82,7 @@ public class BlockReactorController extends BlockReactorComponentDirectional
 			return 0;
 		
 		TileEntityReactorController controller = (TileEntityReactorController)tile;
-		return Util.getEnergyFilledScaled(controller, 15);
+		return Util.getTemperatureScaled(controller.getTemperature(), 15);
 	}
 	
 	@Override

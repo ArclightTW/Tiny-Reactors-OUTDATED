@@ -65,16 +65,26 @@ public class TRRecipes
 	});
 	
 	public static IRecipe REACTOR_GLASS = new ShapelessRecipe(new ItemStack(TRBlocks.REACTOR_GLASS, 7), new Object[] {
-		Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Items.REDSTONE, Items.IRON_INGOT
+			Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Blocks.GLASS, Items.REDSTONE, Items.IRON_INGOT
+	});
+	
+	public static IRecipe REACTOR_HEAT_SINK = new ShapedRecipe(TRBlocks.REACTOR_HEAT_SINK, new Object[] {
+			"CRC",
+			"IBI",
+			"CRC",
+				Character.valueOf('C'), TRBlocks.REACTOR_CASING,
+				Character.valueOf('R'), Items.REDSTONE,
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('B'), Blocks.IRON_BARS
 	});
 	
 	public static IRecipe CAPACITOR_TIER_1 = new ShapedRecipe(TRBlocks.CAPACITOR_1, new Object[] {
-		"IGI",
-		"IGI",
-		"IRI",
-			Character.valueOf('I'), Items.IRON_INGOT,
-			Character.valueOf('R'), Items.REDSTONE,
-			Character.valueOf('G'), Blocks.GLASS_PANE
+			"IGI",
+			"IGI",
+			"IRI",
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('R'), Items.REDSTONE,
+				Character.valueOf('G'), Blocks.GLASS_PANE
 	});
 	
 	public static IRecipe CAPACITOR_TIER_2 = new ShapedRecipe(TRBlocks.CAPACITOR_2, new Object[] {

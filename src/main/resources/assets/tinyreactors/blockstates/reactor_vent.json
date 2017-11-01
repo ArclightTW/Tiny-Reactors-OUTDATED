@@ -1,0 +1,13 @@
+{
+	"forge_marker": 1,
+	
+	"variants":
+	{
+		"venttier":
+		{
+			"iron": { "model": "tinyreactors:reactor_vent_0" },
+			"gold": { "model": "tinyreactors:reactor_vent_1" },
+			"diamond": { "model": "tinyreactors:reactor_vent_2" }
+		}
+	}
+}

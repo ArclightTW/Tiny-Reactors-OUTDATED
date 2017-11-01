@@ -35,7 +35,7 @@ public class TileEntityReactorEnergyPort extends TileEntityEnergy
 	@Override
 	public void update()
 	{
-		if(getEnergyStored(EnumFacing.NORTH) <= 0 || world == null || world.isRemote)
+		if(getEnergyStored() <= 0 || world == null || world.isRemote)
 			return;
 		
 		if(facing == null)
@@ -50,12 +50,12 @@ public class TileEntityReactorEnergyPort extends TileEntityEnergy
 				
 				if(storage != null)
 				{
-					int extracted = extractEnergy(facing, energy.getCurrentExtract(), true);
+					int extracted = extractEnergy( energy.getCurrentExtract(), true);
 					
 					if(extracted > 0)
 					{
 						int received = storage.receiveEnergy(extracted, false);
-						extractEnergy(facing, received, false);
+						extractEnergy(received, false);
 					}
 				}
 			}
@@ -65,10 +65,15 @@ public class TileEntityReactorEnergyPort extends TileEntityEnergy
 	}
 	
 	@Override
-	public boolean canConnectEnergy(EnumFacing from)
+	public boolean canExtract()
 	{
-		EnumFacing facing = world.getBlockState(pos).getValue(BlockReactorComponentDirectional.FACING);
-		return from == facing.getOpposite();
+		return false;
+	}
+	
+	@Override
+	public boolean canReceive()
+	{
+		return true;
 	}
 	
 	@Override
