@@ -1,0 +1,15 @@
+itemGroup.tinyreactors=Tiny Reactors
+
+tile.reactor_controller_1.name=Reactor Controller
+tile.reactor_controller_2.name=Reactor Controller
+
+tile.reactor_energy_port_1.name=Reactor Energy Port
+tile.reactor_energy_port_2.name=Reactor Energy Port
+tile.reactor_energy_port_3.name=Reactor Energy Port
+
+tile.capacitor_1.name=Capacitor
+tile.capacitor_2.name=Capacitor
+tile.capacitor_3.name=Capacitor
+
+tile.reactor_casing.name=Reactor Casing
+tile.reactor_glass.name=Reactor Glass

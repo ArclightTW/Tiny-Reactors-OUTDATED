@@ -1,0 +1,9 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "particle": "tinyreactors:blocks/capacitor",
+    		"front": "tinyreactors:blocks/capacitor_front",
+        "top": "tinyreactors:blocks/capacitor",
+		"side": "tinyreactors:blocks/capacitor"
+    }
+}
