@@ -1,6 +1,7 @@
 package com.arclighttw.tinyreactors.tiles;
 
 import com.arclighttw.tinyreactors.config.TRConfig;
+import com.arclighttw.tinyreactors.inits.TRSounds;
 import com.arclighttw.tinyreactors.properties.EnumControllerTier;
 import com.arclighttw.tinyreactors.properties.EnumRedstoneMode;
 import com.arclighttw.tinyreactors.storage.ReactorMultiBlockStorage;
@@ -9,6 +10,7 @@ import com.arclighttw.tinyreactors.storage.TemperatureStorage;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.WorldServer;
 
 public class TileEntityReactorController extends TileEntityEnergy
@@ -59,7 +61,9 @@ public class TileEntityReactorController extends TileEntityEnergy
 					return;
 				
 				meltdownInitiated = true;
-				meltdownTimer = 20 * TRConfig.REACTOR_MELTDOWN_DELAY;
+				
+				if(meltdownTimer == -1)
+					meltdownTimer = 20 * TRConfig.REACTOR_MELTDOWN_DELAY;
 		},
 			() -> {
 				meltdownInitiated = false;
@@ -83,6 +87,9 @@ public class TileEntityReactorController extends TileEntityEnergy
 			((WorldServer)world).addScheduledTask(() -> {
 				if(meltdownInitiated)
 				{
+					if(meltdownTimer % 40 == 0)
+						world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					
 					meltdownTimer--;
 					
 					if(meltdownTimer <= 0)
@@ -94,7 +101,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 				
 				if(!multiblock.isValid())
 				{
-					temperature.modifyHeat(-0.5F);
+					temperature.modifyHeat(multiblock.getReactorSize() * -0.25F);
 					return;
 				}
 				
@@ -123,10 +130,10 @@ public class TileEntityReactorController extends TileEntityEnergy
 				if(isActive())
 				{
 					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
-					temperature.modifyHeat(0.25F);
+					temperature.modifyHeat(multiblock.getReactorSize() * 0.25F);
 				}
 				else
-					temperature.modifyHeat(-0.25F);
+					temperature.modifyHeat(multiblock.getReactorSize() * -0.25F);
 				
 				int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
 				

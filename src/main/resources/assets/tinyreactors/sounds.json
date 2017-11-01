@@ -1,0 +1,11 @@
+{
+	"reactor_klaxon":
+	{
+		"category": "block",
+		
+		"sounds":
+		[
+			"tinyreactors:reactor_klaxon"
+		]
+	}
+}

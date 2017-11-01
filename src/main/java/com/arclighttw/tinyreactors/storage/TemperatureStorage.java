@@ -48,17 +48,21 @@ public class TemperatureStorage
 		if(currentTemperature < 0)
 			currentTemperature = 0;
 		
-		if(currentTemperature > maximumTemperature && !peaked)
+		if(currentTemperature >= maximumTemperature)
 		{
 			currentTemperature = maximumTemperature;
-			peaked = true;
 			
-			if(hitPeakListener != null)
-				hitPeakListener.run();
+			if(!peaked)
+			{
+				peaked = true;
+				
+				if(hitPeakListener != null)
+					hitPeakListener.run();
+			}
 			
 			return;
 		}
-		else
+		else if(currentTemperature < maximumTemperature - 1)
 		{
 			peaked = false;
 			

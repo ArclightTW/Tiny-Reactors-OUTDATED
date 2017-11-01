@@ -18,6 +18,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -35,6 +36,7 @@ public class Registry
 	static Map<ResourceLocation, Block> BLOCKS = Maps.newHashMap();
 	static Map<ResourceLocation, Item> ITEMS = Maps.newHashMap();
 	static Map<ResourceLocation, IRecipe> RECIPES = Maps.newHashMap();
+	static Map<ResourceLocation, SoundEvent> SOUNDS = Maps.newHashMap();
 	
 	static Map<ResourceLocation, Class<? extends TileEntity>> TILES = Maps.newHashMap();
 	
@@ -55,6 +57,11 @@ public class Registry
 	public static void register(IRecipe recipe, String name)
 	{
 		registerRecipe(recipe, name);
+	}
+	
+	public static void register(SoundEvent sound, String name)
+	{
+		registerSound(sound, name);
 	}
 	
 	private static void registerBlock(Block block, String name)
@@ -137,6 +144,25 @@ public class Registry
 		TILES.put(tileResource, tileClass);
 	}
 	
+	private static void registerSound(SoundEvent sound, String name)
+	{
+		if(sound == null)
+		{
+			System.err.println(String.format("Unable to register SoundEvent with name '%s' as the provided SoundEvent is null.", name));
+			return;
+		}
+		
+		sound.setRegistryName(new ResourceLocation(Reference.ID, name));
+		
+		if(SOUNDS.containsKey(sound.getRegistryName()))
+		{
+			System.err.println(String.format("Unable to register SoundEvent with registry name '%s' as an entry already exists with this name.", sound.getRegistryName().toString()));
+			return;
+		}
+		
+		SOUNDS.put(sound.getRegistryName(), sound);
+	}
+	
 	public interface IItemProvider
 	{
 		ItemBlock getItemBlock();
@@ -177,6 +203,15 @@ public class Registry
 	}
 	
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onSoundRegister(RegistryEvent.Register<SoundEvent> event)
+	{
+		for(Map.Entry<ResourceLocation, SoundEvent> sound : SOUNDS.entrySet())
+			event.getRegistry().register(sound.getValue());
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void onModelRegister(ModelRegistryEvent event)
 	{
 		for(Map.Entry<ResourceLocation, Block> block : BLOCKS.entrySet())

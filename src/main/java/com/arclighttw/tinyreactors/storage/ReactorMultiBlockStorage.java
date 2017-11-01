@@ -22,7 +22,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	final TileEntityReactorController controller;
 	
 	int availableYield, maximumYield;
-	int heatSinkCount;
+	int heatSinkCount, reactorSize;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
 	
@@ -83,6 +83,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	@Override
 	public void onInternalBlockDetected(World world, BlockPos pos, IBlockState state)
 	{
+		reactorSize++;
 		maximumYield += ReactorManager.getMaximumReactantRate();
 		
 		if(state.getBlock() != Blocks.AIR)
@@ -97,7 +98,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		availableYield = 0;
 		maximumYield = 0;
+		
 		heatSinkCount = 0;
+		reactorSize = 0;
 	
 		energyPorts = Lists.newArrayList();
 	}
@@ -122,6 +125,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		compound.setInteger("availableYield", availableYield);
 		compound.setInteger("maximumYield", maximumYield);
+		
+		compound.setInteger("heatSinkCount", heatSinkCount);
+		compound.setInteger("reactorSize", reactorSize);
 	}
 	
 	@Override
@@ -131,6 +137,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		availableYield = compound.getInteger("availableYield");
 		maximumYield = compound.getInteger("maximumYield");
+		
+		heatSinkCount = compound.getInteger("heatSinkCount");
+		reactorSize = compound.getInteger("reactorSize");
 	}
 	
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()
@@ -146,5 +155,10 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	public int getAvailableYield()
 	{
 		return availableYield;
+	}
+	
+	public int getReactorSize()
+	{
+		return reactorSize;
 	}
 }
