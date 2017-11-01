@@ -46,6 +46,54 @@ By default, reactor structures support the following power source blocks (all Va
 		<td>Iron Block</td>
 		<td>16</td>
 	</tr>
+	<tr>
+		<td>Lapis Ore</td>
+		<td>4</td>
+	</tr>
+	<tr>
+		<td>Lapis Block</td>
+		<td>32</td>
+	</tr>
+	<tr>
+		<td>Redstone Ore</td>
+		<td>8</td>
+	</tr>
+	<tr>
+		<td>Redstone Block</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<td>Gold Ore</td>
+		<td>8</td>
+	</tr>
+	<tr>
+		<td>Gold Block</td>
+		<td>64</td>
+	</tr>
+	<tr>
+		<td>Diamond Ore</td>
+		<td>16</td>
+	</tr>
+	<tr>
+		<td>Diamond Block</td>
+		<td>128</td>
+	</tr>
+	<tr>
+		<td>Emerald Ore</td>
+		<td32</td>
+	</tr>
+	<tr>
+		<td>Emerald Block</td>
+		<td>256</td>
+	</tr>
+	<tr>
+		<td>Quartz Ore</td>
+		<td>8</td>
+	</tr>
+	<tr>
+		<td>Quartz Block</td>
+		<td>32</td>
+	</tr>
 </table>
 
 This default values can be modified, however, or removed entirely from the reactant registry.  They can also be configured to support additional blocks, whether these be from Vanilla Minecraft or another installed mod.  Reactants can be added to the registry using one of the two below lines in the configuration file (I would recommend using the in-game Mod Options to add/remove entries as these can be tested on the fly):
