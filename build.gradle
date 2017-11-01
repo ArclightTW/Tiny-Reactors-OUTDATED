@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+
+version = "${version}"
+group= "com.arclighttw.tinyreactors" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "tinyreactors"
+
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+repositories {
+	maven {
+		name = "Covers Maven"
+		url = "http://maven.covers1624.net"
+	}
+	
+	maven
+	{
+		url = "http://tehnut.info/maven"
+	}
+}
+
+dependencies {
+	compile "cofh:RedstoneFlux:1.12-2.0.0.1:deobf"
+	deobfCompile "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
+	
+	compile files('libs/ImmersiveEngineering-0.12-69.jar')
+}
+
+minecraft {
+    runDir = "run"
+	mappings = "${mappings_version}"
+    version = "${mcversion}-${forge_version}"
+    replaceIn "${mod_info_path}"
+    replace "@VERSION@", "${version}"
+    replace "@FORGE_VERSION@", "${forge_version}"
+}
+
+display_version = "${display_version}" ?: "${mcversion}"
+version = "${display_version}-${mod_version}"
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
