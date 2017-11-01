@@ -6,7 +6,7 @@ Build a tiny reactor... Or a massive one!
 
 # Navigation
 
-* [Changelog](https://github.com/ArclightTW/Tiny-Reactors/CHANGELOG.md)
+* [Changelog](https://github.com/ArclightTW/Tiny-Reactors/blob/1.12/CHANGELOG.md)
 * [About](#about)
 * [Reactants](#reactants)
 
