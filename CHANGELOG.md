@@ -13,7 +13,9 @@ __Previous configuration files will not work as they have been relocated to conf
 * Tier 2 Reactor Controller outputs redstone power equivalent to energy fill percentage.
 * Tier 2 Reactor Controller supports redstone modes (Ignore, Active on Redstone, Deactivate on Redstone).
 * Energy Port Renderer shows fill percentage on block.
-* Capacitor blocks temporarily removed until they work properly.
+* Capacitor blocks fill from all directions.
+* Capaitor blocks output in all directions (apart from back into Energy Ports).
+* Capacitor blocks display key information on the front face.
 * Waila and Vanilla Information to display Tiers for tiered blocks.
 
 ## Pre-Version 0.4.0
