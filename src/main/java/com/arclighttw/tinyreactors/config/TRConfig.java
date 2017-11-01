@@ -21,5 +21,5 @@ public class TRConfig
 			"minecraft:emerald_block:256",
 			"minecraft:quartz_block:32"		
 	};
-	public static String REACTANT_REGISTRY_LABEL = "Entries should be input in the format (rate is specified per tick):\nmod_id:block_name:rate";
+	public static String REACTANT_REGISTRY_LABEL = "Entries should be input in the format (rate is specified per tick):\nmod_id:block_name:rate or\nmod_id:block_name:metadata:rate";
 }
