@@ -21,11 +21,6 @@ compileJava {
 }
 
 repositories {
-	maven {
-		name = "Covers Maven"
-		url = "http://maven.covers1624.net"
-	}
-	
 	maven
 	{
 		url = "http://tehnut.info/maven"
@@ -33,10 +28,7 @@ repositories {
 }
 
 dependencies {
-	compile "cofh:RedstoneFlux:1.12-2.0.0.1:deobf"
 	deobfCompile "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
-	
-	compile files('libs/ImmersiveEngineering-0.12-69.jar')
 }
 
 minecraft {
