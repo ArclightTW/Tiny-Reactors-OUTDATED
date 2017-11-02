@@ -3,8 +3,6 @@ package com.arclighttw.tinyreactors.client.render;
 import java.util.Arrays;
 
 import com.arclighttw.tinyreactors.blocks.BlockReactorComponentDirectional;
-import com.arclighttw.tinyreactors.blocks.BlockTiny;
-import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.util.Util;
 import com.arclighttw.tinyreactors.util.Util.EnumTextAlignment;
@@ -12,6 +10,7 @@ import com.arclighttw.tinyreactors.util.Util.EnumTextAlignment;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,10 +29,7 @@ public class RenderTileEntityCapacitor extends TileEntitySpecialRenderer<TileEnt
 		
 		IBlockState neighbor = tile.getWorld().getBlockState(tile.getPos().offset(facing));
 		
-		if(neighbor.isOpaqueCube())
-			return;
-		
-		if(neighbor.getBlock() instanceof BlockTiny && neighbor.getBlock() != TRBlocks.REACTOR_GLASS)
+		if(neighbor.getBlock() != Blocks.AIR)
 			return;
 		
 		GlStateManager.pushMatrix();
