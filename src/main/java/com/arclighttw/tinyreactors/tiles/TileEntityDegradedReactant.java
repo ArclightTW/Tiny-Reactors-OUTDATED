@@ -24,7 +24,7 @@ public class TileEntityDegradedReactant extends TileEntitySync
 	{
 		super.writeToNBT(compound);
 		
-		compound.setString("representedBlock", representedBlock.getRegistryName().toString());
+		compound.setString("representedBlock", getRepresentedBlock().getRegistryName().toString());
 		
 		return compound;
 	}

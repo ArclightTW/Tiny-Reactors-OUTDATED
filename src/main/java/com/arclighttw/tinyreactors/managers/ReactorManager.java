@@ -3,11 +3,13 @@ package com.arclighttw.tinyreactors.managers;
 import java.util.List;
 import java.util.Map;
 
+import com.arclighttw.tinyreactors.blocks.BlockDegradedReactant;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
 import com.arclighttw.tinyreactors.config.TRConfig;
 import com.arclighttw.tinyreactors.container.ContainerReactorController;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
+import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -72,9 +74,9 @@ public class ReactorManager
 		}
 	}
 	
-	public static boolean isReactant(IBlockState state)
+	public static boolean isReactant(World world, BlockPos pos, IBlockState state)
 	{
-		return getReactantRate(state) > 0;
+		return getReactantRate(world, pos, state) > 0;
 	}
 	
 	public static boolean isValidRoof(Block block)
@@ -100,9 +102,20 @@ public class ReactorManager
 				block == TRBlocks.REACTOR_HEAT_SINK;
 	}
 	
-	public static int getReactantRate(IBlockState state)
+	public static int getReactantRate(World world, BlockPos pos, IBlockState state)
 	{
 		Block block = state.getBlock();
+		
+		if(block instanceof BlockDegradedReactant)
+		{
+			TileEntity tile = world.getTileEntity(pos);
+			
+			if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+				return 0;
+			
+			TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
+			block = reactant.getRepresentedBlock();
+		}
 		
 		if(!REACTANTS.containsKey(block.getRegistryName()))
 			return 0;

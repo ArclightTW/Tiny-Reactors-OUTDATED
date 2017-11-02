@@ -5,6 +5,7 @@ import java.util.List;
 import com.arclighttw.tinyreactors.blocks.BlockCapacitor;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
+import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityEnergy;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 
@@ -59,6 +60,13 @@ public class WailaIntegration implements IWailaDataProvider
 		{
 			TileEntityReactorVent vent = (TileEntityReactorVent)tile;
 			text.add(String.format("State: %s", vent.isOperational() ? "Operational" : (vent.isObstructed() ? "Obstructed" : "Non-operational")));
+		}
+		
+		if(tile instanceof TileEntityDegradedReactant)
+		{
+			TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
+			text.add("Reactant: " + reactant.getRepresentedBlock().getLocalizedName());
+			text.add("Degradation: 100%");
 		}
 		
 		if(accessor.getPlayer().isSneaking())
