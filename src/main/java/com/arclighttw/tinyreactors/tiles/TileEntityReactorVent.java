@@ -13,6 +13,9 @@ public class TileEntityReactorVent extends TileEntitySync
 	private BlockPos controllerBlockPos;
 	private TileEntityReactorController controller;
 	
+	private boolean operational;
+	private int cooldown;
+	
 	public TileEntityReactorVent()
 	{
 	}
@@ -38,10 +41,14 @@ public class TileEntityReactorVent extends TileEntitySync
 	{
 		super.update();
 		
-		if(controller != null && controller.getMultiblock().isValid())
-		{
+		if(cooldown > 0)
+			cooldown--;
+		
+		if(controller == null || !operational)
+			return;
+		
+		if(controller.getMultiblock().isValid())
 			controller.getTemperature().modifyHeat(-tier.getHeatOffset());
-		}
 	}
 	
 	@Override
@@ -50,6 +57,7 @@ public class TileEntityReactorVent extends TileEntitySync
 		super.writeToNBT(compound);
 
 		compound.setInteger("tier", tier != null ? tier.ordinal() : 0);
+		compound.setBoolean("operational", operational);
 
 		if(controllerBlockPos != null)
 		{
@@ -69,6 +77,7 @@ public class TileEntityReactorVent extends TileEntitySync
 		super.readFromNBT(compound);
 		
 		tier = EnumVentTier.values()[compound.getInteger("tier")];
+		operational = compound.getBoolean("operational");
 		
 		if(!compound.hasKey("Empty"))
 		{
@@ -80,9 +89,24 @@ public class TileEntityReactorVent extends TileEntitySync
 		}
 	}
 	
+	public void toggleState()
+	{
+		if(cooldown > 0)
+			return;
+		
+		cooldown = 5;
+		operational = !operational;
+		sync();
+	}
+	
 	public void setController(TileEntityReactorController controller)
 	{
 		this.controller = controller;
 		controllerBlockPos = controller != null ? controller.getPos() : null;
+	}
+	
+	public boolean isOperational()
+	{
+		return operational;
 	}
 }

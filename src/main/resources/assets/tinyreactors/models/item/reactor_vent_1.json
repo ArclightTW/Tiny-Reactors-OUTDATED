@@ -1,9 +1,9 @@
 {
     "parent": "block/orientable",
     "textures": {
-        "particle": "tinyreactors:blocks/reactor_energy_port_2",
-    		"front": "tinyreactors:blocks/reactor_energy_port_2",
-        "top": "tinyreactors:blocks/reactor_casing",
-		"side": "tinyreactors:blocks/reactor_casing"
+        "particle": "tinyreactors:blocks/gold_reactor_vent",
+    		"front": "tinyreactors:blocks/gold_reactor_vent",
+        "top": "tinyreactors:blocks/gold_reactor_vent_closed",
+		"side": "tinyreactors:blocks/gold_reactor_vent"
     }
 }

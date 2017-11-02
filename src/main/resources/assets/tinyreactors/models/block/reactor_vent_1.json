@@ -1,12 +1,12 @@
 {
     "parent": "tinyreactors:block/orientable",
     "textures": {
-        "particle": "tinyreactors:blocks/reactor_energy_port_2",
-    		"front": "tinyreactors:blocks/reactor_energy_port_2",
-        "top": "tinyreactors:blocks/reactor_casing",
-        "bottom": "tinyreactors:blocks/reactor_casing",
-		"back": "tinyreactors:blocks/reactor_casing",
-		"side_left": "tinyreactors:blocks/reactor_casing",
-		"side_right": "tinyreactors:blocks/reactor_casing"
+        "particle": "tinyreactors:blocks/gold_reactor_vent",
+    		"front": "tinyreactors:blocks/gold_reactor_vent",
+        "top": "tinyreactors:blocks/gold_reactor_vent_open",
+        "bottom": "tinyreactors:blocks/gold_reactor_vent",
+		"back": "tinyreactors:blocks/gold_reactor_vent",
+		"side_left": "tinyreactors:blocks/gold_reactor_vent",
+		"side_right": "tinyreactors:blocks/gold_reactor_vent"
     }
 }
