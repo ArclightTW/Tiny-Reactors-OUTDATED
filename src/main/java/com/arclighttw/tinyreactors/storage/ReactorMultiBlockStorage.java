@@ -5,11 +5,13 @@ import java.util.List;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
+import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +27,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	int heatSinkCount, reactorSize;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
+	List<BlockPos> validReactants;
 	
 	boolean isReactor, hasController;
 	
@@ -33,6 +36,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		this.controller = controller;
 		
 		energyPorts = Lists.newArrayList();
+		validReactants = Lists.newArrayList();
 	}
 	
 	@Override
@@ -87,11 +91,14 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		maximumYield += ReactorManager.getMaximumReactantRate();
 		
 		if(state.getBlock() != Blocks.AIR)
+		{
 			availableYield += ReactorManager.getReactantRate(state);
+			validReactants.add(pos);
+		}
 	}
 	
 	@Override
-	public void onPreCalculation()
+	public void onPreCalculation(World world)
 	{
 		isReactor = true;
 		hasController = false;
@@ -106,7 +113,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	}
 	
 	@Override
-	public void onPostCalculation()
+	public void onPostCalculation(World world)
 	{
 		if(!hasController || energyPorts.size() == 0)
 		{
@@ -116,6 +123,23 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		}
 		
 		setValid(isReactor);
+		
+		if(isReactor)
+		{
+			for(BlockPos pos : validReactants)
+			{
+				Block reactant = world.getBlockState(pos).getBlock();
+				world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
+				
+				TileEntity tile = world.getTileEntity(pos);
+				
+				if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+					continue;
+				
+				TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
+				degradedReactant.setRepresentedBlock(reactant);
+			}
+		}
 	}
 	
 	@Override

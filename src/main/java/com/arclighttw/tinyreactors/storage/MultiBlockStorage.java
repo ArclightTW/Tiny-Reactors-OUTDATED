@@ -244,7 +244,7 @@ public abstract class MultiBlockStorage
 			start = new BlockPos(xStart, yEnd, zStart);
 			end = new BlockPos(xEnd, yStart, zEnd);
 			
-			onPreCalculation();
+			onPreCalculation(world);
 			
 			for(int x = xStart; x <= xEnd; x++)
 			{
@@ -298,7 +298,7 @@ public abstract class MultiBlockStorage
 				}
 			}
 			
-			onPostCalculation();
+			onPostCalculation(world);
 		});
 	}
 	
@@ -310,11 +310,11 @@ public abstract class MultiBlockStorage
 	{
 	}
 	
-	public void onPreCalculation()
+	public void onPreCalculation(World world)
 	{
 	}
 	
-	public void onPostCalculation()
+	public void onPostCalculation(World world)
 	{
 	}
 	
