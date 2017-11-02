@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -37,25 +36,23 @@ public class TileEntityCapacitor extends TileEntityEnergy
 	@Override
 	public void update()
 	{
+		super.update();
+		
 		if(getEnergyStored() <= 0 || world == null || world.isRemote)
 			return;
 		
-		((WorldServer)world).addScheduledTask(() -> {
-			onInitialLoad();
-			
-			for(Map.Entry<EnumFacing, IEnergyStorage> receiver : receivers.entrySet())
-			{
-				int extracted = extractEnergy(energy.getCurrentExtract() / receivers.size(), true);
-				
-				if(extracted > 0)
-				{
-					int received = receiver.getValue().receiveEnergy(extracted, false);
-					extractEnergy(received, false);
-				}
-			}
-		});
+		onInitialLoad();
 		
-		sync();
+		for(Map.Entry<EnumFacing, IEnergyStorage> receiver : receivers.entrySet())
+		{
+			int extracted = extractEnergy(energy.getCurrentExtract() / receivers.size(), true);
+			
+			if(extracted > 0)
+			{
+				int received = receiver.getValue().receiveEnergy(extracted, false);
+				extractEnergy(received, false);
+			}
+		}
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import com.arclighttw.tinyreactors.properties.EnumEnergyPortTier;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -35,33 +34,31 @@ public class TileEntityReactorEnergyPort extends TileEntityEnergy
 	@Override
 	public void update()
 	{
+		super.update();
+		
 		if(getEnergyStored() <= 0 || world == null || world.isRemote)
 			return;
 		
 		if(facing == null)
 			onInitialLoad();
+	
+		TileEntity tile = world.getTileEntity(pos.offset(facing));
 		
-		((WorldServer)world).addScheduledTask(() -> {
-			TileEntity tile = world.getTileEntity(pos.offset(facing));
+		if(tile != null)
+		{
+			IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
 			
-			if(tile != null)
+			if(storage != null)
 			{
-				IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
+				int extracted = extractEnergy( energy.getCurrentExtract(), true);
 				
-				if(storage != null)
+				if(extracted > 0)
 				{
-					int extracted = extractEnergy( energy.getCurrentExtract(), true);
-					
-					if(extracted > 0)
-					{
-						int received = storage.receiveEnergy(extracted, false);
-						extractEnergy(received, false);
-					}
+					int received = storage.receiveEnergy(extracted, false);
+					extractEnergy(received, false);
 				}
 			}
-		});
-		
-		sync();
+		}
 	}
 	
 	@Override

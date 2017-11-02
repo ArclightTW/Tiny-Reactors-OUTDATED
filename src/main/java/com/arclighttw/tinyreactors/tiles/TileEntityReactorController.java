@@ -11,7 +11,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.world.WorldServer;
 
 public class TileEntityReactorController extends TileEntityEnergy
 {
@@ -27,7 +26,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 	private boolean meltdownInitiated;
 	private int meltdownTimer;
 	
-	private int timer;
+	private int soundTimer;
+	private int degradationTimer;
 	
 	private static final float TEMP_GAIN = 0.05F;
 	
@@ -88,76 +88,83 @@ public class TileEntityReactorController extends TileEntityEnergy
 		
 		if(!world.isRemote)
 		{
-			((WorldServer)world).addScheduledTask(() -> {
-				if(meltdownInitiated)
-				{
-					if(meltdownTimer % 40 == 0)
-						world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					
-					meltdownTimer--;
-					
-					if(meltdownTimer <= 0)
-					{
-						world.setBlockState(pos, Blocks.AIR.getDefaultState());
-						return;
-					}
-				}
+			if(meltdownInitiated)
+			{
+				if(meltdownTimer % 40 == 0)
+					world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				
-				if(!multiblock.isValid())
+				meltdownTimer--;
+				
+				if(meltdownTimer <= 0)
 				{
-					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					return;
 				}
+			}
+			
+			if(!multiblock.isValid())
+			{
+				temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
+				return;
+			}
+			
+			int redstone = world.getBlockState(pos).getWeakPower(world, pos, EnumFacing.NORTH);
+			
+			if(redstone != previousRedstone)
+			{
+				previousRedstone = redstone;
+				sync();
+			}
+			
+			if(tier == EnumControllerTier.I)
+				redstoneMode = EnumRedstoneMode.IGNORE;
+			
+			if(redstoneMode != EnumRedstoneMode.IGNORE)
+			{
+				boolean powered = isPowered();
 				
-				int redstone = world.getBlockState(pos).getWeakPower(world, pos, EnumFacing.NORTH);
+				if(powered && redstoneMode == EnumRedstoneMode.DISABLE_ON_REDSTONE)
+					return;
 				
-				if(redstone != previousRedstone)
+				if(!powered && redstoneMode == EnumRedstoneMode.ENABLE_ON_REDSTONE)
+					return;
+			}
+			
+			if(isActive())
+			{
+				energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
+				temperature.modifyHeat(multiblock.getReactorSize() * TEMP_GAIN);
+				
+				soundTimer++;
+				if(soundTimer >= 36)
 				{
-					previousRedstone = redstone;
-					sync();
+					world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
+					soundTimer = 0;
 				}
 				
-				if(tier == EnumControllerTier.I)
-					redstoneMode = EnumRedstoneMode.IGNORE;
-				
-				if(redstoneMode != EnumRedstoneMode.IGNORE)
+				if(TRConfig.REACTANT_DEGRADATION)
 				{
-					boolean powered = isPowered();
-					
-					if(powered && redstoneMode == EnumRedstoneMode.DISABLE_ON_REDSTONE)
-						return;
-					
-					if(!powered && redstoneMode == EnumRedstoneMode.ENABLE_ON_REDSTONE)
-						return;
-				}
-				
-				if(isActive())
-				{
-					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
-					temperature.modifyHeat(multiblock.getReactorSize() * TEMP_GAIN);
-					
-					timer++;
-					
-					if(timer <= 36)
+					degradationTimer++;
+					if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
 					{
-						world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
-						timer = 0;
+						multiblock.degradeReactant(world);
+						degradationTimer = 0;
 					}
 				}
-				else
-				{
-					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
-					timer = 0;
-				}
-				
-				int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
-				
-				for(TileEntityReactorEnergyPort energyPort : multiblock.getEnergyPorts())
-				{
-					int extracted = energyPort.receiveEnergy(average, false);
-					extractEnergy(extracted, false);
-				}
-			});
+			}
+			else
+			{
+				temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
+				soundTimer = 0;
+			}
+			
+			int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
+			
+			for(TileEntityReactorEnergyPort energyPort : multiblock.getEnergyPorts())
+			{
+				int extracted = energyPort.receiveEnergy(average, false);
+				extractEnergy(extracted, false);
+			}
 		}
 	}
 	

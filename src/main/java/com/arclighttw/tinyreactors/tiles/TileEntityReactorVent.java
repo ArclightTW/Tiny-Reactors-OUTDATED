@@ -46,14 +46,17 @@ public class TileEntityReactorVent extends TileEntitySync
 	{
 		super.update();
 		
-		if(cooldown > 0)
-			cooldown--;
-		
-		if(controller == null || !operational)
-			return;
-		
-		if(controller.getMultiblock().isValid())
-			controller.getTemperature().modifyHeat(-tier.getHeatOffset());
+		if(!world.isRemote)
+		{
+			if(cooldown > 0)
+				cooldown--;
+			
+			if(controller == null || !operational)
+				return;
+			
+			if(controller.getMultiblock().isValid())
+				controller.getTemperature().modifyHeat(-tier.getHeatOffset());
+		}
 	}
 	
 	@Override
