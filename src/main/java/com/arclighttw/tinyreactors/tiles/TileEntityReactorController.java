@@ -29,6 +29,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 	
 	private int timer;
 	
+	private static final float TEMP_GAIN = 0.05F;
+	
 	public TileEntityReactorController()
 	{
 		this(EnumControllerTier.I);
@@ -103,7 +105,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 				
 				if(!multiblock.isValid())
 				{
-					temperature.modifyHeat(multiblock.getReactorSize() * -0.25F);
+					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
 					return;
 				}
 				
@@ -132,7 +134,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 				if(isActive())
 				{
 					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
-					temperature.modifyHeat(multiblock.getReactorSize() * 0.25F);
+					temperature.modifyHeat(multiblock.getReactorSize() * TEMP_GAIN);
 					
 					timer++;
 					
@@ -144,7 +146,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 				}
 				else
 				{
-					temperature.modifyHeat(multiblock.getReactorSize() * -0.25F);
+					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
 					timer = 0;
 				}
 				
