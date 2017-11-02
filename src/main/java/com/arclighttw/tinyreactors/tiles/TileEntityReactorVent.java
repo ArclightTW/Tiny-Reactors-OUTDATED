@@ -87,10 +87,11 @@ public class TileEntityReactorVent extends TileEntitySync
 		if(!compound.hasKey("Empty"))
 		{
 			int x = compound.getInteger("controllerX");
-			int y = compound.getInteger("controllerX");
-			int z = compound.getInteger("controllerX");
+			int y = compound.getInteger("controllerY");
+			int z = compound.getInteger("controllerZ");
 			
 			controllerBlockPos = new BlockPos(x, y, z);
+			controller = (TileEntityReactorController)world.getTileEntity(controllerBlockPos);
 		}
 	}
 	
@@ -104,10 +105,10 @@ public class TileEntityReactorVent extends TileEntitySync
 		sync();
 	}
 	
-	public void setController(TileEntityReactorController controller)
+	public void setController(BlockPos controllerPos)
 	{
-		this.controller = controller;
-		controllerBlockPos = controller != null ? controller.getPos() : null;
+		this.controller = (TileEntityReactorController)world.getTileEntity(controllerPos);
+		controllerBlockPos = controllerPos;
 	}
 	
 	public boolean isObstructed()
@@ -126,8 +127,12 @@ public class TileEntityReactorVent extends TileEntitySync
 	
 	public boolean isOperational()
 	{
-		boolean canRun = operational && (controller != null && controller.isActive());
-		if(!canRun) return false;
+		if(!operational)
+			return false;
+		
+		if(controller == null || !controller.isActive())
+			return false;
+		
 		return !isObstructed();		
 	}
 	

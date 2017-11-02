@@ -229,7 +229,10 @@ public class TileEntityReactorController extends TileEntityEnergy
 		sync();
 		
 		if(active)
+		{
+			multiblock.onActivate(world);
 			world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
+		}
 	}
 	
 	public boolean isActive()

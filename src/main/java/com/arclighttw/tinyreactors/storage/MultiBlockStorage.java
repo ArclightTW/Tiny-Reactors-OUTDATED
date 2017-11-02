@@ -288,7 +288,7 @@ public abstract class MultiBlockStorage
 							if(b.getBlock() == Blocks.AIR)
 								continue;
 							
-							if(!isValidInternalBlock(b))
+							if(!isValidInternalBlock(world, pos, b))
 							{
 								invalidate();
 								return;
@@ -321,5 +321,5 @@ public abstract class MultiBlockStorage
 	public abstract boolean isValidRoof(IBlockState state);
 	public abstract boolean isValidCasing(IBlockState state);
 	public abstract boolean isValidStructure(IBlockState state);
-	public abstract boolean isValidInternalBlock(IBlockState state);
+	public abstract boolean isValidInternalBlock(World world, BlockPos pos, IBlockState state);
 }

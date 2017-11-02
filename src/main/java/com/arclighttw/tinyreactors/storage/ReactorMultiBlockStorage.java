@@ -58,9 +58,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	}
 	
 	@Override
-	public boolean isValidInternalBlock(IBlockState state)
+	public boolean isValidInternalBlock(World world, BlockPos pos, IBlockState state)
 	{
-		return ReactorManager.isReactant(state);
+		return ReactorManager.isReactant(world, pos, state);
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 				energyPorts.add((TileEntityReactorEnergyPort)tile);
 			
 			if(tile instanceof TileEntityReactorVent)
-				((TileEntityReactorVent)tile).setController(controller);
+				((TileEntityReactorVent)tile).setController(controller.getPos());
 		}
 	}
 	
@@ -92,7 +92,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		if(state.getBlock() != Blocks.AIR)
 		{
-			availableYield += ReactorManager.getReactantRate(state);
+			availableYield += ReactorManager.getReactantRate(world, pos, state);
 			validReactants.add(pos);
 		}
 	}
@@ -110,6 +110,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		reactorSize = 0;
 	
 		energyPorts = Lists.newArrayList();
+		validReactants = Lists.newArrayList();
 	}
 	
 	@Override
@@ -123,23 +124,6 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		}
 		
 		setValid(isReactor);
-		
-		if(isReactor)
-		{
-			for(BlockPos pos : validReactants)
-			{
-				Block reactant = world.getBlockState(pos).getBlock();
-				world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
-				
-				TileEntity tile = world.getTileEntity(pos);
-				
-				if(tile == null || !(tile instanceof TileEntityDegradedReactant))
-					continue;
-				
-				TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
-				degradedReactant.setRepresentedBlock(reactant);
-			}
-		}
 	}
 	
 	@Override
@@ -164,6 +148,28 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		heatSinkCount = compound.getInteger("heatSinkCount");
 		reactorSize = compound.getInteger("reactorSize");
+	}
+	
+	public void onActivate(World world)
+	{
+		for(BlockPos pos : validReactants)
+		{
+			TileEntity tile = world.getTileEntity(pos);
+			
+			if(tile != null && tile instanceof TileEntityDegradedReactant)
+				continue;
+			
+			Block reactant = world.getBlockState(pos).getBlock();
+			world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
+			
+			tile = world.getTileEntity(pos);
+			
+			if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+				continue;
+			
+			TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
+			degradedReactant.setRepresentedBlock(reactant);
+		}
 	}
 	
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()
