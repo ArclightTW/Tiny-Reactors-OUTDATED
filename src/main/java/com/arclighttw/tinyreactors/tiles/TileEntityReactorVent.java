@@ -2,9 +2,14 @@ package com.arclighttw.tinyreactors.tiles;
 
 import com.arclighttw.tinyreactors.properties.EnumVentTier;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class TileEntityReactorVent extends TileEntitySync
 {
@@ -105,8 +110,29 @@ public class TileEntityReactorVent extends TileEntitySync
 		controllerBlockPos = controller != null ? controller.getPos() : null;
 	}
 	
+	public boolean isObstructed()
+	{
+		Block above = world.getBlockState(pos.offset(EnumFacing.UP)).getBlock();
+		
+		if(above == Blocks.AIR || above == Blocks.WATER || above == Blocks.FLOWING_WATER)
+			return false;
+		
+		if(!(above instanceof IFluidBlock))
+			return true;
+		
+		Fluid fluid = ((IFluidBlock)above).getFluid();
+		return fluid.getTemperature() > 300;
+	}
+	
 	public boolean isOperational()
 	{
-		return operational;
+		boolean canRun = operational && (controller != null && controller.isActive());
+		if(!canRun) return false;
+		return !isObstructed();		
+	}
+	
+	public EnumVentTier getTier()
+	{
+		return tier;
 	}
 }
