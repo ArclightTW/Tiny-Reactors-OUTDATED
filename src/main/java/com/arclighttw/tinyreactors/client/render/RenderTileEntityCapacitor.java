@@ -7,6 +7,7 @@ import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.util.Util;
 import com.arclighttw.tinyreactors.util.Util.EnumTextAlignment;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -29,7 +30,7 @@ public class RenderTileEntityCapacitor extends TileEntitySpecialRenderer<TileEnt
 		
 		IBlockState neighbor = tile.getWorld().getBlockState(tile.getPos().offset(facing));
 		
-		if(neighbor.getBlock() != Blocks.AIR)
+		if(neighbor.getBlock() != Blocks.AIR && neighbor.getMaterial() != Material.GLASS)
 			return;
 		
 		GlStateManager.pushMatrix();
