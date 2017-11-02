@@ -10,6 +10,7 @@ public class TileEntitySync extends TileEntity implements ITickable
 {
 	private boolean syncScheduled;
 	private boolean firstLoad;
+	private boolean syncUpcoming;
 	
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket()
@@ -45,6 +46,8 @@ public class TileEntitySync extends TileEntity implements ITickable
 			firstLoad = true;
 			sync();
 		}
+		
+		syncUpcoming = false;
 	}
 	
 	public void sync()
@@ -55,12 +58,19 @@ public class TileEntitySync extends TileEntity implements ITickable
 			return;
 		}
 		
-		syncScheduled = false;
-		world.markBlockRangeForRenderUpdate(pos, pos);
-		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-		world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
-		world.scheduleBlockUpdate(pos, getBlockType(), 0, 0);
-		markDirty();
+		if(syncUpcoming)
+			return;
+		
+		if(!world.isRemote)
+		{
+			syncScheduled = false;
+			syncUpcoming = true;
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+			world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
+			world.scheduleBlockUpdate(pos, getBlockType(), 0, 0);
+			markDirty();
+		}
 	}
 	
 	public void onInitialLoad()
