@@ -4,11 +4,13 @@ import com.arclighttw.tinyreactors.client.render.RenderTileEntityCapacitor;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorController;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorEnergyPort;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorVent;
+import com.arclighttw.tinyreactors.managers.ModelBakeEventManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -19,6 +21,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void onPreInitialization(FMLPreInitializationEvent event)
 	{
+		MinecraftForge.EVENT_BUS.register(new ModelBakeEventManager());
 	}
 	
 	@Override
