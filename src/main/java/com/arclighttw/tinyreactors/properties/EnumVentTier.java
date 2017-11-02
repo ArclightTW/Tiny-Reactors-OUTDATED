@@ -7,15 +7,17 @@ import net.minecraft.util.IStringSerializable;
 
 public enum EnumVentTier implements IStringSerializable
 {
-	IRON(0.05F),
-	GOLD(0.10F),
-	DIAMOND(0.20F);
+	IRON(0.05F, 8),
+	GOLD(0.10F, 16),
+	DIAMOND(0.20F, 32);
 	
 	private float heatOffset;
+	private int particleCount;
 	
-	EnumVentTier(float heatOffset)
+	EnumVentTier(float heatOffset, int particleCount)
 	{
 		this.heatOffset = heatOffset;
+		this.particleCount = particleCount;
 	}
 	
 	@Override
@@ -27,6 +29,11 @@ public enum EnumVentTier implements IStringSerializable
 	public float getHeatOffset()
 	{
 		return heatOffset;
+	}
+	
+	public int getParticleCount()
+	{
+		return particleCount;
 	}
 	
 	public static final PropertyEnum<EnumVentTier> PROPERTY = PropertyEnum.create("venttier", EnumVentTier.class);

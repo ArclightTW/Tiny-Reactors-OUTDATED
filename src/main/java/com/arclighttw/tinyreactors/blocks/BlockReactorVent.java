@@ -1,5 +1,6 @@
 package com.arclighttw.tinyreactors.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import com.arclighttw.tinyreactors.inits.Registry.IItemProvider;
@@ -14,6 +15,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -122,7 +124,13 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 		if(!vent.isOperational())
 			return;
 		
-		for(int i = 0; i < 16; i++)
+		for(int i = 0; i < vent.getTier().getParticleCount(); i++)
 			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, true, pos.getX() + 0.1F + (rand.nextFloat() * 0.8F), pos.getY() + 1F, pos.getZ() + 0.1F + (rand.nextFloat() * 0.8F), 0F, 0.05F, 0F);
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
+	{
+		tooltip.add(String.format("Operational Heat Offset: %.2f C", getStateFromMeta(stack.getItemDamage()).getValue(EnumVentTier.PROPERTY).getHeatOffset()));
 	}
 }
