@@ -9,6 +9,7 @@
 * Reactors running at 125C are 100% efficient, whilst running hotter increases efficiency.
 * Reactor Heat Sinks increase Reactor Controller heat cap by 50C.
 * Reactor Vents can be used to slow, stop or even reverse heat gain in a reactor.
+* Sound effects.
 * Removed Redstone Flux dependency.
 
 ## Version 0.4.0
