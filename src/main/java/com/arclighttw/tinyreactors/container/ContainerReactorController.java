@@ -4,14 +4,14 @@ import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 
-public class ContainerReactorController extends Container
+public class ContainerReactorController extends ContainerBase
 {
 	private final TileEntityReactorController controller;
 	
 	public ContainerReactorController(TileEntityReactorController controller, InventoryPlayer player)
 	{
+		super(player, 8, 81);
 		this.controller = controller;
 	}
 	

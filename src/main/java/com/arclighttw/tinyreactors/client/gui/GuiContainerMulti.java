@@ -42,6 +42,13 @@ public abstract class GuiContainerMulti extends GuiContainer
 	}
 	
 	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		renderHoveredToolTip(mouseX, mouseY);
+	}
+	
+	@Override
 	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		for(GuiButton button : buttonList)

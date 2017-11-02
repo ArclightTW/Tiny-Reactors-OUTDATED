@@ -4,14 +4,14 @@ import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 
-public class ContainerReactorEnergyPort extends Container
+public class ContainerReactorEnergyPort extends ContainerBase
 {
 	private final TileEntityReactorEnergyPort energyPort;
 	
 	public ContainerReactorEnergyPort(TileEntityReactorEnergyPort energyPort, InventoryPlayer player)
 	{
+		super(player, 8, 81);
 		this.energyPort = energyPort;
 	}
 	
