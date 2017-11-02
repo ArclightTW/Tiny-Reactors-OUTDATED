@@ -6,6 +6,7 @@ import com.arclighttw.tinyreactors.blocks.BlockCapacitor;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
 import com.arclighttw.tinyreactors.tiles.TileEntityEnergy;
+import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -49,13 +50,19 @@ public class WailaIntegration implements IWailaDataProvider
 		if(block instanceof BlockCapacitor)
 			text.add("Tier: " + ((BlockCapacitor)block).getTier().getName());
 		
+		TileEntity tile = accessor.getTileEntity();
+		
+		if(tile == null)
+			return text;
+		
+		if(tile instanceof TileEntityReactorVent)
+		{
+			TileEntityReactorVent vent = (TileEntityReactorVent)tile;
+			text.add(String.format("State: %s", vent.isOperational() ? "Operational" : (vent.isObstructed() ? "Obstructed" : "Non-operational")));
+		}
+		
 		if(accessor.getPlayer().isSneaking())
 		{
-			TileEntity tile = accessor.getTileEntity();
-			
-			if(tile == null)
-				return text;
-			
 			if(tile instanceof TileEntityEnergy)
 			{
 				TileEntityEnergy energy = (TileEntityEnergy)tile;
