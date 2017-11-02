@@ -50,7 +50,7 @@ public class TileEntityReactorEnergyPort extends TileEntityEnergy
 			
 			if(storage != null)
 			{
-				int extracted = extractEnergy( energy.getCurrentExtract(), true);
+				int extracted = extractEnergy(energy.getCurrentExtract(), true);
 				
 				if(extracted > 0)
 				{

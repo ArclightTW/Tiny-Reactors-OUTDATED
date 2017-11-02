@@ -37,6 +37,7 @@ public class TileEntityCapacitor extends TileEntityEnergy
 	public void update()
 	{
 		super.update();
+		sync();
 		
 		if(getEnergyStored() <= 0 || world == null || world.isRemote)
 			return;
