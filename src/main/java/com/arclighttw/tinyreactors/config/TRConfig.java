@@ -28,4 +28,10 @@ public class TRConfig
 	
 	public static int REACTOR_MELTDOWN_DELAY = 30;
 	public static String REACTOR_MELTDOWN_DELAY_LABEL = "The amount of time (in seconds) a Reactor can be at maximum heat before a meltdown occurs.";
+	
+	public static boolean REACTANT_DEGRADATION = true;
+	public static String REACTANT_DEGRADATION_LABEL = "Whether Reactants in an active Reactor should degrade over time.";
+	
+	public static int REACTANT_DEGRADATION_TICK = 20;
+	public static String REACTANT_DEGRADATION_TICK_LABEL = "The number of ticks between each quality degradation cycle.";
 }

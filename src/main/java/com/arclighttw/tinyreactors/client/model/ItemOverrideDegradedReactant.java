@@ -8,9 +8,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ModelOverrideDegradedReactant extends ItemOverrideList
+public class ItemOverrideDegradedReactant extends ItemOverrideList
 {
-	public ModelOverrideDegradedReactant()
+	public ItemOverrideDegradedReactant()
 	{
 		super(Collections.emptyList());
 	}
@@ -23,6 +23,6 @@ public class ModelOverrideDegradedReactant extends ItemOverrideList
 		if(stack.hasTagCompound())
 			reactantName = stack.getTagCompound().getString("registryName");
 		
-		return new ModelDegradedReactant(originalModel, reactantName);
+		return new ModelItemDegradedReactant(originalModel, reactantName);
 	}
 }

@@ -2,10 +2,13 @@ package com.arclighttw.tinyreactors.blocks;
 
 import java.util.List;
 
+import com.arclighttw.tinyreactors.properties.PropertyUnlistedIBlockState;
 import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,9 +21,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class BlockDegradedReactant extends BlockTiny
 {
+	public static final PropertyUnlistedIBlockState REPRESENTATIVE = new PropertyUnlistedIBlockState();
+	
 	public BlockDegradedReactant()
 	{
 		super(Material.ROCK, "degraded_reactant");
@@ -49,7 +57,10 @@ public class BlockDegradedReactant extends BlockTiny
 		
 		String registryName = compound.getString("registryName");
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
+		float quality = compound.getFloat("quality");
+		
 		reactant.setRepresentedBlock(block);
+		reactant.setQuality(quality);
 	}
 	
 	@Override
@@ -66,6 +77,7 @@ public class BlockDegradedReactant extends BlockTiny
 			
 			NBTTagCompound compound = new NBTTagCompound();
 			compound.setString("registryName", reactant.getRepresentedBlock().getRegistryName().toString());
+			compound.setFloat("quality", reactant.getQuality());
 			
 			ItemStack itemstack = new ItemStack(this);
 			itemstack.setTagCompound(compound);
@@ -84,6 +96,28 @@ public class BlockDegradedReactant extends BlockTiny
 	}
 	
 	@Override
+	public BlockStateContainer createBlockState()
+	{
+		return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { REPRESENTATIVE });
+	}
+	
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		if(state instanceof IExtendedBlockState)
+		{
+			IExtendedBlockState extended = (IExtendedBlockState)state;
+			
+			TileEntity tile = world.getTileEntity(pos);
+			
+			if(tile != null && tile instanceof TileEntityDegradedReactant)
+				return extended.withProperty(REPRESENTATIVE, ((TileEntityDegradedReactant)tile).getRepresentedBlock().getDefaultState());
+		}
+		
+		return state;
+	}
+	
+	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
 	{
 		if(!stack.hasTagCompound())
@@ -98,7 +132,9 @@ public class BlockDegradedReactant extends BlockTiny
 			return;
 		}
 		
+		float quality = stack.getTagCompound().getFloat("quality");
+		
 		tooltip.add("Reactant: " + block.getLocalizedName());
-		tooltip.add("Degradation: 100 %");
+		tooltip.add(String.format("Quality: %.2f ", quality) + "%");
 	}
 }

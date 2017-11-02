@@ -7,7 +7,6 @@ import com.arclighttw.tinyreactors.inits.Registry;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.integration.WailaIntegration;
 import com.arclighttw.tinyreactors.managers.GuiManager;
-import com.arclighttw.tinyreactors.managers.ProcessManager;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerActive;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerRedstone;
 import com.arclighttw.tinyreactors.network.SMessageReactorEnergyPort;
@@ -63,7 +62,6 @@ public class TinyReactors
 		proxy.onInitialization(event);
 		
 		WailaIntegration.register();
-		ProcessManager.register();
 		
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 		network.registerMessage(SMessageReactorEnergyPort.Handler.class, SMessageReactorEnergyPort.class, 0, Side.SERVER);

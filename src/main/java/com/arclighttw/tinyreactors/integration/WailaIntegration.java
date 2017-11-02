@@ -66,7 +66,7 @@ public class WailaIntegration implements IWailaDataProvider
 		{
 			TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
 			text.add("Reactant: " + reactant.getRepresentedBlock().getLocalizedName());
-			text.add("Degradation: 100%");
+			text.add(String.format("Quality: %.2f ", reactant.getQuality()) + "%");
 		}
 		
 		if(accessor.getPlayer().isSneaking())

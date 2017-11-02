@@ -3,6 +3,7 @@ package com.arclighttw.tinyreactors.storage;
 import java.util.List;
 
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
+import com.arclighttw.tinyreactors.config.TRConfig;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
@@ -25,8 +26,11 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	
 	int availableYield, maximumYield;
 	int heatSinkCount, reactorSize;
+	int degradedItem;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
+	List<TileEntityReactorVent> reactorVents;
+	
 	List<BlockPos> validReactants;
 	
 	boolean isReactor, hasController;
@@ -36,6 +40,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		this.controller = controller;
 		
 		energyPorts = Lists.newArrayList();
+		reactorVents = Lists.newArrayList();
+		
 		validReactants = Lists.newArrayList();
 	}
 	
@@ -80,7 +86,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 				energyPorts.add((TileEntityReactorEnergyPort)tile);
 			
 			if(tile instanceof TileEntityReactorVent)
-				((TileEntityReactorVent)tile).setController(controller.getPos());
+				reactorVents.add((TileEntityReactorVent)tile);
 		}
 	}
 	
@@ -110,6 +116,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		reactorSize = 0;
 	
 		energyPorts = Lists.newArrayList();
+		reactorVents = Lists.newArrayList();
+		
 		validReactants = Lists.newArrayList();
 	}
 	
@@ -136,6 +144,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		compound.setInteger("heatSinkCount", heatSinkCount);
 		compound.setInteger("reactorSize", reactorSize);
+		
+		compound.setInteger("degradedItem", degradedItem);
 	}
 	
 	@Override
@@ -148,10 +158,21 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		heatSinkCount = compound.getInteger("heatSinkCount");
 		reactorSize = compound.getInteger("reactorSize");
+		
+		degradedItem = compound.getInteger("degradedItem");
 	}
 	
 	public void onActivate(World world)
 	{
+		if(!TRConfig.REACTANT_DEGRADATION)
+			return;
+		
+		for(TileEntityReactorVent vent : reactorVents)
+		{
+			vent.setController(controller);
+			vent.sync();
+		}
+		
 		for(BlockPos pos : validReactants)
 		{
 			TileEntity tile = world.getTileEntity(pos);
@@ -170,6 +191,22 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
 			degradedReactant.setRepresentedBlock(reactant);
 		}
+	}
+	
+	public void degradeReactant(World world, float qualityDegration)
+	{
+		if(validReactants.size() == 0)
+			return;
+		
+		BlockPos pos = validReactants.get(degradedItem);
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if(tile != null && tile instanceof TileEntityDegradedReactant)
+			((TileEntityDegradedReactant)tile).degrade(qualityDegration);
+		
+		degradedItem++;
+		if(degradedItem >= validReactants.size())
+			degradedItem = 0;
 	}
 	
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()

@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TemperatureStorage
 {
-	private static final float BASE_TEMPERATURE_CAP = 250F;
+	public static final float BASE_TEMPERATURE_CAP = 250F;
 	
 	private float currentTemperature;
 	private float maximumTemperature;
@@ -44,7 +44,7 @@ public class TemperatureStorage
 	public void modifyHeat(float heat)
 	{
 		currentTemperature += heat;
-
+		
 		if(currentTemperature < 0)
 			currentTemperature = 0;
 		
@@ -62,7 +62,7 @@ public class TemperatureStorage
 			
 			return;
 		}
-		else if(currentTemperature < maximumTemperature - 1)
+		else if(currentTemperature < maximumTemperature - 10)
 		{
 			peaked = false;
 			

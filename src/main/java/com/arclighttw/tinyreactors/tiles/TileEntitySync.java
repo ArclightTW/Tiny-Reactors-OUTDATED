@@ -49,8 +49,7 @@ public class TileEntitySync extends TileEntity implements ITickable
 	
 	public void sync()
 	{
-		if(!world.isRemote)
-			syncScheduled = true;
+		syncScheduled = true;
 	}
 	
 	public void onInitialLoad()

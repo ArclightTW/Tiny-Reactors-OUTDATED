@@ -41,6 +41,9 @@ public class ModConfig
 		TRConfig.REACTOR_MELTDOWN = config.getBoolean("Reactor Meltdown", category, TRConfig.REACTOR_MELTDOWN, TRConfig.REACTOR_MELTDOWN_LABEL);
 		TRConfig.REACTOR_MELTDOWN_DELAY = config.getInt("Reactor Meltdown Delay", category, TRConfig.REACTOR_MELTDOWN_DELAY, 1, Integer.MAX_VALUE, TRConfig.REACTOR_MELTDOWN_DELAY_LABEL);
 		
+		TRConfig.REACTANT_DEGRADATION = config.getBoolean("Reactant Degradation", category, TRConfig.REACTANT_DEGRADATION, TRConfig.REACTANT_DEGRADATION_LABEL);
+		TRConfig.REACTANT_DEGRADATION_TICK = config.getInt("Reactant Degradation Tick", category, TRConfig.REACTANT_DEGRADATION_TICK, 1, Integer.MAX_VALUE, TRConfig.REACTANT_DEGRADATION_TICK_LABEL);
+		
 		category = "Reactants";
 		config.addCustomCategoryComment(category, "Specify the rate per tick of each Block when placed inside an active reactor.");
 		

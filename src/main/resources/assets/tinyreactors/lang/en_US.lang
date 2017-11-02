@@ -16,6 +16,8 @@ tile.reactor_vent.0.name=Iron Reactor Vent
 tile.reactor_vent.1.name=Gold Reactor Vent
 tile.reactor_vent.2.name=Diamond Reactor Vent
 
+tile.degraded_reactant.name=Degraded Reactant
+
 tile.capacitor_1.name=Capacitor
 tile.capacitor_2.name=Capacitor
 tile.capacitor_3.name=Capacitor

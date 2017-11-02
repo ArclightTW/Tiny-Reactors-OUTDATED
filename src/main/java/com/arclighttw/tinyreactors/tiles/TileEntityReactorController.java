@@ -147,7 +147,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 					degradationTimer++;
 					if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
 					{
-						multiblock.degradeReactant(world);
+						multiblock.degradeReactant(world, temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5));
 						degradationTimer = 0;
 					}
 				}
@@ -238,7 +238,9 @@ public class TileEntityReactorController extends TileEntityEnergy
 		if(active)
 		{
 			multiblock.onActivate(world);
-			world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
+			
+			if(world != null)
+				world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
 		}
 	}
 	
