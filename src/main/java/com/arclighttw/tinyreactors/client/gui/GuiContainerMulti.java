@@ -49,6 +49,11 @@ public abstract class GuiContainerMulti extends GuiContainer
 	}
 	
 	@Override
+	public void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	{
+	}
+	
+	@Override
 	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		for(GuiButton button : buttonList)

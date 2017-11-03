@@ -1,9 +1,12 @@
 package com.arclighttw.tinyreactors.managers;
 
+import com.arclighttw.tinyreactors.client.gui.GuiReactantCombiner;
 import com.arclighttw.tinyreactors.client.gui.GuiReactorController;
 import com.arclighttw.tinyreactors.client.gui.GuiReactorEnergyPort;
+import com.arclighttw.tinyreactors.container.ContainerReactantCombiner;
 import com.arclighttw.tinyreactors.container.ContainerReactorController;
 import com.arclighttw.tinyreactors.container.ContainerReactorEnergyPort;
+import com.arclighttw.tinyreactors.tiles.TileEntityReactantCombiner;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 
@@ -17,6 +20,7 @@ public class GuiManager implements IGuiHandler
 {
 	public static final int REACTOR_CONTROLLER = 0;
 	public static final int REACTOR_ENERGY_PORT = 1;
+	public static final int REACTANT_COMBINER = 2;
 	
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
@@ -31,6 +35,9 @@ public class GuiManager implements IGuiHandler
 		case REACTOR_ENERGY_PORT:
 			if(tile != null && tile instanceof TileEntityReactorEnergyPort)
 				return new GuiReactorEnergyPort((TileEntityReactorEnergyPort)tile, player.inventory);
+		case REACTANT_COMBINER:
+			if(tile != null && tile instanceof TileEntityReactantCombiner)
+				return new GuiReactantCombiner((TileEntityReactantCombiner)tile, player.inventory);
 		}
 		
 		return null;
@@ -49,6 +56,9 @@ public class GuiManager implements IGuiHandler
 		case REACTOR_ENERGY_PORT:
 			if(tile != null && tile instanceof TileEntityReactorEnergyPort)
 				return new ContainerReactorEnergyPort((TileEntityReactorEnergyPort)tile, player.inventory);
+		case REACTANT_COMBINER:
+			if(tile != null && tile instanceof TileEntityReactantCombiner)
+				return new ContainerReactantCombiner((TileEntityReactantCombiner)tile, player.inventory);
 		}
 		
 		return null;

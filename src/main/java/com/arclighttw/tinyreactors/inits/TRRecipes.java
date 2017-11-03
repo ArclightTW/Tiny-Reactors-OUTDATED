@@ -139,6 +139,16 @@ public class TRRecipes
 				Character.valueOf('C'), TRBlocks.CAPACITOR_2
 	});
 	
+	public static IRecipe REACTANT_COMBINER = new ShapedRecipe(TRBlocks.REACTANT_COMBINER, new Object[] {
+			"IGI",
+			"IPI",
+			"IRI",
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('G'), Blocks.GLASS,
+				Character.valueOf('P'), Blocks.PISTON,
+				Character.valueOf('R'), Blocks.REDSTONE_BLOCK
+	});
+	
 	public static void onRegister()
 	{
 		try

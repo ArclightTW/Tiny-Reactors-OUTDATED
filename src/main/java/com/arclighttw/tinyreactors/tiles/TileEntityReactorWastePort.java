@@ -13,6 +13,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityReactorWastePort extends TileEntitySync
 {
+	public static final float REQUIRED_VOLUME = 200F;
+	
 	private float volume;
 	
 	@Override
@@ -20,7 +22,7 @@ public class TileEntityReactorWastePort extends TileEntitySync
 	{
 		super.update();
 		
-		if(volume < 200)
+		if(volume < REQUIRED_VOLUME)
 			return;
 		
 		if(!world.isRemote)
@@ -61,6 +63,11 @@ public class TileEntityReactorWastePort extends TileEntitySync
 	{
 		volume += amount;
 		sync();
+	}
+	
+	public float getVolume()
+	{
+		return volume;
 	}
 	
 	@Override

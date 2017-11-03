@@ -218,17 +218,6 @@ public class Registry
 	@SideOnly(Side.CLIENT)
 	public void onModelRegister(ModelRegistryEvent event)
 	{
-		for(Map.Entry<ResourceLocation, Block> block : BLOCKS.entrySet())
-		{
-			if(block.getValue() instanceof IModelProvider)
-			{
-				((IModelProvider)block.getValue()).registerModels();
-				continue;
-			}
-			
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block.getValue()), 0, new ModelResourceLocation(new ResourceLocation(Reference.ID, block.getKey().getResourcePath()), "inventory"));
-		}
-		
 		for(Map.Entry<ResourceLocation, Item> item : ITEMS.entrySet())
 		{
 			if(item.getValue() instanceof IModelProvider)
@@ -238,6 +227,17 @@ public class Registry
 			}
 			
 			ModelLoader.setCustomModelResourceLocation(item.getValue(), 0, new ModelResourceLocation(new ResourceLocation(Reference.ID, item.getKey().getResourcePath()), "inventory"));
+		}
+		
+		for(Map.Entry<ResourceLocation, Block> block : BLOCKS.entrySet())
+		{
+			if(block.getValue() instanceof IModelProvider)
+			{
+				((IModelProvider)block.getValue()).registerModels();
+				continue;
+			}
+			
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block.getValue()), 0, new ModelResourceLocation(new ResourceLocation(Reference.ID, block.getKey().getResourcePath()), "inventory"));
 		}
 	}
 	
