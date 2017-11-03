@@ -15,6 +15,9 @@ public class TemperatureStorage
 	private Runnable hitPeakListener;
 	private Runnable leftPeakListener;
 	
+	private int cooldown;
+	private boolean locked;
+	
 	public TemperatureStorage(int heatSinkCount)
 	{
 		setHeatSinkCount(heatSinkCount);
@@ -39,6 +42,27 @@ public class TemperatureStorage
 	{
 		maximumTemperature = BASE_TEMPERATURE_CAP + (heatSinkCount * BASE_TEMPERATURE_CAP) / 5;
 		return this;
+	}
+	
+	public void overheat()
+	{
+		locked = true;
+		cooldown = 300;
+	}
+	
+	public void applyCooldownTick()
+	{
+		cooldown--;
+		currentTemperature = maximumTemperature * (cooldown / (float)300);
+		
+		if(cooldown <= 0)
+		{
+			cooldown = 0;
+			locked = false;
+		}
+		
+		if(changeListener != null)
+			changeListener.run();
 	}
 	
 	public void modifyHeat(float heat)
@@ -79,12 +103,18 @@ public class TemperatureStorage
 	{
 		compound.setFloat("currentTemperature", currentTemperature);
 		compound.setFloat("maximumTemperature", maximumTemperature);
+		
+		compound.setInteger("cooldown", cooldown);
+		compound.setBoolean("locked", locked);
 	}
 	
 	public TemperatureStorage readFromNBT(NBTTagCompound compound)
 	{
 		currentTemperature = compound.getFloat("currentTemperature");
 		maximumTemperature = compound.getFloat("maximumTemperature");
+		
+		cooldown = compound.getInteger("cooldown");
+		locked = compound.getBoolean("locked");
 		
 		return this;
 	}
@@ -108,5 +138,10 @@ public class TemperatureStorage
 	public float getMaximumTemperature()
 	{
 		return maximumTemperature;
+	}
+	
+	public boolean hasOverheated()
+	{
+		return locked;
 	}
 }

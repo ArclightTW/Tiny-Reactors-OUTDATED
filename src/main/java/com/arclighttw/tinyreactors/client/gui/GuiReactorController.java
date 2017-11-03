@@ -84,7 +84,13 @@ public class GuiReactorController extends GuiContainerMulti
 	{
 		super.updateScreen();
 		
-		if(controller.getMultiblock().isValid())
+		if(controller.getTemperature().hasOverheated())
+		{
+			buttonOff.visible = true;
+			buttonOff.enabled = false;
+			buttonOn.visible = false;
+		}
+		else if(controller.getMultiblock().isValid())
 		{
 			buttonOff.visible = controller.isActive();
 			buttonOn.visible = !buttonOff.visible;
@@ -142,7 +148,12 @@ public class GuiReactorController extends GuiContainerMulti
 	@Override
 	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		if(controller.isActive())
+		if(controller.getTemperature().hasOverheated())
+		{
+			drawString(fontRenderer, "CRITICAL FAILURE", 5, 7, 0xFFFFFF);
+			drawString(fontRenderer, "Reactor Cooling", 5, 17, 0xFFFFFF);
+		}
+		else if(controller.isActive())
 		{
 			if(controller.isPowered() && controller.getRedstoneMode() == EnumRedstoneMode.DISABLE_ON_REDSTONE)
 			{

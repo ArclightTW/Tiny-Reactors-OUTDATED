@@ -7,7 +7,6 @@ import com.arclighttw.tinyreactors.properties.EnumRedstoneMode;
 import com.arclighttw.tinyreactors.storage.ReactorMultiBlockStorage;
 import com.arclighttw.tinyreactors.storage.TemperatureStorage;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
@@ -97,9 +96,17 @@ public class TileEntityReactorController extends TileEntityEnergy
 				
 				if(meltdownTimer <= 0)
 				{
-					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					// TODO: Play sound effect.
+					temperature.overheat();
+					meltdownInitiated = false;
 					return;
 				}
+			}
+			
+			if(temperature.hasOverheated())
+			{
+				temperature.applyCooldownTick();
+				return;
 			}
 			
 			if(!multiblock.isValid())
