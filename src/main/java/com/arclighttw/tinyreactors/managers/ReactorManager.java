@@ -91,7 +91,8 @@ public class ReactorManager
 				block instanceof BlockReactorEnergyPort ||
 				block == TRBlocks.REACTOR_CASING ||
 				block == TRBlocks.REACTOR_GLASS ||
-				block == TRBlocks.REACTOR_HEAT_SINK;
+				block == TRBlocks.REACTOR_HEAT_SINK ||
+				block == TRBlocks.REACTOR_WASTE_PORT;
 	}
 	
 	public static boolean isValidStructure(Block block)
@@ -99,7 +100,8 @@ public class ReactorManager
 		return block instanceof BlockReactorController ||
 				block instanceof BlockReactorEnergyPort ||
 				block == TRBlocks.REACTOR_CASING ||
-				block == TRBlocks.REACTOR_HEAT_SINK;
+				block == TRBlocks.REACTOR_HEAT_SINK ||
+				block == TRBlocks.REACTOR_WASTE_PORT;
 	}
 	
 	public static int getReactantRate(World world, BlockPos pos, IBlockState state)

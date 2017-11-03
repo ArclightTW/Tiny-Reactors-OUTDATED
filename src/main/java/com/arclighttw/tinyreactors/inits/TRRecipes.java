@@ -78,6 +78,40 @@ public class TRRecipes
 				Character.valueOf('B'), Blocks.IRON_BARS
 	});
 	
+	public static IRecipe REACTOR_VENT_IRON = new ShapedRecipe(new ItemStack(TRBlocks.REACTOR_VENT, 1, 0), new Object[] {
+			"IBI",
+			"IBI",
+			"IBI",
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('B'), Blocks.IRON_BARS
+	});
+	
+	public static IRecipe REACTOR_VENT_GOLD = new ShapedRecipe(new ItemStack(TRBlocks.REACTOR_VENT, 1, 1), new Object[] {
+			"IBI",
+			"IBI",
+			"IBI",
+				Character.valueOf('I'), Items.GOLD_INGOT,
+				Character.valueOf('B'), Blocks.IRON_BARS
+	});
+	
+	public static IRecipe REACTOR_VENT_DIAMOND = new ShapedRecipe(new ItemStack(TRBlocks.REACTOR_VENT, 1, 2), new Object[] {
+			"IBI",
+			"IBI",
+			"IBI",
+				Character.valueOf('I'), Items.DIAMOND,
+				Character.valueOf('B'), Blocks.IRON_BARS
+	});
+	
+	public static IRecipe REACTOR_WASTE_PORT = new ShapedRecipe(TRBlocks.REACTOR_WASTE_PORT, new Object[] {
+			"CGC",
+			"GBG",
+			"CRC",
+				Character.valueOf('C'), TRBlocks.REACTOR_CASING,
+				Character.valueOf('G'), Blocks.GLASS,
+				Character.valueOf('B'), Items.BUCKET,
+				Character.valueOf('R'), Items.REDSTONE
+	});
+	
 	public static IRecipe CAPACITOR_TIER_1 = new ShapedRecipe(TRBlocks.CAPACITOR_1, new Object[] {
 			"IGI",
 			"IGI",

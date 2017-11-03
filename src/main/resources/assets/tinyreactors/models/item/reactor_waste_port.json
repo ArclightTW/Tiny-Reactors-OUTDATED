@@ -1,0 +1,9 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "particle": "tinyreactors:blocks/reactor_waste_port",
+    		"front": "tinyreactors:blocks/reactor_waste_port",
+        "top": "tinyreactors:blocks/reactor_casing",
+		"side": "tinyreactors:blocks/reactor_casing"
+    }
+}
