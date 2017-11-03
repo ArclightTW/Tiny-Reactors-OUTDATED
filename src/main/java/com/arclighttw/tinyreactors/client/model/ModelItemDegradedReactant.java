@@ -1,100 +1,89 @@
 package com.arclighttw.tinyreactors.client.model;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.arclighttw.tinyreactors.inits.TRBlocks;
+import com.arclighttw.tinyreactors.inits.Registry.IRuntimeModel;
+import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraft.world.World;
 
-@SuppressWarnings("deprecation")
-public class ModelItemDegradedReactant implements IBakedModel
+public class ModelItemDegradedReactant implements IRuntimeModel
 {
-	private IBakedModel originalModel;
-	private String registryName;
-	
-	public ModelItemDegradedReactant(IBakedModel originalModel, String registryName)
+	private IBakedModel createActual(IBakedModel existing, String reactantName)
 	{
-		this.originalModel = originalModel;
-		this.registryName = registryName;
-	}
-	
-	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
-	{
-		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(TRBlocks.REACTOR_CASING.getDefaultState());
+		Block block = Block.REGISTRY.getObject(new ResourceLocation(reactantName));
+		final IBlockState representative = block == null ? null : block.getDefaultState();
 		
-		if(registryName != null)
+		return new ModelSimpleBaked(existing)
 		{
-			Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
-			model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
-		}
-		
-		return model.getQuads(state, side, rand);
+			@Override
+			public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+			{
+				List<BakedQuad> oldQuads = existing.getQuads(state, side, rand);
+				
+				if(representative == null)
+					return oldQuads;
+				
+				List<BakedQuad> newQuads = Lists.newArrayList();
+
+				IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(representative);
+				List<BakedQuad> modelQuads = model.getQuads(state, side, rand);
+				
+				if(modelQuads.size() != oldQuads.size())
+					return oldQuads;
+				
+				for(int i = 0; i < modelQuads.size(); i++)
+					newQuads.add(new BakedQuadRetextured(oldQuads.get(i), modelQuads.get(i).getSprite()));
+				
+				return newQuads;
+			}
+			
+			@Override
+			public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
+			{
+				return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(representative).handlePerspective(cameraTransformType);
+			}
+		};
 	}
 	
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
+	public IBakedModel createModel(IBakedModel existing)
 	{
-		if(originalModel instanceof IBakedModel)
+		return new ModelSimpleBaked(existing)
 		{
-			Pair<? extends IBakedModel, Matrix4f> pair = ((IBakedModel)originalModel).handlePerspective(cameraTransformType);
-			return Pair.of(this, pair.getRight());
-		}
-		
-		ItemCameraTransforms transforms = originalModel.getItemCameraTransforms();
-		ItemTransformVec3f transform = transforms.getTransform(cameraTransformType);
-		TRSRTransformation tr = new TRSRTransformation(transform);
-		Matrix4f matrix = null;
-		
-		if(tr != null)
-			matrix = tr.getMatrix();
-		
-		return Pair.of(this, matrix);
-	}
-	
-	@Override
-	public TextureAtlasSprite getParticleTexture()
-	{
-		return originalModel.getParticleTexture();
-	}
-
-	@Override
-	public boolean isAmbientOcclusion()
-	{
-		return originalModel.isAmbientOcclusion();
-	}
-
-	@Override
-	public boolean isGui3d()
-	{
-		return originalModel.isGui3d();
-	}
-
-	@Override
-	public boolean isBuiltInRenderer()
-	{
-		return originalModel.isBuiltInRenderer();
-	}
-
-	@Override
-	public ItemOverrideList getOverrides()
-	{
-		throw new UnsupportedOperationException("The finalized model does not contain an ItemOverrideList");
+			@Override
+			public ItemOverrideList getOverrides()
+			{
+				return new ItemOverrideList(Collections.emptyList()) {
+					@Override
+					public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity)
+					{
+						String reactantName = null;
+						
+						if(stack.hasTagCompound())
+							reactantName = stack.getTagCompound().getString("registryName");
+						
+						return new ModelItemDegradedReactant().createActual(originalModel, reactantName);
+					}
+				};
+			}
+		};
 	}
 }

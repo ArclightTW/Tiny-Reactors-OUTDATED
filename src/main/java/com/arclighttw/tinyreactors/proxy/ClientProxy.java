@@ -5,7 +5,6 @@ import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorControll
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorEnergyPort;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorVent;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
-import com.arclighttw.tinyreactors.managers.ModelBakeEventManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
@@ -16,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -24,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientProxy extends CommonProxy
 {
+	// TODO: Is this necessary?
 	private static final StateMapperBase getIgnoreState(Block block)
 	{
 		return new StateMapperBase() {
@@ -39,8 +38,6 @@ public class ClientProxy extends CommonProxy
 	public void onPreInitialization(FMLPreInitializationEvent event)
 	{
 		ModelLoader.setCustomStateMapper(TRBlocks.DEGRADED_REACTANT, getIgnoreState(TRBlocks.DEGRADED_REACTANT));
-		
-		MinecraftForge.EVENT_BUS.register(new ModelBakeEventManager());
 	}
 	
 	@Override

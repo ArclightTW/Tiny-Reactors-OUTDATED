@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.arclighttw.tinyreactors.inits.Registry.IItemProvider;
-import com.arclighttw.tinyreactors.inits.Registry.IModelProvider;
+import com.arclighttw.tinyreactors.inits.Registry.IModelRegistrar;
 import com.arclighttw.tinyreactors.items.ItemReactorVent;
 import com.arclighttw.tinyreactors.main.Reference;
 import com.arclighttw.tinyreactors.properties.EnumVentTier;
@@ -33,7 +33,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReactorVent extends BlockReactorComponent implements IItemProvider, IModelProvider
+public class BlockReactorVent extends BlockReactorComponent implements IItemProvider, IModelRegistrar
 {
 	public BlockReactorVent()
 	{

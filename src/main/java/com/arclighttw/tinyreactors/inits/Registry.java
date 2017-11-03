@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -19,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -37,6 +39,7 @@ public class Registry
 	static Map<ResourceLocation, Item> ITEMS = Maps.newHashMap();
 	static Map<ResourceLocation, IRecipe> RECIPES = Maps.newHashMap();
 	static Map<ResourceLocation, SoundEvent> SOUNDS = Maps.newHashMap();
+	static Map<ModelResourceLocation, IRuntimeModel> MODELS = Maps.newHashMap();
 	
 	static Map<ResourceLocation, Class<? extends TileEntity>> TILES = Maps.newHashMap();
 	
@@ -44,9 +47,6 @@ public class Registry
 	{
 		registerBlock(block, name);
 		registerItem(block instanceof IItemProvider ? ((IItemProvider)block).getItemBlock() : new ItemBlock(block), name);
-		
-		if(block instanceof ITileEntityProvider)
-			registerTileEntity(((ITileEntityProvider)block).createNewTileEntity(null, -1), name);
 	}
 	
 	public static void register(Item item, String name)
@@ -74,6 +74,12 @@ public class Registry
 		
 		block.setRegistryName(new ResourceLocation(Reference.ID, name));
 		
+		if(block instanceof ITileEntityProvider)
+			registerTileEntity(((ITileEntityProvider)block).createNewTileEntity(null, -1), name);
+		
+		if(block instanceof IModelProvider)
+			registerModel(((IModelProvider)block).createModel(), name, "normal");
+		
 		if(BLOCKS.containsKey(block.getRegistryName()))
 		{
 			System.err.println(String.format("Unable to register Block with registry name '%s' as an entry already exists with this name.", block.getRegistryName().toString()));
@@ -92,6 +98,9 @@ public class Registry
 		}
 		
 		item.setRegistryName(new ResourceLocation(Reference.ID, name));
+		
+		if(item instanceof IModelProvider)
+			registerModel(((IModelProvider)item).createModel(), name, "inventory");
 		
 		if(ITEMS.containsKey(item.getRegistryName()))
 		{
@@ -163,15 +172,40 @@ public class Registry
 		SOUNDS.put(sound.getRegistryName(), sound);
 	}
 	
+	private static void registerModel(IRuntimeModel model, String name, String variant)
+	{
+		if(model == null)
+		{
+			System.err.println(String.format("Unable to register IRuntimeModel with name '%s' as the provided IRuntimeModel is null.", name));
+			return;
+		}
+		
+		ModelResourceLocation resource = new ModelResourceLocation(new ResourceLocation(Reference.ID, name), variant);
+		
+		if(MODELS.containsKey(resource))
+		{
+			System.err.println(String.format("Unable to register IRuntimeModel with ModelResourceLocation '%s' as an entry already exists with this name.", resource.toString()));
+			return;
+		}
+		
+		MODELS.put(resource, model);
+	}
+	
 	public interface IItemProvider
 	{
 		ItemBlock getItemBlock();
 	}
 	
-	public interface IModelProvider
+	public interface IModelRegistrar
 	{
 		@SideOnly(Side.CLIENT)
 		void registerModels();
+	}
+	
+	public interface IModelProvider
+	{
+		@SideOnly(Side.CLIENT)
+		IRuntimeModel createModel();
 	}
 	
 	@SubscribeEvent
@@ -220,9 +254,9 @@ public class Registry
 	{
 		for(Map.Entry<ResourceLocation, Item> item : ITEMS.entrySet())
 		{
-			if(item.getValue() instanceof IModelProvider)
+			if(item.getValue() instanceof IModelRegistrar)
 			{
-				((IModelProvider)item.getValue()).registerModels();
+				((IModelRegistrar)item.getValue()).registerModels();
 				continue;
 			}
 			
@@ -231,14 +265,34 @@ public class Registry
 		
 		for(Map.Entry<ResourceLocation, Block> block : BLOCKS.entrySet())
 		{
-			if(block.getValue() instanceof IModelProvider)
+			if(block.getValue() instanceof IModelRegistrar)
 			{
-				((IModelProvider)block.getValue()).registerModels();
+				((IModelRegistrar)block.getValue()).registerModels();
 				continue;
 			}
 			
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block.getValue()), 0, new ModelResourceLocation(new ResourceLocation(Reference.ID, block.getKey().getResourcePath()), "inventory"));
 		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onModelBake(ModelBakeEvent event)
+	{
+		for(Map.Entry<ModelResourceLocation, IRuntimeModel> model : MODELS.entrySet())
+		{
+			Object existing = event.getModelRegistry().getObject(model.getKey());
+			
+			if(!(existing instanceof IBakedModel))
+				continue;
+			
+			event.getModelRegistry().putObject(model.getKey(), model.getValue().createModel((IBakedModel)existing));
+		}
+	}
+	
+	public static interface IRuntimeModel
+	{
+		IBakedModel createModel(IBakedModel existing);
 	}
 	
 	static class ShapedRecipe extends ShapedOreRecipe

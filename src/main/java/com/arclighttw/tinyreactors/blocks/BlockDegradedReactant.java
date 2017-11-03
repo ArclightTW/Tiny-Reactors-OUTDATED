@@ -2,6 +2,11 @@ package com.arclighttw.tinyreactors.blocks;
 
 import java.util.List;
 
+import com.arclighttw.tinyreactors.client.model.ModelBlockDegradedReactant;
+import com.arclighttw.tinyreactors.inits.Registry.IItemProvider;
+import com.arclighttw.tinyreactors.inits.Registry.IModelProvider;
+import com.arclighttw.tinyreactors.inits.Registry.IRuntimeModel;
+import com.arclighttw.tinyreactors.items.ItemDegradedReactant;
 import com.arclighttw.tinyreactors.properties.PropertyUnlistedIBlockState;
 import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 
@@ -13,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +31,7 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-public class BlockDegradedReactant extends BlockTiny
+public class BlockDegradedReactant extends BlockTiny implements IItemProvider, IModelProvider
 {
 	public static final PropertyUnlistedIBlockState REPRESENTATIVE = new PropertyUnlistedIBlockState();
 	
@@ -35,9 +41,21 @@ public class BlockDegradedReactant extends BlockTiny
 	}
 	
 	@Override
+	public ItemBlock getItemBlock()
+	{
+		return new ItemDegradedReactant(this);
+	}
+	
+	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityDegradedReactant();
+	}
+	
+	@Override
+	public IRuntimeModel createModel()
+	{
+		return new ModelBlockDegradedReactant();
 	}
 	
 	@Override
