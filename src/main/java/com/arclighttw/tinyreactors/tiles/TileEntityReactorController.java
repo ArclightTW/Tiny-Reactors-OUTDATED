@@ -142,12 +142,17 @@ public class TileEntityReactorController extends TileEntityEnergy
 					soundTimer = 0;
 				}
 				
+				float degradedQuality = temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5);
+				
+				for(TileEntityReactorWastePort wastePort : multiblock.getWastePorts())
+					wastePort.generate(degradedQuality / (float)multiblock.getWastePorts().size());
+				
 				if(TRConfig.REACTANT_DEGRADATION)
 				{
 					degradationTimer++;
 					if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
 					{
-						multiblock.degradeReactant(world, temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5));
+						multiblock.degradeReactant(world, degradedQuality);
 						degradationTimer = 0;
 					}
 				}
