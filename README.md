@@ -3,7 +3,7 @@ Build a tiny reactor... Or a massive one!
 
 [Check out the Trello board for an accurate situation update!](https://trello.com/b/hpjBhZXp/tiny-reactors)
 
-< Insert Image Here >
+![Image](https://github.com/ArclightTW/Tiny-Reactors/blob/1.12/screenshot.png?raw=true)
 
 
 # Navigation
