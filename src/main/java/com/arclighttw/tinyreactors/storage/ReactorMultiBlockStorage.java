@@ -10,6 +10,7 @@ import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
+import com.arclighttw.tinyreactors.tiles.TileEntityReactorWastePort;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
@@ -29,6 +30,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	int degradedItem;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
+	List<TileEntityReactorWastePort> wastePorts;
 	List<TileEntityReactorVent> reactorVents;
 	
 	List<BlockPos> validReactants;
@@ -38,11 +40,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	public ReactorMultiBlockStorage(TileEntityReactorController controller)
 	{
 		this.controller = controller;
-		
-		energyPorts = Lists.newArrayList();
-		reactorVents = Lists.newArrayList();
-		
-		validReactants = Lists.newArrayList();
+		onPreCalculation(null);
 	}
 	
 	@Override
@@ -85,6 +83,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			if(tile instanceof TileEntityReactorEnergyPort)
 				energyPorts.add((TileEntityReactorEnergyPort)tile);
 			
+			if(tile instanceof TileEntityReactorWastePort)
+				wastePorts.add((TileEntityReactorWastePort)tile);
+			
 			if(tile instanceof TileEntityReactorVent)
 				reactorVents.add((TileEntityReactorVent)tile);
 		}
@@ -116,8 +117,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		reactorSize = 0;
 	
 		energyPorts = Lists.newArrayList();
-		reactorVents = Lists.newArrayList();
+		wastePorts = Lists.newArrayList();
 		
+		reactorVents = Lists.newArrayList();
 		validReactants = Lists.newArrayList();
 	}
 	
@@ -146,6 +148,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		compound.setInteger("reactorSize", reactorSize);
 		
 		compound.setInteger("degradedItem", degradedItem);
+		
+		// TODO: SAVE ALL POSITIONS
 	}
 	
 	@Override
@@ -160,6 +164,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		reactorSize = compound.getInteger("reactorSize");
 		
 		degradedItem = compound.getInteger("degradedItem");
+		
+		// TODO: LOAD ALL POSITIONS
 	}
 	
 	public void onActivate(World world)
@@ -198,20 +204,37 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		if(validReactants.size() == 0)
 			return;
 		
-		BlockPos pos = validReactants.get(degradedItem);
+		BlockPos pos = null;
+		
+		try
+		{
+			pos = validReactants.get(degradedItem);
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			degradedItem = 0;
+			pos = validReactants.get(degradedItem);
+		}
+		
+		if(pos == null)
+			return;
+		
 		TileEntity tile = world.getTileEntity(pos);
 		
 		if(tile != null && tile instanceof TileEntityDegradedReactant)
 			((TileEntityDegradedReactant)tile).degrade(qualityDegration);
 		
 		degradedItem++;
-		if(degradedItem >= validReactants.size())
-			degradedItem = 0;
 	}
 	
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()
 	{
 		return energyPorts;
+	}
+	
+	public List<TileEntityReactorWastePort> getWastePorts()
+	{
+		return wastePorts;
 	}
 	
 	public int getHeatSinkCount()

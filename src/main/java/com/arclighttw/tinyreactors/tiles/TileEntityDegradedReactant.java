@@ -38,6 +38,13 @@ public class TileEntityDegradedReactant extends TileEntitySync
 	public void degrade(float qualityDegradation)
 	{
 		quality -= qualityDegradation;
+		
+		if(quality <= 0)
+		{
+			// TODO: if(TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION) { world.setBlockState(pos, Blocks.AIR.getDefaultState()); ReactorManager.validateAllReactors(); }
+			quality = 0;
+		}
+		
 		sync();
 	}
 	

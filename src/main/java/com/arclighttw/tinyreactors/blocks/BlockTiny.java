@@ -1,5 +1,8 @@
 package com.arclighttw.tinyreactors.blocks;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.arclighttw.tinyreactors.main.TinyReactors;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 
@@ -7,7 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -19,11 +24,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTiny extends Block implements ITileEntityProvider
 {
+	private List<String> tooltip;
+	
 	public BlockTiny(Material material, String name)
 	{
 		super(material);
 		setUnlocalizedName(name);
 		setCreativeTab(TinyReactors.tab);
+	}
+	
+	public <T extends BlockTiny> T setTooltip(String text)
+	{
+		return setTooltip(Arrays.asList(text));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends BlockTiny> T setTooltip(List<String> text)
+	{
+		tooltip = text;
+		return (T)this;
 	}
 	
 	@Override
@@ -68,6 +87,13 @@ public class BlockTiny extends Block implements ITileEntityProvider
 	public int getInterfaceId()
 	{
 		return -1;
+	}
+	
+	@Override
+	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
+	{
+		if(this.tooltip != null)
+			tooltip.addAll(this.tooltip);
 	}
 	
 	@Override

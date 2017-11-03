@@ -189,6 +189,8 @@ public class Registry
 	@SubscribeEvent
 	public void onItemRegister(RegistryEvent.Register<Item> event)
 	{
+		TRItems.onRegister();
+		
 		for(Map.Entry<ResourceLocation, Item> item : ITEMS.entrySet())
 			event.getRegistry().register(item.getValue());			
 	}
@@ -206,6 +208,8 @@ public class Registry
 	@SideOnly(Side.CLIENT)
 	public void onSoundRegister(RegistryEvent.Register<SoundEvent> event)
 	{
+		TRSounds.onRegister();
+		
 		for(Map.Entry<ResourceLocation, SoundEvent> sound : SOUNDS.entrySet())
 			event.getRegistry().register(sound.getValue());
 	}
@@ -223,6 +227,17 @@ public class Registry
 			}
 			
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block.getValue()), 0, new ModelResourceLocation(new ResourceLocation(Reference.ID, block.getKey().getResourcePath()), "inventory"));
+		}
+		
+		for(Map.Entry<ResourceLocation, Item> item : ITEMS.entrySet())
+		{
+			if(item.getValue() instanceof IModelProvider)
+			{
+				((IModelProvider)item.getValue()).registerModels();
+				continue;
+			}
+			
+			ModelLoader.setCustomModelResourceLocation(item.getValue(), 0, new ModelResourceLocation(new ResourceLocation(Reference.ID, item.getKey().getResourcePath()), "inventory"));
 		}
 	}
 	
