@@ -85,7 +85,7 @@ public class WailaIntegration implements IWailaDataProvider
 		if(tile instanceof TileEntityReactorWastePort)
 		{
 			TileEntityReactorWastePort waste = (TileEntityReactorWastePort)tile;
-			text.add(String.format("Producing: %.2f", (waste.getVolume() / TileEntityReactorWastePort.REQUIRED_VOLUME)) + " %");
+			text.add(String.format("Producing: %.2f", (waste.getVolume() / TileEntityReactorWastePort.REQUIRED_VOLUME) * 100) + " %");
 		}
 		
 		if(tile instanceof TileEntityDegradedReactant)
