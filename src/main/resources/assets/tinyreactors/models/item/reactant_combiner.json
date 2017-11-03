@@ -1,0 +1,9 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "particle": "tinyreactors:blocks/reactant_combiner_front",
+    		"front": "tinyreactors:blocks/reactant_combiner_front",
+        "top": "tinyreactors:blocks/reactant_combiner",
+		"side": "tinyreactors:blocks/reactant_combiner"
+    }
+}
