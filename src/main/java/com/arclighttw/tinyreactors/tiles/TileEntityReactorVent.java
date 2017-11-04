@@ -1,5 +1,6 @@
 package com.arclighttw.tinyreactors.tiles;
 
+import com.arclighttw.tinyreactors.properties.EnumVentState;
 import com.arclighttw.tinyreactors.properties.EnumVentTier;
 
 import net.minecraft.block.Block;
@@ -19,7 +20,6 @@ public class TileEntityReactorVent extends TileEntitySync
 	private BlockPos controllerPos;
 	
 	private boolean operational;
-	private int cooldown;
 	
 	public TileEntityReactorVent()
 	{
@@ -32,7 +32,7 @@ public class TileEntityReactorVent extends TileEntitySync
 		
 		if(controller == null && controllerPos != null)
 		{
-			TileEntity tile = world.getTileEntity(pos);
+			TileEntity tile = world.getTileEntity(controllerPos);
 			
 			if(tile != null && tile instanceof TileEntityReactorController)
 				controller = (TileEntityReactorController)tile;
@@ -46,10 +46,15 @@ public class TileEntityReactorVent extends TileEntitySync
 		
 		if(!world.isRemote)
 		{
-			if(cooldown > 0)
-				cooldown--;
+			operational = world.getBlockState(pos).getValue(EnumVentState.PROPERTY) == EnumVentState.OPEN;
 			
-			if(!isRunning())
+			if(controller == null)
+			{
+				onInitialLoad();
+				return;
+			}
+			
+			if(!isOperational())
 				return;
 			
 			if(controller.getMultiblock().isValid())
@@ -92,16 +97,6 @@ public class TileEntityReactorVent extends TileEntitySync
 			int z = compound.getInteger("controllerZ");
 			controllerPos = new BlockPos(x, y, z);
 		}
-	}
-	
-	public void toggleState()
-	{
-		if(cooldown > 0)
-			return;
-		
-		cooldown = 5;
-		operational = !operational;
-		sync();
 	}
 	
 	public void setController(TileEntityReactorController controller)

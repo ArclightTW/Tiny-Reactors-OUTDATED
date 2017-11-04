@@ -1,5 +1,5 @@
 {
-    "parent": "tinyreactors:block/reactor_vent",
+    "parent": "tinyreactors:block/reactor_vent_open",
     "textures": {
         "particle": "tinyreactors:blocks/iron_reactor_vent",
     		"front": "tinyreactors:blocks/iron_reactor_vent",

@@ -64,6 +64,12 @@ public class ModelItemDegradedReactant implements IRuntimeModel
 			{
 				return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(representative).handlePerspective(cameraTransformType);
 			}
+			
+			@Override
+			public boolean isAmbientOcclusion()
+			{
+				return false;
+			}
 		};
 	}
 	

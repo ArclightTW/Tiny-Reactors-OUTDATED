@@ -3,12 +3,10 @@ package com.arclighttw.tinyreactors.proxy;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityCapacitor;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorController;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorEnergyPort;
-import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorVent;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
-import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -45,7 +43,6 @@ public class ClientProxy extends CommonProxy
 	{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorController.class, new RenderTileEntityReactorController());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorEnergyPort.class, new RenderTileEntityReactorEnergyPort());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorVent.class, new RenderTileEntityReactorVent());
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCapacitor.class, new RenderTileEntityCapacitor());
 	}

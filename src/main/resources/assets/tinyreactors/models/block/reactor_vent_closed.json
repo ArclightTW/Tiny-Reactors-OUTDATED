@@ -27,7 +27,7 @@
 	    		"from": [ 16, 15, 16 ],
 	    		"to": [ 0, 15, 0 ],
 	    		"faces": {
-	    			"down": { "texture": "#open" }
+	    			"down": { "texture": "#top" }
 	    		}
 	    	}
     ],
@@ -39,7 +39,6 @@
 		"east": "#side_left",
 		"west": "#side_right",
 		
-		"interior": "tinyreactors:blocks/reactor_casing",
-		"open": "tinyreactors:blocks/reactor_vent_open"
+		"interior": "tinyreactors:blocks/reactor_casing"
     }
 }

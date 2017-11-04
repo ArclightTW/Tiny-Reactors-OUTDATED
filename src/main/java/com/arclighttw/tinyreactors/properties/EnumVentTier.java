@@ -7,9 +7,9 @@ import net.minecraft.util.IStringSerializable;
 
 public enum EnumVentTier implements IStringSerializable
 {
-	IRON(0.05F, 8),
-	GOLD(0.10F, 16),
-	DIAMOND(0.20F, 32);
+	IRON(0.5F, 8),
+	GOLD(1F, 16),
+	DIAMOND(2F, 32);
 	
 	private float heatOffset;
 	private int particleCount;

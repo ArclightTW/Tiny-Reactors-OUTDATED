@@ -1,12 +1,12 @@
 package com.arclighttw.tinyreactors.blocks;
 
 import java.util.List;
-import java.util.Random;
 
 import com.arclighttw.tinyreactors.inits.Registry.IItemProvider;
 import com.arclighttw.tinyreactors.inits.Registry.IModelRegistrar;
 import com.arclighttw.tinyreactors.items.ItemReactorVent;
 import com.arclighttw.tinyreactors.main.Reference;
+import com.arclighttw.tinyreactors.properties.EnumVentState;
 import com.arclighttw.tinyreactors.properties.EnumVentTier;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 
@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +37,7 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 	public BlockReactorVent()
 	{
 		super(Material.IRON, "reactor_vent");
-		setDefaultState(blockState.getBaseState().withProperty(EnumVentTier.PROPERTY, EnumVentTier.IRON));
+		setDefaultState(blockState.getBaseState().withProperty(EnumVentTier.PROPERTY, EnumVentTier.IRON).withProperty(EnumVentState.PROPERTY, EnumVentState.CLOSED));
 	}
 	
 	@Override
@@ -57,32 +56,38 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 	@SideOnly(Side.CLIENT)
 	public void registerModels()
 	{
-		for(int i = 0; i < EnumVentTier.values().length; i++)
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(new ResourceLocation(Reference.ID, "reactor_vent_" + i), "inventory"));
+		for(EnumVentTier tier : EnumVentTier.values())
+		{
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), tier.ordinal(), new ModelResourceLocation(new ResourceLocation(Reference.ID, "reactor_vent_" + tier.getName() + "_closed"), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 3 + tier.ordinal(), new ModelResourceLocation(new ResourceLocation(Reference.ID, "reactor_vent_" + tier.getName() + "_open"), "inventory"));
+		}
 	}
 	
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return getMetaFromState(state);
+		return getMetaFromState(state) % 3;
 	}
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(EnumVentTier.PROPERTY, EnumVentTier.values()[meta]);
+		return getDefaultState().withProperty(EnumVentTier.PROPERTY, EnumVentTier.values()[meta % 3]).withProperty(EnumVentState.PROPERTY, meta > 2 ? EnumVentState.OPEN : EnumVentState.CLOSED);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(EnumVentTier.PROPERTY).ordinal();
+		int meta = state.getValue(EnumVentTier.PROPERTY).ordinal();
+		meta += state.getValue(EnumVentState.PROPERTY) == EnumVentState.OPEN ? 3 : 0;
+		
+		return meta;
 	}
 
 	@Override
 	public BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] { EnumVentTier.PROPERTY });
+		return new BlockStateContainer(this, new IProperty[] { EnumVentTier.PROPERTY, EnumVentState.PROPERTY });
     	}
 	
 	@Override
@@ -102,14 +107,13 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 			if(tile == null || !(tile instanceof TileEntityReactorVent))
 				return false;
 			
-			TileEntityReactorVent vent = (TileEntityReactorVent)tile;
-			vent.toggleState();
-			return true;
+			EnumVentState ventState = state.getValue(EnumVentState.PROPERTY);
+			world.setBlockState(pos, state.withProperty(EnumVentState.PROPERTY, ventState == EnumVentState.OPEN ? EnumVentState.CLOSED : EnumVentState.OPEN));
 		}
 		
-		return false;
+		return true;
 	}
-	
+	/*
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
@@ -127,7 +131,7 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 		for(int i = 0; i < vent.getTier().getParticleCount(); i++)
 			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, true, pos.getX() + 0.1F + (rand.nextFloat() * 0.8F), pos.getY() + 1F, pos.getZ() + 0.1F + (rand.nextFloat() * 0.8F), 0F, 0.05F, 0F);
 	}
-	
+	*/
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
 	{

@@ -3,11 +3,13 @@
 	
 	"variants":
 	{
-		"venttier":
-		{
-			"iron": { "model": "tinyreactors:reactor_vent_0" },
-			"gold": { "model": "tinyreactors:reactor_vent_1" },
-			"diamond": { "model": "tinyreactors:reactor_vent_2" }
-		}
+		"ventstate=closed,venttier=iron": { "model": "tinyreactors:reactor_vent_iron_closed" },
+		"ventstate=open,venttier=iron": { "model": "tinyreactors:reactor_vent_iron_open" },
+		
+		"ventstate=closed,venttier=gold": { "model": "tinyreactors:reactor_vent_gold_closed" },
+		"ventstate=open,venttier=gold": { "model": "tinyreactors:reactor_vent_gold_open" },
+		
+		"ventstate=closed,venttier=diamond": { "model": "tinyreactors:reactor_vent_diamond_closed" },
+		"ventstate=open,venttier=diamond": { "model": "tinyreactors:reactor_vent_diamond_open" }
 	}
 }
