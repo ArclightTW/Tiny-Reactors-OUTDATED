@@ -37,7 +37,7 @@ public class TinyReactors
 		@Override
 		public ItemStack getTabIconItem()
 		{
-			return new ItemStack(TRBlocks.REACTOR_GLASS);
+			return new ItemStack(TRBlocks.REACTOR_CONTROLLER_1);
 		}
 	};
 	
