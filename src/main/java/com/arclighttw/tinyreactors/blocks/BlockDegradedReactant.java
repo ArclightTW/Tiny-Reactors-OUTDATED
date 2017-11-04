@@ -38,6 +38,7 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 	public BlockDegradedReactant()
 	{
 		super(Material.ROCK, "degraded_reactant");
+		setCreativeTab(null);
 	}
 	
 	@Override

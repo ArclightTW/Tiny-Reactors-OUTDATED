@@ -28,7 +28,11 @@ public class ModelItemDegradedReactant implements IRuntimeModel
 {
 	private IBakedModel createActual(IBakedModel existing, String reactantName)
 	{
-		Block block = Block.REGISTRY.getObject(new ResourceLocation(reactantName));
+		Block block = null;
+		
+		if(reactantName != null)
+			block = Block.REGISTRY.getObject(new ResourceLocation(reactantName));
+		
 		final IBlockState representative = block == null ? null : block.getDefaultState();
 		
 		return new ModelSimpleBaked(existing)
