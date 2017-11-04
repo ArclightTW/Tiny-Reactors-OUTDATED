@@ -76,7 +76,7 @@ public class TileEntityCapacitor extends TileEntityEnergy
 		{
 			TileEntity tile = world.getTileEntity(pos.offset(direction));
 			
-			if(tile == null || tile instanceof TileEntityReactorEnergyPort)
+			if(tile == null || tile instanceof TileEntityReactorEnergyPort || tile instanceof TileEntityCapacitor)
 				continue;
 			
 			IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
