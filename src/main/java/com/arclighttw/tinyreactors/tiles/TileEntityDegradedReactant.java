@@ -1,5 +1,7 @@
 package com.arclighttw.tinyreactors.tiles;
 
+import com.arclighttw.tinyreactors.managers.ReactorManager;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,8 +43,11 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		
 		if(quality <= 0)
 		{
-			// TODO: if(TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION) { world.setBlockState(pos, Blocks.AIR.getDefaultState()); ReactorManager.validateAllReactors(); }
 			quality = 0;
+			
+			// TODO: if(TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION) {
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			ReactorManager.validateAllReactors(world);
 		}
 		
 		sync();
