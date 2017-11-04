@@ -67,7 +67,7 @@ public class TemperatureStorage
 	
 	public void modifyHeat(float heat)
 	{
-		heat /= 1000F;
+		heat /= 500F;
 		currentTemperature += heat;
 		
 		if(currentTemperature < 0)
