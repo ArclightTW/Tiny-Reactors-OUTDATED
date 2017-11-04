@@ -3,7 +3,7 @@
 	
 	"defaults":
 	{
-		"model": "tinyreactors:reactor_energy_port_3"
+		"model": "tinyreactors:reactor_energy_port"
 	},
 	
 	"variants":

@@ -13,7 +13,6 @@ import com.arclighttw.tinyreactors.blocks.BlockReactorVent;
 import com.arclighttw.tinyreactors.blocks.BlockReactorWastePort;
 import com.arclighttw.tinyreactors.properties.EnumCapacitorTier;
 import com.arclighttw.tinyreactors.properties.EnumControllerTier;
-import com.arclighttw.tinyreactors.properties.EnumEnergyPortTier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -23,9 +22,7 @@ public class TRBlocks
 	public static Block REACTOR_CONTROLLER_1 = new BlockReactorController(EnumControllerTier.I).setHardness(50F).setResistance(50F);
 	public static Block REACTOR_CONTROLLER_2 = new BlockReactorController(EnumControllerTier.II).setHardness(50F).setResistance(50F);
 	
-	public static Block REACTOR_ENERGY_PORT_1 = new BlockReactorEnergyPort(EnumEnergyPortTier.I).setHardness(50F).setResistance(50F);
-	public static Block REACTOR_ENERGY_PORT_2 = new BlockReactorEnergyPort(EnumEnergyPortTier.II).setHardness(50F).setResistance(50F);
-	public static Block REACTOR_ENERGY_PORT_3 = new BlockReactorEnergyPort(EnumEnergyPortTier.III).setHardness(50F).setResistance(50F);
+	public static Block REACTOR_ENERGY_PORT = new BlockReactorEnergyPort().setHardness(50F).setResistance(50F);
 	
 	public static Block REACTOR_CASING = new BlockReactorComponent(Material.IRON, "reactor_casing").setHardness(50F).setResistance(50F);
 	public static Block REACTOR_GLASS = new BlockReactorComponent(Material.GLASS, "reactor_glass").setHardness(10F).setResistance(50F);

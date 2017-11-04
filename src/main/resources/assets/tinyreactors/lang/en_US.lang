@@ -3,9 +3,7 @@ itemGroup.tinyreactors=Tiny Reactors
 tile.reactor_controller_1.name=Reactor Controller
 tile.reactor_controller_2.name=Reactor Controller
 
-tile.reactor_energy_port_1.name=Reactor Energy Port
-tile.reactor_energy_port_2.name=Reactor Energy Port
-tile.reactor_energy_port_3.name=Reactor Energy Port
+tile.reactor_energy_port.name=Reactor Energy Port
 
 tile.reactor_heat_sink.name=Reactor Heat Sink
 

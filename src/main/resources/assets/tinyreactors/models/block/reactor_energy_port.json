@@ -1,8 +1,8 @@
 {
     "parent": "tinyreactors:block/orientable",
     "textures": {
-        "particle": "tinyreactors:blocks/reactor_energy_port_3",
-    		"front": "tinyreactors:blocks/reactor_energy_port_3",
+        "particle": "tinyreactors:blocks/reactor_energy_port",
+    		"front": "tinyreactors:blocks/reactor_energy_port",
         "top": "tinyreactors:blocks/reactor_casing",
         "bottom": "tinyreactors:blocks/reactor_casing",
 		"back": "tinyreactors:blocks/reactor_casing",

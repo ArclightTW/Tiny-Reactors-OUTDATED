@@ -28,7 +28,7 @@ public class TRRecipes
 			TRBlocks.REACTOR_CONTROLLER_1, Blocks.REDSTONE_BLOCK
 	});
 	
-	public static IRecipe REACTOR_ENERGY_PORT_TIER_1 = new ShapedRecipe(TRBlocks.REACTOR_ENERGY_PORT_1, new Object[] {
+	public static IRecipe REACTOR_ENERGY_PORT = new ShapedRecipe(TRBlocks.REACTOR_ENERGY_PORT, new Object[] {
 			"CIC",
 			"III",
 			"CIC",
@@ -36,24 +36,8 @@ public class TRRecipes
 				Character.valueOf('I'), Blocks.IRON_BARS
 	});
 	
-	public static IRecipe REACTOR_ENERGY_PORT_TIER_2 = new ShapedRecipe(TRBlocks.REACTOR_ENERGY_PORT_2, new Object[] {
-			"CIC",
-			"RER",
-			"CRC",
-				Character.valueOf('C'), TRBlocks.REACTOR_CASING,
-				Character.valueOf('I'), Items.IRON_INGOT,
-				Character.valueOf('R'), Items.REDSTONE,
-				Character.valueOf('E'), TRBlocks.REACTOR_ENERGY_PORT_1
-	});
-	
-	public static IRecipe REACTOR_ENERGY_PORT_TIER_3 = new ShapedRecipe(TRBlocks.REACTOR_ENERGY_PORT_3, new Object[] {
-			"CIC",
-			"RER",
-			"CRC",
-				Character.valueOf('C'), TRBlocks.REACTOR_CASING,
-				Character.valueOf('I'), Blocks.IRON_BLOCK,
-				Character.valueOf('R'), Blocks.REDSTONE_BLOCK,
-				Character.valueOf('E'),TRBlocks.REACTOR_ENERGY_PORT_2
+	public static IRecipe REACTOR_ENERGY_PORT_UPGRADE = new ShapelessRecipe(TRBlocks.REACTOR_ENERGY_PORT, new Object[] {
+			TRBlocks.REACTOR_ENERGY_PORT, TRBlocks.REACTOR_ENERGY_PORT
 	});
 	
 	public static IRecipe REACTOR_CASING = new ShapedRecipe(new ItemStack(TRBlocks.REACTOR_CASING, 8), new Object[] {
