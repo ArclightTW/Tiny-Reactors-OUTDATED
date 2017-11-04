@@ -190,7 +190,8 @@ public class GuiReactorController extends GuiContainerMulti
 		
 		if(mouseX >= guiLeft + 133 && mouseX <= guiLeft + 133 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 8 + 64)
 			drawHoveringText(Arrays.asList(
-					String.format("Temperature: %,.0f C", controller.getTemperature().getCurrentTemperature())
+					String.format("Temperature: %,.1f C", (controller.getTemperature().getCurrentTemperature() * 10)),
+					String.format("Limit: %,.1f C", (controller.getTemperature().getMaximumTemperature() * 10))
 				), mouseX - guiLeft, mouseY - guiTop);
 		
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
