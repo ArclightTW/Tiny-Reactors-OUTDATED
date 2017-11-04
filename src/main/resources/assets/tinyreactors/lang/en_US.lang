@@ -24,4 +24,6 @@ tile.capacitor_1.name=Capacitor
 tile.capacitor_2.name=Capacitor
 tile.capacitor_3.name=Capacitor
 
+tile.reactant_combiner.name=Reactant Combiner
+
 item.radioactive_ingot.name=Radioactive Ingot
