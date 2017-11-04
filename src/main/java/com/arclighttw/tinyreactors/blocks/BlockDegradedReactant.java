@@ -64,15 +64,11 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 	{
 		TileEntity tile = world.getTileEntity(pos);
 		
-		if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+		if(tile == null || !(tile instanceof TileEntityDegradedReactant) || !stack.hasTagCompound())
 			return;
 		
 		TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
-		
 		NBTTagCompound compound = stack.getTagCompound();
-		
-		if(compound == null)
-			return;
 		
 		String registryName = compound.getString("registryName");
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
