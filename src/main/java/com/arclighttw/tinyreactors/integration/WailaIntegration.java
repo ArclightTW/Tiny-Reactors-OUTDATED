@@ -1,10 +1,13 @@
 package com.arclighttw.tinyreactors.integration;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.arclighttw.tinyreactors.blocks.BlockCapacitor;
+import com.arclighttw.tinyreactors.blocks.BlockDegradedReactant;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
+import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityEnergy;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
@@ -33,25 +36,19 @@ public class WailaIntegration implements IWailaDataProvider
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
-	private ItemStack getWailaInfo(IWailaDataAccessor accessor, IWailaConfigHandler config)
+	@Override
+	@Optional.Method(modid = "waila")
+	public List<String> getWailaHead(ItemStack itemstack, List<String> text, IWailaDataAccessor accessor, IWailaConfigHandler config)
 	{
-		TileEntity tile = accessor.getTileEntity();
+		if(accessor.getBlock() == TRBlocks.DEGRADED_REACTANT)
+			return Arrays.asList("§f" + TRBlocks.DEGRADED_REACTANT.getLocalizedName());
 		
-		if(tile == null)
-			return accessor.getStack();
-		
-		if(tile instanceof TileEntityDegradedReactant)
-		{
-			Block block = ((TileEntityDegradedReactant)tile).getRepresentedBlock();
-			
-			if(block != Blocks.AIR)
-				return new ItemStack(block);
-		}
-		
-		return accessor.getStack();
+		return text;
 	}
 	
-	private List<String> getWailaInfo(ItemStack itemstack, List<String> text, IWailaDataAccessor accessor, IWailaConfigHandler config)
+	@Override
+	@Optional.Method(modid = "waila")
+	public List<String> getWailaBody(ItemStack itemstack, List<String> text, IWailaDataAccessor accessor, IWailaConfigHandler config)
 	{
 		if(itemstack == ItemStack.EMPTY)
 			return text;
@@ -85,7 +82,7 @@ public class WailaIntegration implements IWailaDataProvider
 		if(tile instanceof TileEntityReactorWastePort)
 		{
 			TileEntityReactorWastePort waste = (TileEntityReactorWastePort)tile;
-			text.add(String.format("Producing: %.2f", (waste.getVolume() / TileEntityReactorWastePort.REQUIRED_VOLUME) * 100) + " %");
+			text.add(String.format("Producing: %.1f", (waste.getVolume() / TileEntityReactorWastePort.REQUIRED_VOLUME) * 100) + " %");
 		}
 		
 		if(tile instanceof TileEntityDegradedReactant)
@@ -110,38 +107,40 @@ public class WailaIntegration implements IWailaDataProvider
 	
 	@Override
 	@Optional.Method(modid = "waila")
-	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
+	public List<String> getWailaTail(ItemStack itemstack, List<String> text, IWailaDataAccessor accessor, IWailaConfigHandler config)
 	{
-		return getWailaInfo(itemStack, currenttip, accessor, config);
-	}
-	
-	@Override
-	@Optional.Method(modid = "waila")
-	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-	{
-		return getWailaInfo(itemStack, currenttip, accessor, config);
-	}
-	
-	@Override
-	@Optional.Method(modid = "waila")
-	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config)
-	{
-		return getWailaInfo(itemStack, currenttip, accessor, config);
+		return text;
 	}
 	
 	@Override
 	@Optional.Method(modid = "waila")
 	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config)
 	{
-		return getWailaInfo(accessor, config);
+		TileEntity tile = accessor.getTileEntity();
+		
+		if(tile == null)
+			return accessor.getStack();
+		
+		if(tile instanceof TileEntityDegradedReactant)
+		{
+			Block block = ((TileEntityDegradedReactant)tile).getRepresentedBlock();
+			
+			if(block != Blocks.AIR)
+				return new ItemStack(block);
+		}
+		
+		return accessor.getStack();
 	}
 	
 	@Optional.Method(modid = "waila")
 	public static void callbackRegister(final IWailaRegistrar registrar)
 	{
 		WailaIntegration instance = new WailaIntegration();
-		registrar.registerHeadProvider(instance, Block.class);
-		registrar.registerStackProvider(instance, Block.class);
+
+		registrar.registerBodyProvider(instance, Block.class);
+		
+		registrar.registerHeadProvider(instance, BlockDegradedReactant.class);
+		registrar.registerStackProvider(instance, BlockDegradedReactant.class);
 	}
 	
 	public static void register()
