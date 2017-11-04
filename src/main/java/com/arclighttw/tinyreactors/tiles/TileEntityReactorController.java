@@ -166,9 +166,14 @@ public class TileEntityReactorController extends TileEntityEnergy
 			}
 			else
 			{
-				temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
+				if(temperature.getCurrentTemperature() > 1)
+					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
+				
 				soundTimer = 0;
 			}
+			
+			if(getEnergyStored() <= 0)
+				return;
 			
 			int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
 			

@@ -59,10 +59,10 @@ public class TileEntitySync extends TileEntity implements ITickable
 	private void actualSync()
 	{
 		syncScheduled = false;
-		world.markBlockRangeForRenderUpdate(pos, pos);
+//		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
-		world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
-		world.scheduleBlockUpdate(pos, getBlockType(), 0, 0);
+//		world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
+//		world.scheduleBlockUpdate(pos, getBlockType(), 0, 0);
 		markDirty();
 	}
 }
