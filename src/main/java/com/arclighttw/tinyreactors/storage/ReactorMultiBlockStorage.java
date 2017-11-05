@@ -26,7 +26,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	final TileEntityReactorController controller;
 	
 	int availableYield, maximumYield;
-	int heatSinkCount, reactorSize;
+	int heatSinkCount, reactorSize, prevReactorSize;
 	int degradedItem;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
@@ -126,6 +126,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	@Override
 	public void onPostCalculation(World world)
 	{
+		prevReactorSize = reactorSize;
+		
 		if(!hasController || energyPorts.size() == 0)
 		{
 			isReactor = false;
@@ -249,6 +251,6 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	
 	public int getReactorSize()
 	{
-		return reactorSize;
+		return prevReactorSize;
 	}
 }

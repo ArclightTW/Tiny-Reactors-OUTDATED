@@ -43,14 +43,13 @@ public class TileEntityReactorController extends TileEntityEnergy
 		
 		multiblock = new ReactorMultiBlockStorage(this);
 		multiblock.setValidityListener(() -> {
-			temperature.setHeatSinkCount(multiblock.getHeatSinkCount());
-			
 			if(!multiblock.isValid())
 			{
 				setActive(false);
 				return;
 			}
 			
+			temperature.setHeatSinkCount(multiblock.getHeatSinkCount());
 			sync();
 		});
 		
