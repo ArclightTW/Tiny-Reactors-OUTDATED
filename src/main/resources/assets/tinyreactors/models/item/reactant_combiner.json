@@ -3,7 +3,7 @@
     "textures": {
         "particle": "tinyreactors:blocks/reactant_combiner_front",
     		"front": "tinyreactors:blocks/reactant_combiner_front",
-        "top": "tinyreactors:blocks/reactant_combiner",
-		"side": "tinyreactors:blocks/reactant_combiner"
+        "top": "tinyreactors:blocks/reactor_casing",
+		"side": "tinyreactors:blocks/reactor_casing"
     }
 }

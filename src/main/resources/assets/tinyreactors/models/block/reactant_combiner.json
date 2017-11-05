@@ -1,12 +1,12 @@
 {
     "parent": "tinyreactors:block/orientable",
     "textures": {
-        "particle": "tinyreactors:blocks/reactant_combiner_front",
-    		"front": "tinyreactors:blocks/reactant_combiner_front",
-        "top": "tinyreactors:blocks/reactant_combiner",
-        "bottom": "tinyreactors:blocks/reactant_combiner",
-		"back": "tinyreactors:blocks/reactant_combiner",
-		"side_left": "tinyreactors:blocks/reactant_combiner",
-		"side_right": "tinyreactors:blocks/reactant_combiner"
+        "particle": "tinyreactors:blocks/reactor_casing",
+    	"front": "tinyreactors:blocks/reactant_combiner_front",
+        "top": "tinyreactors:blocks/reactor_casing",
+        "bottom": "tinyreactors:blocks/reactor_casing",
+		"back": "tinyreactors:blocks/reactor_casing",
+		"side_left": "tinyreactors:blocks/reactor_casing",
+		"side_right": "tinyreactors:blocks/reactor_casing"
     }
 }

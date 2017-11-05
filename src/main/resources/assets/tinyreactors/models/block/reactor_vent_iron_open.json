@@ -2,9 +2,9 @@
     "parent": "tinyreactors:block/reactor_vent_open",
     "textures": {
         "particle": "tinyreactors:blocks/iron_reactor_vent",
-    		"front": "tinyreactors:blocks/iron_reactor_vent",
+    	"front": "tinyreactors:blocks/iron_reactor_vent",
         "top": "tinyreactors:blocks/iron_reactor_vent_open",
-        "bottom": "tinyreactors:blocks/iron_reactor_vent_open",
+        "bottom": "tinyreactors:blocks/iron_reactor_vent_open_bottom",
 		"back": "tinyreactors:blocks/iron_reactor_vent",
 		"side_left": "tinyreactors:blocks/iron_reactor_vent",
 		"side_right": "tinyreactors:blocks/iron_reactor_vent"
