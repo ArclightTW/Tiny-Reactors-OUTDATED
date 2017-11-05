@@ -10,6 +10,7 @@ import com.arclighttw.tinyreactors.container.ContainerReactorController;
 import com.arclighttw.tinyreactors.main.Reference;
 import com.arclighttw.tinyreactors.main.TinyReactors;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerActive;
+import com.arclighttw.tinyreactors.network.SMessageReactorControllerPrewarm;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerRedstone;
 import com.arclighttw.tinyreactors.properties.EnumControllerTier;
 import com.arclighttw.tinyreactors.properties.EnumRedstoneMode;
@@ -29,7 +30,7 @@ public class GuiReactorController extends GuiContainerMulti
 	
 	private final TileEntityReactorController controller;
 	
-	private GuiButtonMulti buttonOff, buttonOn;
+	private GuiButtonMulti buttonOff, buttonOn, buttonPrewarmingOff, buttonPrewarmingOn;
 	private GuiButtonMulti buttonRedstoneIgnore, buttonRedstoneDisable, buttonRedstoneEnable;
 	
 	public GuiReactorController(TileEntityReactorController controller, InventoryPlayer player)
@@ -48,6 +49,9 @@ public class GuiReactorController extends GuiContainerMulti
 		
 		addButton(buttonOn = new GuiButtonDrawable(0, guiLeft + 118, guiTop + 60, TEXTURE, 189, 56, 12, 12).setHoverTextureLocation(189, 67).setDisabledTextureLocation(177, 78).setLabel("Enable"));
 		addButton(buttonOff = new GuiButtonDrawable(1, guiLeft + 118, guiTop + 60, TEXTURE, 177, 56, 12, 12).setHoverTextureLocation(177, 67).setDisabledTextureLocation(177, 78).setLabel("Disable"));
+		
+		addButton(buttonPrewarmingOn = new GuiButtonDrawable(6, guiLeft + 118, guiTop + 46, TEXTURE, 189, 56, 12, 12).setHoverTextureLocation(189, 67).setDisabledTextureLocation(177, 78).setLabel("Start Pre-Warming"));
+		addButton(buttonPrewarmingOff = new GuiButtonDrawable(5, guiLeft + 118, guiTop + 46, TEXTURE, 177, 56, 12, 12).setHoverTextureLocation(177, 67).setDisabledTextureLocation(177, 78).setLabel("Stop Pre-Warming"));
 		
 		addButton(buttonRedstoneIgnore = new GuiButtonItemStack(2, guiLeft - 20, guiTop, TEXTURE, 177, 89, 20, 20, this).setIcon(new ItemStack(Blocks.BARRIER)).setLabel(Arrays.asList("Mode: Ignore", "Click to Cycle")));
 		addButton(buttonRedstoneDisable = new GuiButtonItemStack(3, guiLeft - 20, guiTop, TEXTURE, 177, 89, 20, 20, this).setIcon(new ItemStack(Items.REDSTONE)).setLabel(Arrays.asList("Mode: Disable on Redstone", "Click to Cycle")));
@@ -76,29 +80,95 @@ public class GuiReactorController extends GuiContainerMulti
 		case 4:
 			TinyReactors.network.sendToServer(new SMessageReactorControllerRedstone(EnumRedstoneMode.IGNORE, controller.getPos()));
 			break;
+		case 5:
+			TinyReactors.network.sendToServer(new SMessageReactorControllerPrewarm(false, controller.getPos()));
+			break;
+		case 6:
+			TinyReactors.network.sendToServer(new SMessageReactorControllerPrewarm(true, controller.getPos()));
+			break;
 		}
+		
+		updateScreen();
 	}
 	
 	@Override
 	public void updateScreen()
 	{
 		super.updateScreen();
-		
-		if(controller.getTemperature().hasOverheated())
+
+		if(controller.isWarming())
 		{
+			buttonPrewarmingOff.visible = true;
+			buttonPrewarmingOff.enabled = true;
+			
+			buttonPrewarmingOn.visible = false;
+			buttonPrewarmingOn.enabled = false;
+			
 			buttonOff.visible = true;
 			buttonOff.enabled = false;
+			
 			buttonOn.visible = false;
-		}
-		else if(controller.getMultiblock().isValid())
-		{
-			buttonOff.visible = controller.isActive();
-			buttonOn.visible = !buttonOff.visible;
+			buttonOn.enabled = false;
 		}
 		else
 		{
+			buttonPrewarmingOff.visible = false;
+			buttonPrewarmingOff.enabled = false;
+			
+			buttonPrewarmingOn.visible = true;
+			buttonPrewarmingOn.enabled = true;
+			
+			buttonOff.visible = true;
 			buttonOff.enabled = false;
+			
 			buttonOn.visible = false;
+			buttonOn.enabled = false;
+			
+			if(controller.getTemperature().hasOverheated())
+			{
+				buttonOff.visible = true;
+				buttonOff.enabled = false;
+				
+				buttonOff.visible = false;
+				buttonOff.enabled = false;
+				
+				buttonOn.visible = false;
+				buttonOn.enabled = false;
+				
+				buttonPrewarmingOff.visible = true;
+				buttonPrewarmingOff.enabled = false;
+				
+				buttonPrewarmingOn.visible = false;
+				buttonPrewarmingOn.enabled = false;
+			}
+			else if(controller.getMultiblock().isValid())
+			{
+				buttonOff.visible = controller.isActive();
+				buttonOff.enabled = buttonOff.visible;
+				
+				buttonOn.visible = !buttonOff.visible;
+				buttonOn.enabled = buttonOn.visible;
+				
+				buttonPrewarmingOff.visible = controller.isActive();
+				buttonPrewarmingOff.enabled = !controller.isActive();
+				
+				buttonPrewarmingOn.visible = !controller.isActive();
+				buttonPrewarmingOn.enabled = true;
+			}
+			else
+			{
+				buttonOn.visible = true;
+				buttonOn.enabled = false;
+				
+				buttonOff.visible = false;
+				buttonOff.enabled = false;
+				
+				buttonPrewarmingOn.visible = true;
+				buttonPrewarmingOn.enabled = false;
+				
+				buttonPrewarmingOff.visible = false;
+				buttonPrewarmingOff.enabled = false;
+			}
 		}
 		
 		if(controller.getTier() == EnumControllerTier.I)
@@ -177,6 +247,8 @@ public class GuiReactorController extends GuiContainerMulti
 				drawString(fontRenderer, String.format("%,d RF/t", (int)(controller.getMultiblock().getAvailableYield() * controller.getTemperature().getEfficiency())), 5, 67, 0xFFFFFF);
 			}
 		}
+		else if(controller.isWarming())
+			drawString(fontRenderer, "Pre-Warming", 5, 7, 0xFFFFFF);
 		else if(controller.getMultiblock().isValid())
 			drawString(fontRenderer, "Inactive", 5, 7, 0xFFFFFF);
 		else

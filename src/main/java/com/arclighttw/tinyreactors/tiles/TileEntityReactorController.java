@@ -21,10 +21,10 @@ public class TileEntityReactorController extends TileEntityEnergy
 	private TemperatureStorage temperature;
 	
 	private boolean active;
-	
+	private boolean warming;
 	private boolean meltdownInitiated;
+
 	private int meltdownTimer;
-	
 	private int soundTimer;
 	private int degradationTimer;
 	
@@ -136,36 +136,39 @@ public class TileEntityReactorController extends TileEntityEnergy
 					return;
 			}
 			
-			if(isActive())
+			if(isActive() || isWarming())
 			{
-				energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
-				temperature.modifyHeat(multiblock.getReactorSize() * TEMP_GAIN);
+				temperature.modifyHeat(multiblock.getReactorSize() * TEMP_GAIN * (isWarming() ? 4 : 1));
 				
 				soundTimer++;
 				if(soundTimer >= 36)
 				{
-					world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
+					world.playSound(null, pos, isWarming() ? TRSounds.REACTOR_WARMING : TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					soundTimer = 0;
 				}
 				
-				float degradedQuality = temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5);
-				
-				for(TileEntityReactorWastePort wastePort : multiblock.getWastePorts())
-					wastePort.generate(degradedQuality / (float)multiblock.getWastePorts().size());
-				
-				if(TRConfig.REACTANT_DEGRADATION)
+				if(isActive())
 				{
-					degradationTimer++;
-					if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
+					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
+					float degradedQuality = temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5);
+					
+					for(TileEntityReactorWastePort wastePort : multiblock.getWastePorts())
+						wastePort.generate(degradedQuality / (float)multiblock.getWastePorts().size());
+					
+					if(TRConfig.REACTANT_DEGRADATION)
 					{
-						multiblock.degradeReactant(world, degradedQuality);
-						degradationTimer = 0;
+						degradationTimer++;
+						if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
+						{
+							multiblock.degradeReactant(world, degradedQuality);
+							degradationTimer = 0;
+						}
 					}
 				}
 			}
 			else
 			{
-				if(temperature.getCurrentTemperature() > 1)
+				if(temperature.getCurrentTemperature() > 0)
 					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
 				
 				soundTimer = 0;
@@ -212,6 +215,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 		compound.setInteger("redstoneMode", redstoneMode.ordinal());
 		
 		compound.setBoolean("active", active);
+		compound.setBoolean("warming", warming);
 	}
 	
 	@Override
@@ -224,6 +228,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 		redstoneMode = EnumRedstoneMode.values()[compound.getInteger("redstoneMode")];
 		
 		setActive(compound.getBoolean("active"));
+		setWarming(compound.getBoolean("warming"));
 	}
 	
 	public ReactorMultiBlockStorage getMultiblock()
@@ -248,7 +253,11 @@ public class TileEntityReactorController extends TileEntityEnergy
 	
 	public void setActive(boolean active)
 	{
+		if(warming)
+			return;
+		
 		this.active = active;
+		soundTimer = 0;
 		sync();
 		
 		if(active)
@@ -256,7 +265,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 			multiblock.onActivate(world);
 			
 			if(world != null)
-				world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 0.05F, 1.0F);
+				world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		}
 	}
 	
@@ -265,11 +274,27 @@ public class TileEntityReactorController extends TileEntityEnergy
 		return multiblock.isValid() && active;
 	}
 	
+	public void setWarming(boolean warming)
+	{
+		this.warming = warming;
+		soundTimer = 0;
+		sync();
+		
+		if(warming && world != null)
+			world.playSound(null, pos, TRSounds.REACTOR_WARMING, SoundCategory.BLOCKS, 1.0F, 1.0F);
+	}
+	
+	public boolean isWarming()
+	{
+		return multiblock.isValid() && warming;
+	}
+	
 	public void toggleRedstone(EnumRedstoneMode redstoneMode)
 	{
 		if(tier != EnumControllerTier.II)
 			redstoneMode = EnumRedstoneMode.IGNORE;
 		
 		this.redstoneMode = redstoneMode;
+		sync();
 	}
 }

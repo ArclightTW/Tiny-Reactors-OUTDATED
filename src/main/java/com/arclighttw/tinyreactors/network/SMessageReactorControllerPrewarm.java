@@ -1,6 +1,5 @@
 package com.arclighttw.tinyreactors.network;
 
-import com.arclighttw.tinyreactors.properties.EnumRedstoneMode;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 
 import io.netty.buffer.ByteBuf;
@@ -11,25 +10,25 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SMessageReactorControllerRedstone implements IMessage
+public class SMessageReactorControllerPrewarm implements IMessage
 {
-	private EnumRedstoneMode mode;
+	private boolean enabled;
 	private BlockPos pos;
 	
-	public SMessageReactorControllerRedstone()
+	public SMessageReactorControllerPrewarm()
 	{
 	}
 	
-	public SMessageReactorControllerRedstone(EnumRedstoneMode mode, BlockPos pos)
+	public SMessageReactorControllerPrewarm(boolean enabled, BlockPos pos)
 	{
-		this.mode = mode;
+		this.enabled = enabled;
 		this.pos = pos;
 	}
 	
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(mode.ordinal());
+		buf.writeBoolean(enabled);
 		
 		buf.writeInt(pos.getX());
 		buf.writeInt(pos.getY());
@@ -39,7 +38,7 @@ public class SMessageReactorControllerRedstone implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		mode = EnumRedstoneMode.values()[buf.readInt()];
+		enabled = buf.readBoolean();
 		
 		int x = buf.readInt();
 		int y = buf.readInt();
@@ -47,10 +46,10 @@ public class SMessageReactorControllerRedstone implements IMessage
 		pos = new BlockPos(x, y, z);
 	}
 	
-	public static class Handler implements IMessageHandler<SMessageReactorControllerRedstone, IMessage>
+	public static class Handler implements IMessageHandler<SMessageReactorControllerPrewarm, IMessage>
 	{
 		@Override
-		public IMessage onMessage(SMessageReactorControllerRedstone message, MessageContext ctx)
+		public IMessage onMessage(SMessageReactorControllerPrewarm message, MessageContext ctx)
 		{
 			WorldServer world = ctx.getServerHandler().player.getServerWorld();
 			TileEntity tile = world.getTileEntity(message.pos);
@@ -58,7 +57,7 @@ public class SMessageReactorControllerRedstone implements IMessage
 			if(tile != null && tile instanceof TileEntityReactorController)
 			{
 				TileEntityReactorController controller = (TileEntityReactorController)tile;
-				controller.toggleRedstone(message.mode);
+				controller.setWarming(message.enabled);
 			}
 			
 			return null;

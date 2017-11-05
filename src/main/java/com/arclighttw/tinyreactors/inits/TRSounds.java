@@ -12,6 +12,7 @@ public class TRSounds
 {
 	public static final SoundEvent REACTOR_KLAXON = registerSoundResource("reactor_klaxon");
 	public static final SoundEvent REACTOR_ACTIVE = registerSoundResource("reactor_active");
+	public static final SoundEvent REACTOR_WARMING = registerSoundResource("reactor_warming");
 	public static final SoundEvent REACTOR_OVERHEAT = registerSoundResource("reactor_overheat");
 	
 	private static SoundEvent registerSoundResource(String name)

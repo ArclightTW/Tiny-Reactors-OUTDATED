@@ -58,7 +58,6 @@ public class SMessageReactorControllerActive implements IMessage
 			{
 				TileEntityReactorController controller = (TileEntityReactorController)tile;
 				controller.setActive(message.enabled);
-				controller.sync();
 			}
 			
 			return null;

@@ -19,6 +19,16 @@
 		]
 	},
 	
+	"reactor_warming":
+	{
+		"category": "block",
+		
+		"sounds":
+		[
+			"tinyreactors:reactor_warming"
+		]
+	},
+	
 	"reactor_overheat":
 	{
 		"category": "block",

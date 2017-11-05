@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
@@ -43,8 +44,8 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 	public int getInterfaceId()
 	{
 		return GuiManager.REACTOR_ENERGY_PORT;
-	}
 	
+	}
 	@Override
 	public void onCrafted(ItemStack result, IInventory craftMatrix)
 	{
@@ -137,6 +138,19 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 		}
 		
 		super.breakBlock(world, pos, state);
+	}
+	
+	@Override
+	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items)
+	{
+		ItemStack creative = new ItemStack(this);
+
+		NBTTagCompound compound = new NBTTagCompound();
+		compound.setInteger("limit", 1024);
+		compound.setInteger("capacity", 1000000);
+		
+		creative.setTagCompound(compound);
+		items.add(creative);
 	}
 	
 	@Override

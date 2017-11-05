@@ -8,6 +8,7 @@ import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.integration.WailaIntegration;
 import com.arclighttw.tinyreactors.managers.GuiManager;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerActive;
+import com.arclighttw.tinyreactors.network.SMessageReactorControllerPrewarm;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerRedstone;
 import com.arclighttw.tinyreactors.network.SMessageReactorEnergyPort;
 import com.arclighttw.tinyreactors.proxy.CommonProxy;
@@ -67,6 +68,7 @@ public class TinyReactors
 		network.registerMessage(SMessageReactorEnergyPort.Handler.class, SMessageReactorEnergyPort.class, 0, Side.SERVER);
 		network.registerMessage(SMessageReactorControllerActive.Handler.class, SMessageReactorControllerActive.class, 1, Side.SERVER);
 		network.registerMessage(SMessageReactorControllerRedstone.Handler.class, SMessageReactorControllerRedstone.class, 2, Side.SERVER);
+		network.registerMessage(SMessageReactorControllerPrewarm.Handler.class, SMessageReactorControllerPrewarm.class, 3, Side.SERVER);
 	}
 	
 	@Mod.EventHandler
