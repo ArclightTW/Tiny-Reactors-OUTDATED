@@ -79,7 +79,7 @@ public class TileEntityReactantCombiner extends TileEntitySync implements IInven
 				ItemStack reactant = getStackInSlot(0);
 				ItemStack ingot = getStackInSlot(1);
 				
-				if(reactant.isEmpty() || ingot.isEmpty())
+				if(reactant.isEmpty() || ingot.isEmpty() || !reactant.hasTagCompound())
 				{
 					setInventorySlotContents(2, ItemStack.EMPTY);
 					calculated = true;
