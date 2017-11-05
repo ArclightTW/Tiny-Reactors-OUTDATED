@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BakedQuadRetextured;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -21,8 +20,10 @@ public class ModelBlockDegradedReactant implements IRuntimeModel
 	@Override
 	public IBakedModel createModel(IBakedModel existing)
 	{
-		return new IBakedModel()
+		return new ModelSimpleBaked(existing)
 		{
+			private IBakedModel replacement;
+			
 			@Override
 			public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
 			{
@@ -40,8 +41,8 @@ public class ModelBlockDegradedReactant implements IRuntimeModel
 				if(representative == null)
 					return oldQuads;
 				
-				IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(representative);
-				List<BakedQuad> modelQuads = model.getQuads(state, side, rand);
+				replacement = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(representative);
+				List<BakedQuad> modelQuads = replacement.getQuads(state, side, rand);
 				
 				if(modelQuads.size() != oldQuads.size())
 					return oldQuads;
@@ -55,31 +56,7 @@ public class ModelBlockDegradedReactant implements IRuntimeModel
 			@Override
 			public TextureAtlasSprite getParticleTexture()
 			{
-				return existing.getParticleTexture();
-			}
-			
-			@Override
-			public ItemOverrideList getOverrides()
-			{
-				return existing.getOverrides();
-			}
-			
-			@Override
-			public boolean isGui3d()
-			{
-				return existing.isGui3d();
-			}
-			
-			@Override
-			public boolean isBuiltInRenderer()
-			{
-				return existing.isBuiltInRenderer();
-			}
-			
-			@Override
-			public boolean isAmbientOcclusion()
-			{
-				return existing.isAmbientOcclusion();
+				return replacement == null ? existing.getParticleTexture() : replacement.getParticleTexture();
 			}
 		};
 	}
