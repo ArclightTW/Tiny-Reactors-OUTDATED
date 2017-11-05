@@ -3,23 +3,28 @@ package com.arclighttw.tinyreactors.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public abstract class ContainerBase extends Container
 {
-	public ContainerBase(InventoryPlayer player, int inventoryX, int inventoryY)
+	private final IInventory inventory;
+	
+	public ContainerBase(IInventory inventory, InventoryPlayer player, int inventoryX, int inventoryY)
 	{
-		this(player, inventoryX, inventoryY + 58, inventoryY);
+		this(inventory, player, inventoryX, inventoryY + 58, inventoryY);
 	}
 	
-	public ContainerBase(InventoryPlayer player, int inventoryX, int hotbarY, int inventoryY)
+	public ContainerBase(IInventory inventory, InventoryPlayer player, int inventoryX, int hotbarY, int inventoryY)
 	{
-		this(player, inventoryX, hotbarY, inventoryX, inventoryY);
+		this(inventory, player, inventoryX, hotbarY, inventoryX, inventoryY);
 	}
 	
-	public ContainerBase(InventoryPlayer player, int hotbarX, int hotbarY, int inventoryX, int inventoryY)
+	public ContainerBase(IInventory inventory, InventoryPlayer player, int hotbarX, int hotbarY, int inventoryX, int inventoryY)
 	{
+		this.inventory = inventory;
+		
 		for(int x = 0; x < 9; x++)
 			addSlotToContainer(new Slot(player, x, hotbarX + x * 18, hotbarY));
 		
@@ -40,7 +45,14 @@ public abstract class ContainerBase extends Container
 		ItemStack itemstack = slot.getStack();
 		returned = itemstack.copy();
 		
-		if(index >= 9 && index < 36)
+		if(index >= 36)
+		{
+			if(!mergeItemStack(itemstack, 0, 36, false))
+				return ItemStack.EMPTY;
+		}
+		else if(inventory != null && !mergeItemStack(itemstack, 36, 36 + inventory.getSizeInventory(), false))
+			return ItemStack.EMPTY;
+		else if(index >= 9 && index < 36)
 		{
 			if(!mergeItemStack(itemstack, 0, 9, false))
 				return ItemStack.EMPTY;

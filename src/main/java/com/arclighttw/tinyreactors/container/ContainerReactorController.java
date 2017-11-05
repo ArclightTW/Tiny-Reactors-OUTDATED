@@ -11,7 +11,7 @@ public class ContainerReactorController extends ContainerBase
 	
 	public ContainerReactorController(TileEntityReactorController controller, InventoryPlayer player)
 	{
-		super(player, 8, 81);
+		super(null, player, 8, 81);
 		this.controller = controller;
 	}
 	

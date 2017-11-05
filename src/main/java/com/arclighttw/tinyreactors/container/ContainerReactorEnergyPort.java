@@ -11,7 +11,7 @@ public class ContainerReactorEnergyPort extends ContainerBase
 	
 	public ContainerReactorEnergyPort(TileEntityReactorEnergyPort energyPort, InventoryPlayer player)
 	{
-		super(player, 8, 81);
+		super(null, player, 8, 81);
 		this.energyPort = energyPort;
 	}
 	

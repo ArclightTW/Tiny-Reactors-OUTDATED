@@ -17,7 +17,7 @@ public class ContainerReactantCombiner extends ContainerBase
 	
 	public ContainerReactantCombiner(TileEntityReactantCombiner combiner, InventoryPlayer player)
 	{
-		super(player, 8, 81);
+		super(combiner, player, 8, 81);
 		this.combiner = combiner;
 		
 		addSlotToContainer(new Slot(combiner, 0, 44, 12) {
