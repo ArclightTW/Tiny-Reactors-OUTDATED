@@ -17,5 +17,15 @@
 		[
 			"tinyreactors:reactor_active"
 		]
+	},
+	
+	"reactor_overheat":
+	{
+		"category": "block",
+		
+		"sounds":
+		[
+			"tinyreactors:reactor_overheat"
+		]
 	}
 }

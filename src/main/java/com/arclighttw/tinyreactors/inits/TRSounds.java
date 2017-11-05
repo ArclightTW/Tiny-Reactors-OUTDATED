@@ -10,8 +10,14 @@ import net.minecraft.util.SoundEvent;
 
 public class TRSounds
 {
-	public static final SoundEvent REACTOR_KLAXON = new SoundEvent(new ResourceLocation(Reference.ID, "reactor_klaxon"));
-	public static final SoundEvent REACTOR_ACTIVE = new SoundEvent(new ResourceLocation(Reference.ID, "reactor_active"));
+	public static final SoundEvent REACTOR_KLAXON = registerSoundResource("reactor_klaxon");
+	public static final SoundEvent REACTOR_ACTIVE = registerSoundResource("reactor_active");
+	public static final SoundEvent REACTOR_OVERHEAT = registerSoundResource("reactor_overheat");
+	
+	private static SoundEvent registerSoundResource(String name)
+	{
+		return new SoundEvent(new ResourceLocation(Reference.ID, name));
+	}
 	
 	public static void onRegister()
 	{

@@ -96,7 +96,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 				
 				if(meltdownTimer <= 0)
 				{
-					// TODO: Play sound effect.
+					world.playSound(null, pos, TRSounds.REACTOR_OVERHEAT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					temperature.overheat();
 					meltdownInitiated = false;
 					return;
