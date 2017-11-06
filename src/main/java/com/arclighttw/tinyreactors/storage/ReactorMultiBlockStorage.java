@@ -180,25 +180,6 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			vent.setController(controller);
 			vent.sync();
 		}
-		
-		for(BlockPos pos : validReactants)
-		{
-			TileEntity tile = world.getTileEntity(pos);
-			
-			if(tile != null && tile instanceof TileEntityDegradedReactant)
-				continue;
-			
-			Block reactant = world.getBlockState(pos).getBlock();
-			world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
-			
-			tile = world.getTileEntity(pos);
-			
-			if(tile == null || !(tile instanceof TileEntityDegradedReactant))
-				continue;
-			
-			TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
-			degradedReactant.setRepresentedBlock(reactant);
-		}
 	}
 	
 	public void degradeReactant(World world, float qualityDegration)
@@ -222,6 +203,20 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			return;
 		
 		TileEntity tile = world.getTileEntity(pos);
+		
+		if(tile == null)
+		{
+			Block reactant = world.getBlockState(pos).getBlock();
+			world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
+			
+			tile = world.getTileEntity(pos);
+			
+			if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+				return;
+			
+			TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
+			degradedReactant.setRepresentedBlock(reactant);
+		}
 		
 		if(tile != null && tile instanceof TileEntityDegradedReactant)
 			((TileEntityDegradedReactant)tile).degrade(qualityDegration);
