@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -28,7 +27,6 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,7 +40,6 @@ public class Registry
 	static Map<ResourceLocation, IRecipe> RECIPES = Maps.newHashMap();
 	static Map<ResourceLocation, SoundEvent> SOUNDS = Maps.newHashMap();
 	static Map<ModelResourceLocation, IRuntimeModel> MODELS = Maps.newHashMap();
-	static Map<ResourceLocation, ICraftedTrigger> CRAFTED = Maps.newHashMap();
 	
 	static Map<ResourceLocation, Class<? extends TileEntity>> TILES = Maps.newHashMap();
 	
@@ -83,9 +80,6 @@ public class Registry
 		if(block instanceof IModelProvider)
 			registerModel(((IModelProvider)block).createModel(), name, "normal");
 		
-		if(block instanceof ICraftedTrigger)
-			registerCraftable((ICraftedTrigger)block, name);
-		
 		if(BLOCKS.containsKey(block.getRegistryName()))
 		{
 			System.err.println(String.format("Unable to register Block with registry name '%s' as an entry already exists with this name.", block.getRegistryName().toString()));
@@ -107,9 +101,6 @@ public class Registry
 		
 		if(item instanceof IModelProvider)
 			registerModel(((IModelProvider)item).createModel(), name, "inventory");
-		
-		if(item instanceof ICraftedTrigger)
-			registerCraftable((ICraftedTrigger)item, name);
 		
 		if(ITEMS.containsKey(item.getRegistryName()))
 		{
@@ -200,25 +191,6 @@ public class Registry
 		MODELS.put(resource, model);
 	}
 	
-	private static void registerCraftable(ICraftedTrigger craftable, String name)
-	{
-		if(craftable == null)
-		{
-			System.err.println(String.format("Unable to register ICraftedTrigger with name '%s' as the provided ICraftedTrigger is null.", name));
-			return;
-		}
-		
-		ResourceLocation resource = new ResourceLocation(Reference.ID, name);
-		
-		if(CRAFTED.containsKey(resource))
-		{
-			System.err.println(String.format("Unable to register ICraftedTrigger with name '%s' as an entry already exists with this name.", resource.toString()));
-			return;
-		}
-		
-		CRAFTED.put(resource, craftable);
-	}
-	
 	@SubscribeEvent
 	public void onBlockRegister(RegistryEvent.Register<Block> event)
 	{
@@ -301,37 +273,9 @@ public class Registry
 		}
 	}
 	
-	@SubscribeEvent
-	public void onItemCrafted(ItemCraftedEvent event)
-	{
-		for(Map.Entry<ResourceLocation, ICraftedTrigger> crafted : CRAFTED.entrySet())
-		{
-			Item item = Item.REGISTRY.getObject(crafted.getKey());
-			
-			if(item != null && event.crafting.getItem() == item)
-			{
-				crafted.getValue().onCrafted(event.crafting, event.craftMatrix);
-				return;
-			}
-			
-			Block block = Block.REGISTRY.getObject(crafted.getKey());
-			
-			if(block != null && Block.getBlockFromItem(event.crafting.getItem()) == block)
-			{
-				crafted.getValue().onCrafted(event.crafting, event.craftMatrix);
-				return;
-			}
-		}
-	}
-	
 	public interface IItemProvider
 	{
 		ItemBlock getItemBlock();
-	}
-	
-	public interface ICraftedTrigger
-	{
-		void onCrafted(ItemStack result, IInventory craftMatrix);
 	}
 	
 	public interface IModelRegistrar
@@ -351,7 +295,7 @@ public class Registry
 		IBakedModel createModel(IBakedModel existing);
 	}
 	
-	static class ShapedRecipe extends ShapedOreRecipe
+	public static class ShapedRecipe extends ShapedOreRecipe
 	{
 		public ShapedRecipe(Block result, Object... recipe) { this(new ItemStack(result), recipe); }
 		public ShapedRecipe(Item result, Object... recipe) { this(new ItemStack(result), recipe); }
@@ -363,7 +307,7 @@ public class Registry
 		}
 	}
 	
-	static class ShapelessRecipe extends ShapelessOreRecipe
+	public static class ShapelessRecipe extends ShapelessOreRecipe
 	{
 		public ShapelessRecipe(Block result, Object... recipe) { this(new ItemStack(result), recipe); }
 		public ShapelessRecipe(Item result, Object... recipe) { this(new ItemStack(result), recipe); }

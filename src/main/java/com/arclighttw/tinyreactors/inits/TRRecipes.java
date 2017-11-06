@@ -5,6 +5,8 @@ import java.util.Locale;
 
 import com.arclighttw.tinyreactors.inits.Registry.ShapedRecipe;
 import com.arclighttw.tinyreactors.inits.Registry.ShapelessRecipe;
+import com.arclighttw.tinyreactors.recipes.TemplateRecipe;
+import com.arclighttw.tinyreactors.recipes.UpgradeRecipe;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -28,7 +30,7 @@ public class TRRecipes
 			TRBlocks.REACTOR_CONTROLLER_1, Blocks.REDSTONE_BLOCK
 	});
 	
-	public static IRecipe REACTOR_ENERGY_PORT = new ShapedRecipe(TRBlocks.REACTOR_ENERGY_PORT, new Object[] {
+	public static IRecipe REACTOR_ENERGY_PORT = new TemplateRecipe(TRBlocks.REACTOR_ENERGY_PORT, 256, 250000, new Object[] {
 			"CIC",
 			"III",
 			"CIC",
@@ -36,9 +38,7 @@ public class TRRecipes
 				Character.valueOf('I'), Blocks.IRON_BARS
 	});
 	
-	public static IRecipe REACTOR_ENERGY_PORT_UPGRADE = new ShapelessRecipe(TRBlocks.REACTOR_ENERGY_PORT, new Object[] {
-			TRBlocks.REACTOR_ENERGY_PORT, TRBlocks.REACTOR_ENERGY_PORT
-	});
+	public static IRecipe REACTOR_ENERGY_PORT_UPGRADE = new UpgradeRecipe(TRBlocks.REACTOR_ENERGY_PORT);
 	
 	public static IRecipe REACTOR_CASING = new ShapedRecipe(new ItemStack(TRBlocks.REACTOR_CASING, 8), new Object[] {
 			"III",
@@ -96,7 +96,7 @@ public class TRRecipes
 				Character.valueOf('R'), Items.REDSTONE
 	});
 	
-	public static IRecipe CAPACITOR_TIER_1 = new ShapedRecipe(TRBlocks.CAPACITOR_1, new Object[] {
+	public static IRecipe CAPACITOR = new TemplateRecipe(TRBlocks.CAPACITOR, 256, 2500000, new Object[] {
 			"IGI",
 			"IGI",
 			"IRI",
@@ -105,23 +105,7 @@ public class TRRecipes
 				Character.valueOf('G'), Blocks.GLASS_PANE
 	});
 	
-	public static IRecipe CAPACITOR_TIER_2 = new ShapedRecipe(TRBlocks.CAPACITOR_2, new Object[] {
-			"IRI",
-			"ICI",
-			"IRI",
-				Character.valueOf('I'), Items.IRON_INGOT,
-				Character.valueOf('R'), Items.REDSTONE,
-				Character.valueOf('C'), TRBlocks.CAPACITOR_1
-	});
-	
-	public static IRecipe CAPACITOR_TIER_3 = new ShapedRecipe(TRBlocks.CAPACITOR_3, new Object[] {
-			"IRI",
-			"ICI",
-			"IRI",
-				Character.valueOf('I'), Items.IRON_INGOT,
-				Character.valueOf('R'), Blocks.REDSTONE_BLOCK,
-				Character.valueOf('C'), TRBlocks.CAPACITOR_2
-	});
+	public static IRecipe CAPACITOR_UPGRADE = new UpgradeRecipe(TRBlocks.CAPACITOR);
 	
 	public static IRecipe REACTANT_COMBINER = new ShapedRecipe(TRBlocks.REACTANT_COMBINER, new Object[] {
 			"IGI",
