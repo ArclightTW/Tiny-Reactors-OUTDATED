@@ -26,7 +26,7 @@ public class TRBlocks
 	public static Block REACTOR_CASING = new BlockReactorComponent(Material.IRON, "reactor_casing").setHardness(50F).setResistance(50F);
 	public static Block REACTOR_GLASS = new BlockReactorComponent(Material.GLASS, "reactor_glass").setHardness(10F).setResistance(50F);
 	
-	public static Block REACTOR_HEAT_SINK = new BlockReactorComponent(Material.IRON, "reactor_heat_sink").setTooltip("Increases Reactor Heat Capacity by 50 C").setHardness(50F).setResistance(50F);
+	public static Block REACTOR_HEAT_SINK = new BlockReactorComponent(Material.IRON, "reactor_heat_sink").setTooltip("Increases Reactor Heat Capacity by 500 C").setHardness(50F).setResistance(50F);
 	
 	public static Block REACTOR_VENT = new BlockReactorVent().setHardness(50F).setResistance(50F);
 	

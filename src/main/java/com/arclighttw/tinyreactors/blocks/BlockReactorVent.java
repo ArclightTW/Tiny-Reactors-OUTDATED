@@ -137,6 +137,6 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
 	{
-		tooltip.add(String.format("Operational Heat Offset: %.2f C", getStateFromMeta(stack.getItemDamage()).getValue(EnumVentTier.PROPERTY).getHeatOffset()));
+		tooltip.add(String.format("Operational Heat Offset: %.2f C", (getStateFromMeta(stack.getItemDamage()).getValue(EnumVentTier.PROPERTY).getHeatOffset() * 10)));
 	}
 }
