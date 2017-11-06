@@ -18,9 +18,7 @@ tile.reactor_waste_port.name=Reactor Waste Port
 
 tile.degraded_reactant.name=Degraded Reactant
 
-tile.capacitor_1.name=Capacitor
-tile.capacitor_2.name=Capacitor
-tile.capacitor_3.name=Capacitor
+tile.capacitor.name=Capacitor
 
 tile.reactant_combiner.name=Reactant Combiner
 

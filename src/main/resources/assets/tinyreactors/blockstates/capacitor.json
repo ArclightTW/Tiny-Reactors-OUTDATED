@@ -3,8 +3,8 @@
 	
 	"defaults":
 	{
-		"model": "tinyreactors:capacitor_2"
-	},	
+		"model": "tinyreactors:capacitor"
+	},
 	
 	"variants":
 	{

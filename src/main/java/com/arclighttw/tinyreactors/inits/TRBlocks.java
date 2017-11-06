@@ -11,7 +11,6 @@ import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
 import com.arclighttw.tinyreactors.blocks.BlockReactorVent;
 import com.arclighttw.tinyreactors.blocks.BlockReactorWastePort;
-import com.arclighttw.tinyreactors.properties.EnumCapacitorTier;
 import com.arclighttw.tinyreactors.properties.EnumControllerTier;
 
 import net.minecraft.block.Block;
@@ -33,9 +32,7 @@ public class TRBlocks
 	
 	public static Block REACTOR_WASTE_PORT = new BlockReactorWastePort().setHardness(50F).setResistance(50F);
 	
-	public static Block CAPACITOR_1 = new BlockCapacitor(EnumCapacitorTier.I).setHardness(50F).setResistance(50F);
-	public static Block CAPACITOR_2 = new BlockCapacitor(EnumCapacitorTier.II).setHardness(50F).setResistance(50F);
-	public static Block CAPACITOR_3 = new BlockCapacitor(EnumCapacitorTier.III).setHardness(50F).setResistance(50F);
+	public static Block CAPACITOR = new BlockCapacitor().setHardness(50F).setResistance(50F);
 	
 	public static Block REACTANT_COMBINER = new BlockReactantCombiner().setHardness(50F).setResistance(50F);
 	

@@ -1,11 +1,9 @@
 package com.arclighttw.tinyreactors.tiles;
 
-import java.util.Map;
+import java.util.List;
 
-import com.arclighttw.tinyreactors.properties.EnumCapacitorTier;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -13,19 +11,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileEntityCapacitor extends TileEntityEnergy
 {
-	private EnumCapacitorTier tier;
-	private Map<EnumFacing, IEnergyStorage> receivers;
-	
-	public TileEntityCapacitor()
-	{
-		this(EnumCapacitorTier.I);
-	}
-	
-	public TileEntityCapacitor(EnumCapacitorTier tier)
-	{
-		this.tier = tier;
-		energy = tier.getEnergyStorage();
-	}
+	private List<IEnergyStorage> receivers;
 	
 	@Override
 	public void onInitialLoad()
@@ -37,52 +23,56 @@ public class TileEntityCapacitor extends TileEntityEnergy
 	public void update()
 	{
 		super.update();
-		sync();
 		
-		if(getEnergyStored() <= 0 || world == null || world.isRemote)
+		if(world == null || world.isRemote || getEnergyStored() <= 0)
 			return;
 		
-		onInitialLoad();
+		if(receivers == null || receivers.size() == 0)
+		{
+			onInitialLoad();
+			return;
+		}
 		
-		for(Map.Entry<EnumFacing, IEnergyStorage> receiver : receivers.entrySet())
+		for(IEnergyStorage receiver : receivers)
 		{
 			int extracted = extractEnergy(energy.getCurrentExtract() / receivers.size(), true);
-			
-			if(extracted > 0)
-			{
-				int received = receiver.getValue().receiveEnergy(extracted, false);
-				extractEnergy(received, false);
-			}
+			int received = receiver.receiveEnergy(extracted, false);
+			extractEnergy(received, false);
 		}
 	}
 	
-	@Override
-	public void writeToNBTInternal(NBTTagCompound compound)
+	public void setLimit(int limit)
 	{
-		compound.setInteger("tier", tier.ordinal());
+		energy.setMaxTransfer(limit);
 	}
 	
-	@Override
-	public void readFromNBTInternal(NBTTagCompound compound)
+	public int getLimit()
 	{
-		tier = EnumCapacitorTier.values()[compound.getInteger("tier")];
+		return energy.getMaxExtract();
+	}
+	
+	public void setCapacity(int capacity)
+	{
+		energy.setCapacity(capacity);
 	}
 	
 	public void calculateNeighbors()
 	{
-		receivers = Maps.newHashMap();
+		receivers = Lists.newArrayList();
 		
-		for(EnumFacing direction : EnumFacing.VALUES)
+		for(EnumFacing facing : EnumFacing.VALUES)
 		{
-			TileEntity tile = world.getTileEntity(pos.offset(direction));
+			TileEntity tile = world.getTileEntity(pos.offset(facing));
 			
 			if(tile == null || tile instanceof TileEntityReactorEnergyPort || tile instanceof TileEntityCapacitor)
 				continue;
 			
-			IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite());
+			IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, facing.getOpposite());
 			
-			if(storage != null)
-				receivers.put(direction.getOpposite(), storage);
+			if(storage == null)
+				continue;
+			
+			receivers.add(storage);
 		}
 	}
 }
