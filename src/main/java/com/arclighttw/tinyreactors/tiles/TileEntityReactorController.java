@@ -89,7 +89,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 			if(meltdownInitiated)
 			{
 				if(meltdownTimer % 40 == 0)
-					world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 2.0F, 1.0F);
 				
 				meltdownTimer--;
 				
