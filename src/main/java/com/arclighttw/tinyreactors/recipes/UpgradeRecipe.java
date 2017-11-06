@@ -14,12 +14,15 @@ import net.minecraft.world.World;
 
 public class UpgradeRecipe extends Registry.ShapelessRecipe
 {
-	public UpgradeRecipe(Block result) { this(new ItemStack(result), new Object[] { result, result }); }
-	public UpgradeRecipe(Item result) { this(new ItemStack(result), new Object[] { result, result }); }
+	private final TemplateRecipe template;
 	
-	public UpgradeRecipe(ItemStack result, Object... recipe)
+	public UpgradeRecipe(Block result, TemplateRecipe template) { this(new ItemStack(result), template, new Object[] { result, result }); }
+	public UpgradeRecipe(Item result, TemplateRecipe template) { this(new ItemStack(result), template, new Object[] { result, result }); }
+	
+	public UpgradeRecipe(ItemStack result, TemplateRecipe template, Object... recipe)
 	{
 		super(result, recipe);
+		this.template = template;
 	}
 	
 	@Override
@@ -67,8 +70,8 @@ public class UpgradeRecipe extends Registry.ShapelessRecipe
 		if(compound == null)
 			compound = new NBTTagCompound();
 		
-		compound.setInteger("limit", 256);
-		compound.setInteger("capacity", 250000);
+		compound.setInteger("limit", template.getLimit());
+		compound.setInteger("capacity", template.getCapacity());
 		
 		int limit = 0;
 		int capacity = 0;
