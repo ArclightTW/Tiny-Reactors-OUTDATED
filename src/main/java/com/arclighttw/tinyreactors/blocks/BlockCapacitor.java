@@ -3,8 +3,10 @@ package com.arclighttw.tinyreactors.blocks;
 import java.util.List;
 import java.util.Random;
 
+import com.arclighttw.tinyreactors.inits.TRRecipes;
 import com.arclighttw.tinyreactors.main.TinyReactors;
 import com.arclighttw.tinyreactors.network.SMessageReactorEnergyPort.Mode;
+import com.arclighttw.tinyreactors.recipes.TemplateRecipe;
 import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 
 import net.minecraft.block.material.Material;
@@ -94,8 +96,8 @@ public class BlockCapacitor extends BlockReactorComponentDirectional
 		ItemStack creative = new ItemStack(this);
 
 		NBTTagCompound compound = new NBTTagCompound();
-		compound.setInteger("limit", 1024);
-		compound.setInteger("capacity", 1000000);
+		compound.setInteger("limit", ((TemplateRecipe)TRRecipes.CAPACITOR).getLimit());
+		compound.setInteger("capacity", ((TemplateRecipe)TRRecipes.CAPACITOR).getCapacity());
 		
 		creative.setTagCompound(compound);
 		items.add(creative);
