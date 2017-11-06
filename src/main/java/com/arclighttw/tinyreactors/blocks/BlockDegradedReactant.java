@@ -18,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,26 +63,31 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
-		TileEntity tile = world.getTileEntity(pos);
-		
-		if(tile == null || !(tile instanceof TileEntityDegradedReactant) || !stack.hasTagCompound())
-			return;
-		
-		TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
-		NBTTagCompound compound = stack.getTagCompound();
-		
-		String registryName = compound.getString("registryName");
-		Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
-		float quality = compound.getFloat("quality");
-		
-		reactant.setRepresentedBlock(block);
-		reactant.setQuality(quality);
+		if(!world.isRemote)
+		{
+			TileEntity tile = world.getTileEntity(pos);
+			
+			if(tile == null || !(tile instanceof TileEntityDegradedReactant) || !stack.hasTagCompound())
+				return;
+			
+			TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
+			NBTTagCompound compound = stack.getTagCompound();
+			
+			String registryName = compound.getString("registryName");
+			Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
+			float quality = compound.getFloat("quality");
+			
+			reactant.setRepresentedBlock(block);
+			reactant.setQuality(quality);
+			
+			world.notifyBlockUpdate(pos, state, state, 3);
+		}
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player)
 	{
-		if(!world.isRemote)
+		if(!world.isRemote && !player.capabilities.isCreativeMode)
 		{
 			TileEntity tile = world.getTileEntity(pos);
 			
@@ -99,9 +105,8 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 			
 			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 			world.spawnEntity(item);
+			world.removeTileEntity(pos);
 		}
-		
-		super.breakBlock(world, pos, state);
 	}
 	
 	@Override

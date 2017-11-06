@@ -17,6 +17,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -115,9 +116,9 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 	}
 	
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player)
 	{
-		if(!world.isRemote)
+		if(!world.isRemote && !player.capabilities.isCreativeMode)
 		{
 			TileEntity tile = world.getTileEntity(pos);
 			
@@ -135,9 +136,8 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 			
 			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 			world.spawnEntity(item);
+			world.removeTileEntity(pos);
 		}
-		
-		super.breakBlock(world, pos, state);
 	}
 	
 	@Override
