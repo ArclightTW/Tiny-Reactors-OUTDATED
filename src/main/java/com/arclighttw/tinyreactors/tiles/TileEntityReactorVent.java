@@ -44,15 +44,15 @@ public class TileEntityReactorVent extends TileEntitySync
 	{
 		super.update();
 		
+		if(controller == null)
+		{
+			onInitialLoad();
+			return;
+		}
+		
 		if(!world.isRemote)
 		{
 			operational = world.getBlockState(pos).getValue(EnumVentState.PROPERTY) == EnumVentState.OPEN;
-			
-			if(controller == null)
-			{
-				onInitialLoad();
-				return;
-			}
 			
 			if(!isOperational())
 				return;

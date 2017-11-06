@@ -1,6 +1,7 @@
 package com.arclighttw.tinyreactors.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import com.arclighttw.tinyreactors.inits.Registry.IItemProvider;
 import com.arclighttw.tinyreactors.inits.Registry.IModelRegistrar;
@@ -24,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -113,7 +115,7 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 		
 		return true;
 	}
-	/*
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
@@ -125,13 +127,13 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 		
 		TileEntityReactorVent vent = (TileEntityReactorVent)tile;
 		
-		if(!vent.isOperational())
+		if(!vent.isRunning())
 			return;
 		
 		for(int i = 0; i < vent.getTier().getParticleCount(); i++)
 			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, true, pos.getX() + 0.1F + (rand.nextFloat() * 0.8F), pos.getY() + 1F, pos.getZ() + 0.1F + (rand.nextFloat() * 0.8F), 0F, 0.05F, 0F);
 	}
-	*/
+	
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
 	{
