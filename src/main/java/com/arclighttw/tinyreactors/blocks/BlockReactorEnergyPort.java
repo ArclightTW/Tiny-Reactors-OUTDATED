@@ -1,16 +1,13 @@
 package com.arclighttw.tinyreactors.blocks;
 
 import java.util.List;
+import java.util.Random;
 
-import com.arclighttw.tinyreactors.inits.Registry.ICraftedTrigger;
-import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.main.TinyReactors;
 import com.arclighttw.tinyreactors.managers.GuiManager;
 import com.arclighttw.tinyreactors.network.SMessageReactorEnergyPort.Mode;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
-import com.google.common.collect.Lists;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -18,16 +15,15 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockReactorEnergyPort extends BlockReactorComponentDirectional implements ICraftedTrigger
+public class BlockReactorEnergyPort extends BlockReactorComponentDirectional
 {
 	public BlockReactorEnergyPort()
 	{
@@ -46,52 +42,6 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 	{
 		return GuiManager.REACTOR_ENERGY_PORT;
 	
-	}
-	@Override
-	public void onCrafted(ItemStack result, IInventory craftMatrix)
-	{
-		if(Block.getBlockFromItem(result.getItem()) != TRBlocks.REACTOR_ENERGY_PORT)
-			return;
-		
-		List<ItemStack> ingredients = Lists.newArrayList();
-		
-		for(int i = 0; i < craftMatrix.getSizeInventory(); i++)
-		{
-			ItemStack ingredient = craftMatrix.getStackInSlot(i);
-			
-			if(ingredient.isEmpty())
-				continue;
-			
-			ingredients.add(ingredient);
-		}
-		
-		NBTTagCompound compound = result.getTagCompound();
-		
-		if(compound == null)
-			compound = new NBTTagCompound();
-		
-		compound.setInteger("limit", 256);
-		compound.setInteger("capacity", 250000);
-		
-		if(ingredients.size() == 2)
-		{
-			int limit = 0;
-			int capacity = 0;
-			
-			for(ItemStack ingredient : ingredients)
-			{
-				if(!ingredient.hasTagCompound())
-					continue;
-				
-				limit += ingredient.getTagCompound().getInteger("limit");
-				capacity += ingredient.getTagCompound().getInteger("capacity");
-			}
-			
-			compound.setInteger("limit", limit);
-			compound.setInteger("capacity", capacity);
-		}
-		
-		result.setTagCompound(compound);
 	}
 	
 	@Override
@@ -141,6 +91,12 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 	}
 	
 	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune)
+	{
+		return null;
+	}
+	
+	@Override
 	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items)
 	{
 		ItemStack creative = new ItemStack(this);
@@ -151,12 +107,6 @@ public class BlockReactorEnergyPort extends BlockReactorComponentDirectional imp
 		
 		creative.setTagCompound(compound);
 		items.add(creative);
-	}
-	
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-	{
-		drops.clear();
 	}
 	
 	@Override
