@@ -3,10 +3,10 @@ package com.arclighttw.tinyreactors.integration;
 import java.util.Arrays;
 import java.util.List;
 
-import com.arclighttw.tinyreactors.blocks.BlockCapacitor;
 import com.arclighttw.tinyreactors.blocks.BlockDegradedReactant;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
+import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityEnergy;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
@@ -62,9 +62,6 @@ public class WailaIntegration implements IWailaDataProvider
 		if(block instanceof BlockReactorController)
 			text.add("Tier: " + ((BlockReactorController)block).getTier().getName());
 		
-		if(block instanceof BlockCapacitor)
-			text.add("Tier: " + ((BlockCapacitor)block).getTier().getName());
-		
 		TileEntity tile = accessor.getTileEntity();
 		
 		if(tile == null)
@@ -75,6 +72,13 @@ public class WailaIntegration implements IWailaDataProvider
 			TileEntityReactorEnergyPort energy = (TileEntityReactorEnergyPort)tile;
 			text.add(String.format("Limit: %,d RF/t", energy.getLimit()));
 			text.add(String.format("Capacity: %,d RF", energy.getMaxEnergyStored()));
+		}
+		
+		if(tile instanceof TileEntityCapacitor)
+		{
+			TileEntityCapacitor capacitor = (TileEntityCapacitor)tile;
+			text.add(String.format("Limit: %,d RF/t", capacitor.getLimit()));
+			text.add(String.format("Capacity: %,d RF", capacitor.getMaxEnergyStored()));
 		}
 		
 		if(tile instanceof TileEntityReactorVent)
