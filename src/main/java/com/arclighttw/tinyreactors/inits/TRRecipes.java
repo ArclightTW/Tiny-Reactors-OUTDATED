@@ -38,7 +38,7 @@ public class TRRecipes
 				Character.valueOf('I'), Blocks.IRON_BARS
 	});
 	
-	public static IRecipe REACTOR_ENERGY_PORT_UPGRADE = new UpgradeRecipe(TRBlocks.REACTOR_ENERGY_PORT);
+	public static IRecipe REACTOR_ENERGY_PORT_UPGRADE = new UpgradeRecipe(TRBlocks.REACTOR_ENERGY_PORT, (TemplateRecipe)REACTOR_ENERGY_PORT);
 	
 	public static IRecipe REACTOR_CASING = new ShapedRecipe(new ItemStack(TRBlocks.REACTOR_CASING, 8), new Object[] {
 			"III",
@@ -105,7 +105,7 @@ public class TRRecipes
 				Character.valueOf('G'), Blocks.GLASS_PANE
 	});
 	
-	public static IRecipe CAPACITOR_UPGRADE = new UpgradeRecipe(TRBlocks.CAPACITOR);
+	public static IRecipe CAPACITOR_UPGRADE = new UpgradeRecipe(TRBlocks.CAPACITOR, (TemplateRecipe)CAPACITOR);
 	
 	public static IRecipe REACTANT_COMBINER = new ShapedRecipe(TRBlocks.REACTANT_COMBINER, new Object[] {
 			"IGI",

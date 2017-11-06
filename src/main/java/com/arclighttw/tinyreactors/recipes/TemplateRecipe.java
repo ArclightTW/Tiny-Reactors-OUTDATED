@@ -52,4 +52,14 @@ public class TemplateRecipe extends Registry.ShapedRecipe
 		output.setTagCompound(compound);
 		return output.copy();
 	}
+	
+	public int getLimit()
+	{
+		return limit;
+	}
+	
+	public int getCapacity()
+	{
+		return capacity;
+	}
 }
