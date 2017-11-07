@@ -34,4 +34,10 @@ public class TRConfig
 	
 	public static int REACTANT_DEGRADATION_TICK = 20;
 	public static String REACTANT_DEGRADATION_TICK_LABEL = "The number of ticks between each quality degradation cycle.";
+	
+	public static boolean MANUAL_ON_SPAWN = true;
+	public static String MANUAL_ON_SPAWN_LABEL = "Should players be given a copy of the Tiny Manual when joining the world for the first time?";
+	
+	public static boolean MANUAL_ON_CRAFT = true;
+	public static String MANUAL_ON_CRAFT_LABEL = "Should players be given a copy of the Tiny Manual when crafting a Tiny Reactors based block?  This is exclusive to 'Manual on Spawn'.";
 }

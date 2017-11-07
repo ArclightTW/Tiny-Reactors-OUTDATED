@@ -44,6 +44,11 @@ public class ModConfig
 		TRConfig.REACTANT_DEGRADATION = config.getBoolean("Reactant Degradation", category, TRConfig.REACTANT_DEGRADATION, TRConfig.REACTANT_DEGRADATION_LABEL);
 		TRConfig.REACTANT_DEGRADATION_TICK = config.getInt("Reactant Degradation Tick", category, TRConfig.REACTANT_DEGRADATION_TICK, 1, Integer.MAX_VALUE, TRConfig.REACTANT_DEGRADATION_TICK_LABEL);
 		
+		category = "Manual";
+		
+		TRConfig.MANUAL_ON_SPAWN = config.getBoolean("Manual on Spawn", category, TRConfig.MANUAL_ON_SPAWN, TRConfig.MANUAL_ON_SPAWN_LABEL);
+		TRConfig.MANUAL_ON_CRAFT = config.getBoolean("Manual on Craft", category, TRConfig.MANUAL_ON_CRAFT, TRConfig.MANUAL_ON_CRAFT_LABEL);
+		
 		category = "Reactants";
 		config.addCustomCategoryComment(category, "Specify the rate per tick of each Block when placed inside an active reactor.");
 		

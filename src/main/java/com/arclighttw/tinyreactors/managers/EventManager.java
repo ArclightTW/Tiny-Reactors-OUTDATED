@@ -3,6 +3,7 @@ package com.arclighttw.tinyreactors.managers;
 import com.arclighttw.tinyreactors.capabilities.CapabilityHelper;
 import com.arclighttw.tinyreactors.capabilities.IManualCapability;
 import com.arclighttw.tinyreactors.capabilities.ManualCapability;
+import com.arclighttw.tinyreactors.config.TRConfig;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +26,9 @@ public class EventManager
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event)
 	{
+		if(!TRConfig.MANUAL_ON_SPAWN)
+			return;
+
 		IManualCapability capability = event.player.getCapability(ManualCapability.CAPABILITY, null);
 		
 		if(capability == null)
