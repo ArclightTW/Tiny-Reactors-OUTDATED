@@ -1,0 +1,11 @@
+{
+	"type":		"text",
+	
+	"lines": [
+		{
+			"text": "Reactors produce more power the hotter they run.  A reactor running at 1,250C is 100% efficient; reactors running hotter than this generate even more power.\n\nThere are two methods of controlling the heat within a reactor structure; Heat Sinks and Vents.",
+			"border": 20,
+			"wrapped": true
+		}
+	]
+}

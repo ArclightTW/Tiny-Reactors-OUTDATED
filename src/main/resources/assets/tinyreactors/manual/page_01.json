@@ -1,0 +1,42 @@
+{
+	"type":		"contents",
+	"id":		"contents",
+	
+	"stacks": [
+		{
+			"icon": "tinyreactors:reactor_controller_1",
+			"link": "reactor_controller",
+			"tooltip": [
+				"Controller"
+			],
+			
+			"x": 40,
+			"y": 20
+		},
+		
+		{
+			"icon": "tinyreactors:reactor_heat_sink",
+			"link": "reactor_heat_sink",
+			"tooltip": [
+				"Heat Sink"
+			],
+			
+			"x": 85,
+			"y": 38
+		},
+		
+		{
+			"icon": "tinyreactors:reactor_vent",
+			"metadata": [
+				0, 1, 2
+			],
+			"link": "reactor_vent",
+			"tooltip": [
+				"Vent"
+			],
+			
+			"x": 130,
+			"y": 20
+		}
+	]
+}

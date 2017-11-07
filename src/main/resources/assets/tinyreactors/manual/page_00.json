@@ -1,0 +1,28 @@
+{
+	"type":		"cover",
+	"cover":		"front",
+	
+	"lines": [
+		{
+			"text": "Tiny Manual",
+			
+			"x-alignment": "center",
+			"y-alignment": "middle",
+			
+			"y": -10,
+			
+			"color": "C0C607"
+		},
+		
+		{
+			"text": "by ArclightTW",
+			
+			"x-alignment": "center",
+			"y-alignment": "middle",
+			
+			"y": 10,
+			
+			"color": "FFFFFF"
+		}
+	]
+}

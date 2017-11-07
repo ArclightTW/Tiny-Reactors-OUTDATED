@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"reactor_vent",
+	
+	"lines": [
+		{
+			"text": "Reactor Vent",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "< Coming Soon >",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}
