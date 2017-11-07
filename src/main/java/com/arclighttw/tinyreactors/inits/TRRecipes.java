@@ -117,6 +117,10 @@ public class TRRecipes
 				Character.valueOf('R'), Blocks.REDSTONE_BLOCK
 	});
 	
+	public static IRecipe TINY_MANUAL = new ShapelessRecipe(TRItems.TINY_MANUAL, new Object[] {
+			Items.BOOK, Items.IRON_INGOT, Items.REDSTONE
+	});
+	
 	public static void onRegister()
 	{
 		try
