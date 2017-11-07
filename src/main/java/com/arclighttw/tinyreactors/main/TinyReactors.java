@@ -20,7 +20,6 @@ import com.arclighttw.tinyreactors.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -66,7 +65,8 @@ public class TinyReactors
 	{
 		MinecraftForge.EVENT_BUS.register(new EventManager());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiManager());
-		CapabilityManager.INSTANCE.register(IManualCapability.class, new CapabilityHelper.Storage<IManualCapability>(), ManualCapability.class);		
+		
+		CapabilityHelper.register(IManualCapability.class, ManualCapability.class);		
 		
 		WailaIntegration.register();
 		

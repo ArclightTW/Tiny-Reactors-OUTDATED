@@ -4,11 +4,17 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class CapabilityHelper
 {
+	public static <T extends INBTSerializable<NBTTagCompound>> void register(Class<T> type, final Class<? extends T> implementation)
+	{
+		CapabilityManager.INSTANCE.register(type, new CapabilityHelper.Storage<T>(), implementation);
+	}
+	
 	public static class Storage<T extends INBTSerializable<NBTTagCompound>> implements Capability.IStorage<T>
 	{
 		@Override
