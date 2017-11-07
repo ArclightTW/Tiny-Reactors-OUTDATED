@@ -3,6 +3,8 @@ package com.arclighttw.tinyreactors.blocks;
 import java.util.Arrays;
 import java.util.List;
 
+import com.arclighttw.tinyreactors.inits.Registry.IItemProvider;
+import com.arclighttw.tinyreactors.items.ItemTinyBlock;
 import com.arclighttw.tinyreactors.main.TinyReactors;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 
@@ -12,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -22,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTiny extends Block implements ITileEntityProvider
+public class BlockTiny extends Block implements ITileEntityProvider, IItemProvider
 {
 	private List<String> tooltip;
 	
@@ -43,6 +46,12 @@ public class BlockTiny extends Block implements ITileEntityProvider
 	{
 		tooltip = text;
 		return (T)this;
+	}
+	
+	@Override
+	public ItemBlock getItemBlock()
+	{
+		return new ItemTinyBlock(this);
 	}
 	
 	@Override

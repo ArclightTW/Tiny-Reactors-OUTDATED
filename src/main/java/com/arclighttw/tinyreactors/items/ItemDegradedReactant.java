@@ -5,9 +5,7 @@ import com.arclighttw.tinyreactors.client.model.ModelItemDegradedReactant;
 import com.arclighttw.tinyreactors.inits.Registry.IModelProvider;
 import com.arclighttw.tinyreactors.inits.Registry.IRuntimeModel;
 
-import net.minecraft.item.ItemBlock;
-
-public class ItemDegradedReactant extends ItemBlock implements IModelProvider
+public class ItemDegradedReactant extends ItemTinyBlock implements IModelProvider
 {
 	public ItemDegradedReactant(BlockDegradedReactant block)
 	{

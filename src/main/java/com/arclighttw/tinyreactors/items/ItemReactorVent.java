@@ -2,10 +2,9 @@ package com.arclighttw.tinyreactors.items;
 
 import com.arclighttw.tinyreactors.blocks.BlockReactorVent;
 
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemReactorVent extends ItemBlock
+public class ItemReactorVent extends ItemTinyBlock
 {
 	public ItemReactorVent(BlockReactorVent block)
 	{
