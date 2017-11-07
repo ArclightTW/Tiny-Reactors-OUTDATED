@@ -22,8 +22,6 @@ public class GuiManager implements IGuiHandler
 	public static final int REACTOR_ENERGY_PORT = 1;
 	public static final int REACTANT_COMBINER = 2;
 	
-	public static final int TINY_MANUAL = 3;
-	
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
