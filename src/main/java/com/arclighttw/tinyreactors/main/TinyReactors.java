@@ -2,10 +2,14 @@ package com.arclighttw.tinyreactors.main;
 
 import java.io.File;
 
+import com.arclighttw.tinyreactors.capabilities.CapabilityHelper;
+import com.arclighttw.tinyreactors.capabilities.IManualCapability;
+import com.arclighttw.tinyreactors.capabilities.ManualCapability;
 import com.arclighttw.tinyreactors.config.ModConfig;
 import com.arclighttw.tinyreactors.inits.Registry;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.integration.WailaIntegration;
+import com.arclighttw.tinyreactors.managers.EventManager;
 import com.arclighttw.tinyreactors.managers.GuiManager;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerActive;
 import com.arclighttw.tinyreactors.network.SMessageReactorControllerPrewarm;
@@ -16,6 +20,7 @@ import com.arclighttw.tinyreactors.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -59,10 +64,13 @@ public class TinyReactors
 	@Mod.EventHandler
 	public void onInitialization(FMLInitializationEvent event)
 	{
+		MinecraftForge.EVENT_BUS.register(new EventManager());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiManager());
-		proxy.onInitialization(event);
+		CapabilityManager.INSTANCE.register(IManualCapability.class, new CapabilityHelper.Storage<IManualCapability>(), ManualCapability.class);		
 		
 		WailaIntegration.register();
+		
+		proxy.onInitialization(event);
 		
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 		network.registerMessage(SMessageReactorEnergyPort.Handler.class, SMessageReactorEnergyPort.class, 0, Side.SERVER);
