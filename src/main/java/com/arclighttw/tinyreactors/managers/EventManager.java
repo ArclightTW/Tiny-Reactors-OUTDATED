@@ -34,7 +34,7 @@ public class EventManager
 		if(capability == null)
 			return;
 		
-		if(capability.bookGiven())
+		if(capability.hasReceivedBook())
 			return;
 		
 		capability.giveBook(event.player);

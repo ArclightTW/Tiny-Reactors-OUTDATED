@@ -20,11 +20,24 @@ public class ManualCapability implements IManualCapability
 	public static final Capability<IManualCapability> CAPABILITY = null;
 	
 	private boolean given;
+	private int pageNumber;
 	
 	@Override
-	public boolean bookGiven()
+	public boolean hasReceivedBook()
 	{
 		return given;
+	}
+	
+	@Override
+	public void setPageNumber(int page)
+	{
+		pageNumber = page;
+	}
+	
+	@Override
+	public int getPageNumber()
+	{
+		return pageNumber;
 	}
 	
 	@Override
@@ -43,6 +56,7 @@ public class ManualCapability implements IManualCapability
 	{
 		NBTTagCompound compound = new NBTTagCompound();
 		compound.setBoolean("given", given);
+		compound.setInteger("pageNumber", pageNumber);
 		return compound;
 	}
 	
@@ -50,11 +64,12 @@ public class ManualCapability implements IManualCapability
 	public void deserializeNBT(NBTTagCompound compound)
 	{
 		given = compound.getBoolean("given");
+		pageNumber = compound.getInteger("pageNumber");
 	}
 
 	@Override
 	public void set(IManualCapability oldVersion)
 	{
-		given = oldVersion.bookGiven();
+		given = oldVersion.hasReceivedBook();
 	}
 }
