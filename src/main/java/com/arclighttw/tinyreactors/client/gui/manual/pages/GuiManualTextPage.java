@@ -1,9 +1,10 @@
-package com.arclighttw.tinyreactors.client.gui.manual;
+package com.arclighttw.tinyreactors.client.gui.manual.pages;
 
 import java.util.List;
 
 import com.arclighttw.tinyreactors.client.gui.GuiTinyManual;
 import com.arclighttw.tinyreactors.client.gui.manual.entries.TextEntry;
+import com.arclighttw.tinyreactors.client.gui.manual.widgets.WidgetButton;
 import com.arclighttw.tinyreactors.proxy.ClientProxy;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
@@ -13,11 +14,20 @@ import net.minecraft.client.Minecraft;
 
 public class GuiManualTextPage extends GuiManualPage
 {
+	private boolean drawIcons;
 	protected List<TextEntry> entries;
 	
 	public GuiManualTextPage(String id, JsonObject json)
 	{
+		this(id, json, true);
+	}
+	
+	public GuiManualTextPage(String id, JsonObject json, boolean drawIcons)
+	{
 		super(id);
+		this.drawIcons = drawIcons;
+		initGui();
+		
 		entries = Lists.newArrayList();
 		
 		JsonArray array = json.has("lines") ? json.get("lines").getAsJsonArray() : new JsonArray();
@@ -45,26 +55,34 @@ public class GuiManualTextPage extends GuiManualPage
 	}
 	
 	@Override
-	public boolean mouseClicked(GuiTinyManual gui, int mouseX, int mouseY, int mouseButton)
+	public void initGui()
 	{
-		boolean clicked = mouseX - gui.getGuiLeft() >= 154 && mouseX - gui.getGuiLeft() <= 154 + 16 && mouseY - gui.getGuiTop() >= 12 && mouseY - gui.getGuiTop() <= 12 + 15;
+		super.initGui();
 		
-		if(clicked)
+		if(!drawIcons)
+			return;
+		
+		widgets.add(new WidgetButton(GuiTinyManual.WIDGETS, 156, 12, 20, 0, 11, 11, (gui) -> {
+			Minecraft.getMinecraft().displayGuiScreen(null);
+		}));
+		
+		widgets.add(new WidgetButton(GuiTinyManual.WIDGETS, 21, 12, 0, 8, 10, 8, (gui) -> {
 			gui.attemptNavigation("contents");
+		}));
 		
-		return clicked;
-	}
-	
-	@Override
-	public void drawBackground(GuiTinyManual gui, int guiLeft, int guiTop, int mouseX, int mouseY)
-	{
-		Minecraft.getMinecraft().getTextureManager().bindTexture(GuiTinyManual.WIDGETS);
-		gui.drawTexturedModalRect(guiLeft + 154, guiTop + 12, 20, 0, 16, 15);
+		widgets.add(new WidgetButton(GuiTinyManual.WIDGETS, 15, 12, 0, 8, 10, 8, (gui) -> {
+			gui.attemptNavigation("contents");
+		}));
 	}
 	
 	@Override
 	public void drawForeground(GuiTinyManual gui, int mouseX, int mouseY)
 	{
+		super.drawForeground(gui, mouseX, mouseY);
+		
+		if(!drawIcons)
+			return;
+		
 		for(TextEntry entry : entries)
 			entry.draw(gui, ClientProxy.fontRenderer);
 	}

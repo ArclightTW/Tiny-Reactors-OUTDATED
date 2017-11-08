@@ -1,7 +1,11 @@
-package com.arclighttw.tinyreactors.client.gui.manual;
+package com.arclighttw.tinyreactors.client.gui.manual.pages;
+
+import java.util.List;
 
 import com.arclighttw.tinyreactors.client.gui.GuiTinyManual;
+import com.arclighttw.tinyreactors.client.gui.manual.widgets.Widget;
 import com.arclighttw.tinyreactors.main.Reference;
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 
 import net.minecraft.util.ResourceLocation;
@@ -11,21 +15,40 @@ public class GuiManualPage
 	private final String identifier;
 	private int pageIndex;
 	
+	protected List<Widget> widgets;
+	
 	public GuiManualPage(String identifier)
 	{
 		this.identifier = identifier;
+		
+		initGui();
+	}
+	
+	public void initGui()
+	{
+		widgets = Lists.newArrayList();
 	}
 	
 	public void drawBackground(GuiTinyManual gui, int guiLeft, int guiTop, int mouseX, int mouseY)
 	{
+		for(Widget widget : widgets)
+			widget.drawBackground(gui, guiLeft, guiTop, mouseX, mouseY);
 	}
 	
 	public void drawForeground(GuiTinyManual gui, int mouseX, int mouseY)
 	{
+		for(Widget widget : widgets)
+			widget.drawForeground(gui, mouseX, mouseY);
 	}
 	
 	public boolean mouseClicked(GuiTinyManual gui, int mouseX, int mouseY, int mouseButton)
 	{
+		for(Widget widget : widgets)
+		{
+			if(widget.mouseClicked(gui, mouseX, mouseY, mouseButton))
+				return true;
+		}
+		
 		return false;
 	}
 	

@@ -1,13 +1,16 @@
-package com.arclighttw.tinyreactors.client.gui.manual;
+package com.arclighttw.tinyreactors.client.gui.manual.pages;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.arclighttw.tinyreactors.client.gui.GuiTinyManual;
 import com.arclighttw.tinyreactors.client.gui.manual.entries.IconEntry;
+import com.arclighttw.tinyreactors.client.gui.manual.widgets.WidgetButton;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import net.minecraft.client.Minecraft;
 
 public class GuiManualContentsPage extends GuiManualPage
 {
@@ -62,8 +65,20 @@ public class GuiManualContentsPage extends GuiManualPage
 	}
 	
 	@Override
+	public void initGui()
+	{
+		super.initGui();
+		
+		widgets.add(new WidgetButton(GuiTinyManual.WIDGETS, 156, 12, 20, 0, 11, 11, (gui) -> {
+			Minecraft.getMinecraft().displayGuiScreen(null);
+		}));
+	}
+	
+	@Override
 	public void drawBackground(GuiTinyManual gui, int guiLeft, int guiTop, int mouseX, int mouseY)
 	{
+		super.drawBackground(gui, guiLeft, guiTop, mouseX, mouseY);
+		
 		for(IconEntry entry : entries)
 			entry.drawStack(gui);
 	}
@@ -71,6 +86,8 @@ public class GuiManualContentsPage extends GuiManualPage
 	@Override
 	public void drawForeground(GuiTinyManual gui, int mouseX, int mouseY)
 	{
+		super.drawForeground(gui, mouseX, mouseY);
+		
 		for(IconEntry entry : entries)
 			entry.drawLabel(gui, gui.getFontRenderer(), mouseX, mouseY);
 	}
@@ -84,6 +101,6 @@ public class GuiManualContentsPage extends GuiManualPage
 				return true;
 		}
 		
-		return false;
+		return super.mouseClicked(gui, mouseX, mouseY, mouseButton);
 	}
 }
