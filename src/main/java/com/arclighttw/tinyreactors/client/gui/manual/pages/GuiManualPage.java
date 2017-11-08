@@ -81,10 +81,13 @@ public class GuiManualPage
 		{
 		case "cover":
 			return new GuiManualCoverPage(id, json);
+		case "contents":
 		case "text":
 			return new GuiManualTextPage(id, json);
-		case "contents":
-			return new GuiManualContentsPage(id, json);
+		case "image":
+			return new GuiManualImagePage(id, json);
+		case "crafting":
+			return new GuiManualCraftingPage(id, json);
 		default:
 			return new GuiManualPage(id);
 		}

@@ -1,21 +1,16 @@
 package com.arclighttw.tinyreactors.client.gui.manual.entries;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.arclighttw.tinyreactors.client.gui.GuiTinyManual;
-import com.google.common.collect.Lists;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class IconEntry
 {
-	private final List<ItemStack> icon;
+	private final List<ItemStack> icons;
+	private final List<String> label;
 	private final List<String> tooltip;
 	
 	private final String link;
@@ -26,50 +21,15 @@ public class IconEntry
 	private int index;
 	private int counter;
 	
-	public IconEntry(String icon, int metadata, String tooltip, String link, int x, int y)
+	public IconEntry(List<ItemStack> icons, List<String> label, List<String> tooltip, String link, int x, int y)
 	{
-		this(icon, Arrays.asList(metadata), Arrays.asList(tooltip), link, x, y);
-	}
-	
-	public IconEntry(String icon, List<Integer> metadata, String tooltip, String link, int x, int y)
-	{
-		this(icon, metadata, Arrays.asList(tooltip), link, x, y);
-	}
-	
-	public IconEntry(String icon, int metadata, List<String> tooltip, String link, int x, int y)
-	{
-		this(icon, Arrays.asList(metadata), tooltip, link, x, y);
-	}
-	
-	public IconEntry(String icon, List<Integer> metadata, List<String> tooltip, String link, int x, int y)
-	{
-		this.icon = Lists.newArrayList();
+		this.icons = icons;
+		this.label = label;
 		this.tooltip = tooltip;
 		this.link = link;
 		
 		this.x = x;
 		this.y = y;
-		
-		ResourceLocation registry = new ResourceLocation(icon);
-		Block block = Block.REGISTRY.getObject(registry);
-		
-		if(block != null && block != Blocks.AIR)
-		{
-			for(Integer meta : metadata)
-				this.icon.add(new ItemStack(block, 1, meta));
-				
-			return;
-		}
-		
-		Item item = Item.REGISTRY.getObject(registry);
-		
-		if(item != null)
-		{
-			for(Integer meta : metadata)
-				this.icon.add(new ItemStack(block, 1, meta));
-			
-			return;
-		}
 	}
 	
 	public boolean mouseClicked(GuiTinyManual gui, int mouseX, int mouseY, int mouseButton)
@@ -87,7 +47,7 @@ public class IconEntry
 	
 	public void drawStack(GuiTinyManual gui)
 	{
-		if(icon.size() == 0)
+		if(icons.size() == 0)
 			return;
 		
 		counter++;
@@ -97,18 +57,26 @@ public class IconEntry
 			counter = 0;
 			index++;
 			
-			if(index >= icon.size())
+			if(index >= icons.size())
 				index = 0;
 		}
 		
-		gui.drawItemStack(icon.get(index), gui.getGuiLeft() + x, gui.getGuiTop() + y, "");
+		gui.drawItemStack(icons.get(index), gui.getGuiLeft() + x, gui.getGuiTop() + y, icons.get(index).getCount() > 1 ? "x" + icons.get(index).getCount() : "");
+	}
+	
+	public void drawTooltip(GuiTinyManual gui, FontRenderer fontRenderer, int mouseX, int mouseY)
+	{
+		boolean hovered = mouseX - gui.getGuiLeft() >= x && mouseX - gui.getGuiLeft() <= x + 16 && mouseY - gui.getGuiTop() >= y && mouseY - gui.getGuiTop() <= y + 16;
+		
+		if(hovered)
+			gui.drawHoveringText(tooltip, mouseX - gui.getGuiLeft(), mouseY - gui.getGuiTop());
 	}
 	
 	public void drawLabel(GuiTinyManual gui, FontRenderer fontRenderer, int mouseX, int mouseY)
 	{
 		boolean hovered = mouseX - gui.getGuiLeft() >= x && mouseX - gui.getGuiLeft() <= x + 16 && mouseY - gui.getGuiTop() >= y && mouseY - gui.getGuiTop() <= y + 16;
 		
-		for(int i = 0; i < tooltip.size(); i++)
-			fontRenderer.drawString(String.format("%s%s", hovered ? "§o" : "", tooltip.get(i)), x + 8 - fontRenderer.getStringWidth(tooltip.get(i)) / 2, y + 18 + ((fontRenderer.FONT_HEIGHT + 1) * i), 0xFFFFFF);
+		for(int i = 0; i < label.size(); i++)
+			fontRenderer.drawString(String.format("%s%s", hovered ? "§o" : "", label.get(i)), x + 8 - fontRenderer.getStringWidth(label.get(i)) / 2, y + 18 + ((fontRenderer.FONT_HEIGHT + 1) * i), 0xFFFFFF);
 	}
 }

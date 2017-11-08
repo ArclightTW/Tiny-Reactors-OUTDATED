@@ -36,12 +36,6 @@ public class GuiManualCoverPage extends GuiManualTextPage
 	}
 	
 	@Override
-	public boolean mouseClicked(GuiTinyManual gui, int mouseX, int mouseY, int mouseButton)
-	{
-		return false;
-	}
-	
-	@Override
 	public void drawBackground(GuiTinyManual gui, int guiLeft, int guiTop, int mouseX, int mouseY)
 	{
 		super.drawBackground(gui, guiLeft, guiTop, mouseX, mouseY);
@@ -52,7 +46,7 @@ public class GuiManualCoverPage extends GuiManualTextPage
 	{
 		super.drawForeground(gui, mouseX, mouseY);
 		
-		for(TextEntry entry : entries)
+		for(TextEntry entry : textEntries)
 			entry.draw(gui, gui.getFontRenderer());
 	}
 }

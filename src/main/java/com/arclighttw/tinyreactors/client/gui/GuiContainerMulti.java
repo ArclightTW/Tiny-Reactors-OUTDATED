@@ -87,8 +87,8 @@ public abstract class GuiContainerMulti extends GuiContainer
 			font = fontRenderer;
 		
 		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-		itemRender.renderItemOverlayIntoGUI(font, stack, x, y - (stack.isEmpty() ? 0 : 8), altText);
-		zLevel = 0.0F;
-		itemRender.zLevel = 0.0F;
+		itemRender.renderItemOverlayIntoGUI(font, stack, x + 3, y + 3, altText);
+		zLevel = 0F;
+		itemRender.zLevel = 0F;
     }
 }
