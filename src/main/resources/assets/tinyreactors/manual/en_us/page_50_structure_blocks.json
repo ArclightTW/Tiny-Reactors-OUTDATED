@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"structure_blocks",
+	
+	"lines": [
+		{
+			"text": "Structure Blocks",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "Structure Blocks are used to complete the reactor structure.  Reactor Casing and Reactor Glass serve to complete the reactor structure and have no direct functionality.",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}

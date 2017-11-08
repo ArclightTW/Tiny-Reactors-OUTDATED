@@ -1,0 +1,95 @@
+{
+	"type":		"crafting",
+	
+	"recipes": [
+		{
+			"size": 2,
+			"type": "shapeless",
+			"x": 20,
+			"y": 23,
+			
+			"output": {
+				"item": "tinyreactors:capacitor",
+				"nbt": {
+					"limit": 512,
+					"capacity": 5000000
+				}
+			},
+			
+			"inputs": [
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				}
+			]
+		},
+		
+		{
+			"size": 3,
+			"type": "shapeless",
+			"x": 20,
+			"y": 64,
+			
+			"output": {
+				"item": "tinyreactors:capacitor",
+				"nbt": {
+					"limit": 1536,
+					"capacity": 15000000
+				}
+			},
+			
+			"inputs": [
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 512,
+						"capacity": 5000000
+					}
+				}
+			]
+		}
+	]
+}

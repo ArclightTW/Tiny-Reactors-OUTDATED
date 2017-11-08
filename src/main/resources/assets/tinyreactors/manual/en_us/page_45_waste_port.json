@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"reactor_waste_port",
+	
+	"lines": [
+		{
+			"text": "Reactor Waste Port",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "< WIP >",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}

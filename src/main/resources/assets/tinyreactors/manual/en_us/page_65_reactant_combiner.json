@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"reactant_combiner",
+	
+	"lines": [
+		{
+			"text": "Reactant Combiner",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "The Reactant Combiner is a block that can improve the quality of Degraded Reactants until they reform their original block.  It consumes 10 RF/t for 100 ticks and supplies a 20% quality boost.",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}

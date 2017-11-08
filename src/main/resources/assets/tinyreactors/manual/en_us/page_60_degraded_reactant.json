@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"degraded_reactant",
+	
+	"lines": [
+		{
+			"text": "Degraded Reactants",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "Whilst operational, an active reactor will slowly degrade the quality of the reactants inside the structure.  These so-called 'Degraded Reactants' look identical in appearance to the original block but share no physical similarities. The only way to retrieve the original reactant block is via the Reactant Combiner.",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}

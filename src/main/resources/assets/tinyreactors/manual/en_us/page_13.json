@@ -1,0 +1,26 @@
+{
+	"type":		"text",
+	
+	"lines": [
+		{
+			"text": "Placements",
+			"border": 20,
+			
+			"color": "0A0A0A"
+		},
+		
+		{
+			"text": "Bottom Face:\n  - Reactor Casing",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		},
+		
+		{
+			"text": "Bottom Edge:\n  - Reactor Casing\n  - Reactor Controller\n  - Reactor Energy Port\n  - Reactor Waste Port",
+			"border": 20,
+			"y": 33,
+			"wrapped": true
+		}
+	]
+}

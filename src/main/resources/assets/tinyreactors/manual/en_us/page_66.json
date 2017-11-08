@@ -1,0 +1,44 @@
+{
+	"type": 		"image",
+
+	"images": [
+		{
+			"sprite": "textures/gui/reactant_combiner.png",
+			"x": 15,
+			"y": 24,
+			"u": 14,
+			"width": 150,
+			"height": 80
+		}
+	],
+	
+	"lines": [
+		{
+			"text": "Degraded Reactants",
+			"x-alignment": "center",
+			"x": -37,
+			"y": 27
+		},
+			
+		{
+			"text": "Radioactive Ingots",
+			"x-alignment": "center",
+			"x": 37,
+			"y": 27
+		},
+		
+		{
+			"text": "Output",
+			"x-alignment": "center",
+			"x": 0,
+			"y": 95
+		},
+		
+		{
+			"text": "Progress",
+			"x-alignment": "center",
+			"x": 0,
+			"y": 50
+		}
+	]
+}
