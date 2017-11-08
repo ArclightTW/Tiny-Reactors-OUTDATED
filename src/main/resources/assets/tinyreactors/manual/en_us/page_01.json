@@ -37,6 +37,17 @@
 			
 			"x": 130,
 			"y": 20
+		},
+		
+		{
+			"icon": "tinyreactors:reactor_energy_port",
+			"link": "reactor_energy_port",
+			"tooltip": [
+				"Energy Port"
+			],
+			
+			"x": 40,
+			"y": 74
 		}
 	]
 }

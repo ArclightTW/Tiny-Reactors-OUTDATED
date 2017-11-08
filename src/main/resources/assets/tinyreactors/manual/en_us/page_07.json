@@ -1,0 +1,11 @@
+{
+	"type":		"text",
+	
+	"lines": [
+		{
+			"text": "Iron Vents cooling rate: 0.01 C/t.\n\nGold Vents cooling rate: 0.02 C/t.\n\nDiamond Vents cooling rate: 0.04 C/t",
+			"border": 20,
+			"wrapped": true
+		}
+	]
+}

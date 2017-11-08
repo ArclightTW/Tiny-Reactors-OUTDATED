@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"reactor_vent",
+	
+	"lines": [
+		{
+			"text": "Reactor Vent",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "Reactor Vents come in three tiers; Iron, Gold and Diamond. They can be used to slow, stop or even reverse the temperature increase in an active reactor.\nVents can be right-clicked when the player is sneaking to toggle if it is open or not; only open Vents will contribute to reactor cooling.",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}

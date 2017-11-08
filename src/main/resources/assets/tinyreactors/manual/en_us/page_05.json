@@ -1,0 +1,20 @@
+{
+	"type":		"text",
+	"id":		"reactor_heat_sink",
+	
+	"lines": [
+		{
+			"text": "Reactor Heat Sink",
+			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "The Heat Sink acts as a temperature bonus when used in place of Reactor Glass in any reactor structure. It increases the temperature limit of the reactor by 500 C and is stackable to any size.\nThis allows reactors to run hotter without overheating and, as a result, produce more power.",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		}
+	]
+}
