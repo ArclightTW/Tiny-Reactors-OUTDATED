@@ -102,6 +102,9 @@ public class BlockReactorVent extends BlockReactorComponent implements IItemProv
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
+		if(!player.getHeldItem(hand).isEmpty())
+			return false;
+		
 		if(!world.isRemote && player.isSneaking())
 		{
 			TileEntity tile = world.getTileEntity(pos);

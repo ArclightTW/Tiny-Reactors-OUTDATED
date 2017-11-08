@@ -84,7 +84,7 @@ public class WailaIntegration implements IWailaDataProvider
 		if(tile instanceof TileEntityReactorVent)
 		{
 			TileEntityReactorVent vent = (TileEntityReactorVent)tile;
-			text.add(String.format("State: %s", vent.isOperational() ? "Operational" : (vent.isObstructed() ? "Obstructed" : "Non-operational")));
+			text.add(String.format("State: %s", vent.isRunning() ? "Operational" : (vent.isObstructed() ? "Obstructed" : "Non-operational")));
 		}
 		
 		if(tile instanceof TileEntityReactorWastePort)
