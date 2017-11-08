@@ -6,7 +6,7 @@ import java.util.Map;
 import com.arclighttw.tinyreactors.capabilities.IManualCapability;
 import com.arclighttw.tinyreactors.capabilities.ManualCapability;
 import com.arclighttw.tinyreactors.client.gui.components.GuiButtonDrawable;
-import com.arclighttw.tinyreactors.client.gui.manual.GuiManualPage;
+import com.arclighttw.tinyreactors.client.gui.manual.pages.GuiManualPage;
 import com.arclighttw.tinyreactors.container.ContainerTinyManual;
 import com.arclighttw.tinyreactors.main.Reference;
 import com.arclighttw.tinyreactors.managers.ResourceManager;
@@ -44,7 +44,13 @@ public class GuiTinyManual extends GuiContainerMulti
 		xSize = 180;
 		ySize = 146;
 		
-		JsonObject[] jsonPages = ResourceManager.loadResources(new ResourceLocation(Reference.ID, "manual"));
+		String language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+		JsonObject[] jsonPages;
+		
+		if(ResourceManager.hasResource(new ResourceLocation(Reference.ID, "manual/" + language)))
+			jsonPages = ResourceManager.loadResources(new ResourceLocation(Reference.ID, "manual/" + language));
+		else
+			jsonPages = ResourceManager.loadResources(new ResourceLocation(Reference.ID, "manual/en_us"));
 		
 		pages = new GuiManualPage[jsonPages.length];
 		linkedPages = Maps.newHashMap();
