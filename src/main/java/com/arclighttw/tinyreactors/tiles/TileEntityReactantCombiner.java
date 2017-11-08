@@ -2,6 +2,7 @@ package com.arclighttw.tinyreactors.tiles;
 
 import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.inits.TRItems;
+import com.arclighttw.tinyreactors.storage.EnergyStorageRF;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class TileEntityReactantCombiner extends TileEntitySync implements IInventory
+public class TileEntityReactantCombiner extends TileEntityEnergy implements IInventory
 {
 	private ItemStack[] inventory;
 	
@@ -30,6 +31,7 @@ public class TileEntityReactantCombiner extends TileEntitySync implements IInven
 	
 	public TileEntityReactantCombiner()
 	{
+		super(new EnergyStorageRF(10000));
 		clear();
 	}
 	
@@ -110,6 +112,13 @@ public class TileEntityReactantCombiner extends TileEntitySync implements IInven
 		
 		if(!world.isRemote)
 		{
+			if(getEnergyStored() <= 10)
+			{
+				resetProcess();
+				return;
+			}
+			
+			extractEnergy(10, false);
 			timer++;
 			sync();
 			
@@ -128,9 +137,8 @@ public class TileEntityReactantCombiner extends TileEntitySync implements IInven
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	public void writeToNBTInternal(NBTTagCompound compound)
 	{
-		super.writeToNBT(compound);
 		compound.setInteger("timer", timer);
 		compound.setBoolean("processing", processing);
 		compound.setBoolean("processed", processed);
@@ -153,13 +161,11 @@ public class TileEntityReactantCombiner extends TileEntitySync implements IInven
 		}
 		
 		compound.setTag("inventory", list);
-		return compound;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
+	public void readFromNBTInternal(NBTTagCompound compound)
 	{
-		super.readFromNBT(compound);
 		timer = compound.getInteger("timer");
 		processing = compound.getBoolean("processing");
 		processed = compound.getBoolean("processed");
