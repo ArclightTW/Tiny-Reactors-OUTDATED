@@ -27,7 +27,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	
 	int availableYield, maximumYield;
 	int heatSinkCount, reactorSize, prevReactorSize;
-	int degradedItem;
+	int degradedItem, wastePortProduced;
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
 	List<TileEntityReactorWastePort> wastePorts;
@@ -150,6 +150,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		compound.setInteger("reactorSize", reactorSize);
 		
 		compound.setInteger("degradedItem", degradedItem);
+		compound.setInteger("wastePortProduced", wastePortProduced);
 		
 		// TODO: SAVE ALL POSITIONS
 	}
@@ -166,6 +167,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		reactorSize = compound.getInteger("reactorSize");
 		
 		degradedItem = compound.getInteger("degradedItem");
+		wastePortProduced = compound.getInteger("wastePortProduced");
 		
 		// TODO: LOAD ALL POSITIONS
 	}
@@ -219,9 +221,32 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		}
 		
 		if(tile != null && tile instanceof TileEntityDegradedReactant)
-			((TileEntityDegradedReactant)tile).degrade(qualityDegration);
+			((TileEntityDegradedReactant)tile).degrade(controller, qualityDegration);
 		
 		degradedItem++;
+	}
+	
+	public void produceIngot()
+	{
+		if(wastePorts.size() == 0)
+			return;
+		
+		TileEntityReactorWastePort waste = null;
+		
+		try
+		{
+			waste = wastePorts.get(wastePortProduced);
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			wastePortProduced = 0;
+			waste = wastePorts.get(wastePortProduced);
+		}
+		
+		if(waste == null)
+			return;
+		
+		waste.produceIngot();
 	}
 	
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()
