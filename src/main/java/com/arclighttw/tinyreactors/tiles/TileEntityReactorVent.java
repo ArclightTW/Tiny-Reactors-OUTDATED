@@ -54,7 +54,7 @@ public class TileEntityReactorVent extends TileEntitySync
 		{
 			operational = world.getBlockState(pos).getValue(EnumVentState.PROPERTY) == EnumVentState.OPEN;
 			
-			if(!isOperational())
+			if(!isRunning())
 				return;
 			
 			if(controller.getMultiblock().isValid())
