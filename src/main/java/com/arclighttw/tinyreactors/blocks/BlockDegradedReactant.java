@@ -44,6 +44,12 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 	}
 	
 	@Override
+	public boolean canPlaceBlockAt(World world, BlockPos pos)
+	{
+		return false;
+	}
+	
+	@Override
 	public ItemBlock getItemBlock()
 	{
 		return new ItemDegradedReactant(this);
@@ -141,21 +147,23 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced)
 	{
-		if(!stack.hasTagCompound())
-			return;
-		
-		String registryName = stack.getTagCompound().getString("registryName");
-		Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
-		
-		if(block == null)
+		if(stack.hasTagCompound())
 		{
-			tooltip.add("Unrecognised Reactant; this has likely been saved wrong!");
-			return;
+			String registryName = stack.getTagCompound().getString("registryName");
+			Block block = Block.REGISTRY.getObject(new ResourceLocation(registryName));
+			
+			if(block == null)
+			{
+				tooltip.add("Unrecognised Reactant; this has likely been saved wrong!");
+				return;
+			}
+			
+			float quality = stack.getTagCompound().getFloat("quality");
+			
+			tooltip.add("§6Reactant: §b" + block.getLocalizedName());
+			tooltip.add(String.format("§6Quality: §b%.2f ", quality) + "%");
 		}
 		
-		float quality = stack.getTagCompound().getFloat("quality");
-		
-		tooltip.add("Reactant: " + block.getLocalizedName());
-		tooltip.add(String.format("Quality: %.2f ", quality) + "%");
+		tooltip.add("§5Non-placeable");
 	}
 }
