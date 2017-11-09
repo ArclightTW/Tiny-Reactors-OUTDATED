@@ -11,7 +11,7 @@
 		},
 		
 		{
-			"text": "< WIP >",
+			"text": "The Reactor Waste Port periodically outputs a Radioactive Ingot that can be used to repair Degraded Reactants back to their original state (see 'Degraded Reactants').  Having more than one Waste Port in a reactor structure is permitted but the output ingots will cycle between each port; it is recommended to only have 1.",
 			"border": 20,
 			"y": 15,
 			"wrapped": true

@@ -10,7 +10,7 @@
 		},
 		
 		{
-			"text": "Edge Facer:\n  - All except Reactor Vent, Capacitor and Reactant Combiner",
+			"text": "Edge Face:\n  - All except Reactor Vent, Capacitor and Reactant Combiner",
 			"border": 20,
 			"y": 69,
 			"wrapped": true
