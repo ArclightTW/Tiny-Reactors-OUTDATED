@@ -11,7 +11,6 @@ import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityEnergy;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
-import com.arclighttw.tinyreactors.tiles.TileEntityReactorWastePort;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -87,12 +86,6 @@ public class WailaIntegration implements IWailaDataProvider
 			text.add(String.format("State: %s", vent.isRunning() ? "Operational" : (vent.isObstructed() ? "Obstructed" : "Non-operational")));
 		}
 		
-		if(tile instanceof TileEntityReactorWastePort)
-		{
-			TileEntityReactorWastePort waste = (TileEntityReactorWastePort)tile;
-			text.add(String.format("Producing: %.1f", (waste.getVolume() / TileEntityReactorWastePort.REQUIRED_VOLUME) * 100) + " %");
-		}
-		
 		if(tile instanceof TileEntityDegradedReactant)
 		{
 			TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
@@ -102,6 +95,12 @@ public class WailaIntegration implements IWailaDataProvider
 		
 		if(accessor.getPlayer().isSneaking())
 		{
+			if(tile instanceof TileEntityDegradedReactant)
+			{
+				TileEntityDegradedReactant reactant = (TileEntityDegradedReactant)tile;
+				text.add(String.format("Variant: %s", reactant.getVariant()));
+			}
+			
 			if(tile instanceof TileEntityEnergy)
 			{
 				TileEntityEnergy energy = (TileEntityEnergy)tile;
