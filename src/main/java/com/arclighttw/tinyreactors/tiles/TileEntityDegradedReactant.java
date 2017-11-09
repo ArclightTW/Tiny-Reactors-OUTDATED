@@ -1,16 +1,21 @@
 package com.arclighttw.tinyreactors.tiles;
 
 import com.arclighttw.tinyreactors.managers.ReactorManager;
+import com.arclighttw.tinyreactors.properties.EnumFormatting;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TileEntityDegradedReactant extends TileEntitySync
 {
 	private Block representedBlock;
 	private float quality;
+	
+	private int ingotCount;
 	
 	public TileEntityDegradedReactant()
 	{
@@ -20,6 +25,29 @@ public class TileEntityDegradedReactant extends TileEntitySync
 	public void setRepresentedBlock(Block block)
 	{
 		representedBlock = block;
+		ingotCount = -1;
+		
+		int[] ids = OreDictionary.getOreIDs(new ItemStack(block));
+		
+		for(int i = 0; i < ids.length; i++)
+		{
+			String name = OreDictionary.getOreName(ids[i]);
+			
+			if(name.contains("ore"))
+			{
+				ingotCount = 4;
+				break;
+			}
+			
+			if(name.contains("block"))
+			{
+				ingotCount = 8;
+				break;
+			}
+		}
+		
+		if(ingotCount == -1)
+			ingotCount = 2;
 	}
 	
 	public Block getRepresentedBlock()
@@ -37,9 +65,23 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		return quality;
 	}
 	
-	public void degrade(float qualityDegradation)
+	public String getVariant()
+	{
+		EnumFormatting ore = ingotCount == 4 ? EnumFormatting.BOLD : EnumFormatting.RESET;
+		EnumFormatting block = ingotCount == 8 ? EnumFormatting.BOLD : EnumFormatting.RESET;
+		EnumFormatting unrecognised = ingotCount == 2 ? EnumFormatting.BOLD : EnumFormatting.RESET;
+		
+		return String.format("%sOre§r/%sBlock§r/%sDefault", ore, block, unrecognised);
+	}
+	
+	public void degrade(TileEntityReactorController controller, float qualityDegradation)
 	{
 		quality -= qualityDegradation;
+		
+		int roundedDivider = (int)(100 / (float)ingotCount);
+		
+		if((int)quality % roundedDivider == 0)
+			controller.getMultiblock().produceIngot();
 		
 		if(quality <= 0)
 		{
@@ -60,6 +102,7 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		
 		compound.setString("representedBlock", getRepresentedBlock().getRegistryName().toString());
 		compound.setFloat("quality", quality);
+		compound.setInteger("ingotCount", ingotCount);
 		
 		return compound;
 	}
@@ -71,5 +114,6 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		
 		representedBlock = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("representedBlock")));
 		quality = compound.getFloat("quality");
+		ingotCount = compound.getInteger("ingotCount");
 	}
 }
