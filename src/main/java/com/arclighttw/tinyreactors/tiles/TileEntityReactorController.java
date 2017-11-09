@@ -152,9 +152,6 @@ public class TileEntityReactorController extends TileEntityEnergy
 					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
 					float degradedQuality = temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5);
 					
-					for(TileEntityReactorWastePort wastePort : multiblock.getWastePorts())
-						wastePort.generate(degradedQuality / (float)multiblock.getWastePorts().size());
-					
 					if(TRConfig.REACTANT_DEGRADATION)
 					{
 						degradationTimer++;

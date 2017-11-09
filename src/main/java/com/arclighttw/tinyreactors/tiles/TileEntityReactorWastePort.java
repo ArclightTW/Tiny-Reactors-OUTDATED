@@ -5,7 +5,6 @@ import com.arclighttw.tinyreactors.inits.TRItems;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -15,16 +14,8 @@ public class TileEntityReactorWastePort extends TileEntitySync
 {
 	public static final float REQUIRED_VOLUME = 200F;
 	
-	private float volume;
-	
-	@Override
-	public void update()
+	public void produceIngot()
 	{
-		super.update();
-		
-		if(volume < REQUIRED_VOLUME)
-			return;
-		
 		if(!world.isRemote)
 		{
 			ItemStack itemstack = new ItemStack(TRItems.RADIOACTIVE_INGOT);
@@ -55,33 +46,5 @@ public class TileEntityReactorWastePort extends TileEntitySync
 				world.spawnEntity(item);
 			}
 		}
-		
-		volume = 0;
-	}
-	
-	public void generate(float amount)
-	{
-		volume += amount;
-		sync();
-	}
-	
-	public float getVolume()
-	{
-		return volume;
-	}
-	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
-	{
-		super.writeToNBT(compound);
-		compound.setFloat("volume", volume);
-		return compound;
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound compound)
-	{
-		super.readFromNBT(compound);
-		volume = compound.getFloat("volume");
 	}
 }
