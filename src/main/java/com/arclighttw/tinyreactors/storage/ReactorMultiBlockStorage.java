@@ -151,8 +151,6 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		compound.setInteger("degradedItem", degradedItem);
 		compound.setInteger("wastePortProduced", wastePortProduced);
-		
-		// TODO: SAVE ALL POSITIONS
 	}
 	
 	@Override
@@ -168,8 +166,6 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		
 		degradedItem = compound.getInteger("degradedItem");
 		wastePortProduced = compound.getInteger("wastePortProduced");
-		
-		// TODO: LOAD ALL POSITIONS
 	}
 	
 	public void onActivate(World world)
@@ -189,41 +185,46 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		if(validReactants.size() == 0)
 			return;
 		
-		BlockPos pos = null;
+		boolean hasDegraded = false;
 		
-		try
+		while(!hasDegraded)
 		{
-			pos = validReactants.get(degradedItem);
-		}
-		catch(IndexOutOfBoundsException e)
-		{
-			degradedItem = 0;
-			pos = validReactants.get(degradedItem);
-		}
-		
-		if(pos == null)
-			return;
-		
-		TileEntity tile = world.getTileEntity(pos);
-		
-		if(tile == null)
-		{
-			Block reactant = world.getBlockState(pos).getBlock();
-			world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
+			BlockPos pos = null;
 			
-			tile = world.getTileEntity(pos);
+			try
+			{
+				pos = validReactants.get(degradedItem);
+			}
+			catch(IndexOutOfBoundsException e)
+			{
+				degradedItem = 0;
+				pos = validReactants.get(degradedItem);
+			}
 			
-			if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+			if(pos == null)
 				return;
 			
-			TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
-			degradedReactant.setRepresentedBlock(reactant);
+			TileEntity tile = world.getTileEntity(pos);
+			
+			if(tile == null)
+			{
+				Block reactant = world.getBlockState(pos).getBlock();
+				world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
+				
+				tile = world.getTileEntity(pos);
+				
+				if(tile == null || !(tile instanceof TileEntityDegradedReactant))
+					return;
+				
+				TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
+				degradedReactant.setRepresentedBlock(reactant);
+			}
+			
+			if(tile != null && tile instanceof TileEntityDegradedReactant)
+				hasDegraded = ((TileEntityDegradedReactant)tile).degrade(controller, qualityDegration);
+			
+			degradedItem++;
 		}
-		
-		if(tile != null && tile instanceof TileEntityDegradedReactant)
-			((TileEntityDegradedReactant)tile).degrade(controller, qualityDegration);
-		
-		degradedItem++;
 	}
 	
 	public void produceIngot()

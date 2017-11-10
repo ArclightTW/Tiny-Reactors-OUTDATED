@@ -2,6 +2,9 @@ package com.arclighttw.tinyreactors.config;
 
 public class TRConfig
 {
+	public static boolean REACTANT_REMOVAL_ON_FULL_DEGRADATION = true;
+	public static String REACTANT_REMOVAL_ON_FULL_DEGRADATION_LABEL = "Should fully degraded reactants (i.e. 0% quality) be destroyed?";
+	
 	public static String[] REACTANT_REGISTRY = new String[] {
 			"minecraft:coal_ore:1",
 			"minecraft:iron_ore:2",
@@ -28,6 +31,12 @@ public class TRConfig
 	
 	public static int REACTOR_MELTDOWN_DELAY = 30;
 	public static String REACTOR_MELTDOWN_DELAY_LABEL = "The amount of time (in seconds) a Reactor can be at maximum heat before a meltdown occurs.";
+	
+	public static int REACTOR_MELTDOWN_COOLDOWN_TIMER = 30;
+	public static String REACTOR_MELTDOWN_COOLDOWN_TIMER_LABEL = "The amount of time (in seconds) an overheated Reactor takes to fully cool and become operational again.";
+	
+	public static float REACTOR_HEAT_SCALE = 1;
+	public static String REACTOR_HEAT_SCALE_LABEL = "The scale factor to multiply the reactor heat gain/loss by.";
 	
 	public static boolean REACTANT_DEGRADATION = true;
 	public static String REACTANT_DEGRADATION_LABEL = "Whether Reactants in an active Reactor should degrade over time.";

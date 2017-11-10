@@ -40,9 +40,13 @@ public class ModConfig
 		
 		TRConfig.REACTOR_MELTDOWN = config.getBoolean("Reactor Meltdown", category, TRConfig.REACTOR_MELTDOWN, TRConfig.REACTOR_MELTDOWN_LABEL);
 		TRConfig.REACTOR_MELTDOWN_DELAY = config.getInt("Reactor Meltdown Delay", category, TRConfig.REACTOR_MELTDOWN_DELAY, 1, Integer.MAX_VALUE, TRConfig.REACTOR_MELTDOWN_DELAY_LABEL);
+		TRConfig.REACTOR_MELTDOWN_COOLDOWN_TIMER = config.getInt("Reactor Meltdown Cooldown Timer", category, TRConfig.REACTOR_MELTDOWN_COOLDOWN_TIMER, 1, Integer.MAX_VALUE, TRConfig.REACTOR_MELTDOWN_COOLDOWN_TIMER_LABEL);
 		
 		TRConfig.REACTANT_DEGRADATION = config.getBoolean("Reactant Degradation", category, TRConfig.REACTANT_DEGRADATION, TRConfig.REACTANT_DEGRADATION_LABEL);
 		TRConfig.REACTANT_DEGRADATION_TICK = config.getInt("Reactant Degradation Tick", category, TRConfig.REACTANT_DEGRADATION_TICK, 1, Integer.MAX_VALUE, TRConfig.REACTANT_DEGRADATION_TICK_LABEL);
+		TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION = config.getBoolean("Remove Fully Degraded Reactants", category, TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION, TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION_LABEL);		
+
+		TRConfig.REACTOR_HEAT_SCALE = config.getFloat("Reactor Heat Scale", category, TRConfig.REACTOR_HEAT_SCALE, 1, Float.MAX_VALUE, TRConfig.REACTOR_HEAT_SCALE_LABEL);
 		
 		category = "Manual";
 		

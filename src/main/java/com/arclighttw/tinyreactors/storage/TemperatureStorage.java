@@ -1,5 +1,7 @@
 package com.arclighttw.tinyreactors.storage;
 
+import com.arclighttw.tinyreactors.config.TRConfig;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TemperatureStorage
@@ -47,13 +49,13 @@ public class TemperatureStorage
 	public void overheat()
 	{
 		locked = true;
-		cooldown = 300;
+		cooldown = TRConfig.REACTOR_MELTDOWN_COOLDOWN_TIMER;
 	}
 	
 	public void applyCooldownTick()
 	{
 		cooldown--;
-		currentTemperature = maximumTemperature * (cooldown / (float)300);
+		currentTemperature = maximumTemperature * (cooldown / (float)TRConfig.REACTOR_MELTDOWN_COOLDOWN_TIMER);
 		
 		if(cooldown <= 0)
 		{
@@ -67,7 +69,9 @@ public class TemperatureStorage
 	
 	public void modifyHeat(float heat)
 	{
+		heat *= TRConfig.REACTOR_HEAT_SCALE;
 		heat /= 500F;
+		
 		currentTemperature += heat;
 		
 		if(currentTemperature < 0)

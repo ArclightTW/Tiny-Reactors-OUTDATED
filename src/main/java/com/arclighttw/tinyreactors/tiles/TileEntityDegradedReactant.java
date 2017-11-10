@@ -1,5 +1,6 @@
 package com.arclighttw.tinyreactors.tiles;
 
+import com.arclighttw.tinyreactors.config.TRConfig;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.properties.EnumFormatting;
 
@@ -74,7 +75,7 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		return String.format("%sOre§r/%sBlock§r/%sDefault", ore, block, unrecognised);
 	}
 	
-	public void degrade(TileEntityReactorController controller, float qualityDegradation)
+	public boolean degrade(TileEntityReactorController controller, float qualityDegradation)
 	{
 		quality -= qualityDegradation;
 		
@@ -87,12 +88,15 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		{
 			quality = 0;
 			
-			// TODO: if(TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION) {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			ReactorManager.validateAllReactors(world);
+			if(TRConfig.REACTANT_REMOVAL_ON_FULL_DEGRADATION)
+			{
+				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				ReactorManager.validateAllReactors(world);
+			}
 		}
 		
 		sync();
+		return quality == 0;
 	}
 	
 	@Override
