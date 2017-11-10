@@ -28,22 +28,27 @@ public class TileEntityDegradedReactant extends TileEntitySync
 		representedBlock = block;
 		ingotCount = -1;
 		
-		int[] ids = OreDictionary.getOreIDs(new ItemStack(block));
+		ItemStack itemstack = new ItemStack(block);
 		
-		for(int i = 0; i < ids.length; i++)
+		if(!itemstack.isEmpty())
 		{
-			String name = OreDictionary.getOreName(ids[i]);
+			int[] ids = OreDictionary.getOreIDs(itemstack);
 			
-			if(name.contains("ore"))
+			for(int i = 0; i < ids.length; i++)
 			{
-				ingotCount = 4;
-				break;
-			}
-			
-			if(name.contains("block"))
-			{
-				ingotCount = 8;
-				break;
+				String name = OreDictionary.getOreName(ids[i]);
+				
+				if(name.contains("ore"))
+				{
+					ingotCount = 4;
+					break;
+				}
+				
+				if(name.contains("block"))
+				{
+					ingotCount = 8;
+					break;
+				}
 			}
 		}
 		
