@@ -4,11 +4,14 @@ import com.arclighttw.tinyreactors.client.SmallFontRenderer;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityCapacitor;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorController;
 import com.arclighttw.tinyreactors.client.render.RenderTileEntityReactorEnergyPort;
+import com.arclighttw.tinyreactors.managers.ResourceManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityCapacitor;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,6 +25,13 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void onPreInitialization(FMLPreInitializationEvent event)
 	{
+		IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+		
+		if(manager instanceof IReloadableResourceManager)
+		{
+			IReloadableResourceManager registry = (IReloadableResourceManager)manager;
+			registry.registerReloadListener(new ResourceManager());
+		}
 	}
 	
 	@Override

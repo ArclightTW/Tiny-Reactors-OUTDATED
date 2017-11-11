@@ -1,57 +1,137 @@
 package com.arclighttw.tinyreactors.managers;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import com.arclighttw.tinyreactors.client.gui.GuiTinyManual;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 
-public class ResourceManager
+public class ResourceManager implements IResourceManagerReloadListener
 {
-	private static final Gson GSON = new Gson();
-	
-	public static boolean hasResource(ResourceLocation resource)
+	/**
+	 * for all elements of java.class.path get a Collection of resources Pattern
+	 * pattern = Pattern.compile(".*"); gets all resources
+	 * 
+	 * @param pattern
+	 * 				the pattern to match
+	 * @return the resources in the order they are found
+	 */
+	public static Collection<String> getResources(final Pattern pattern)
 	{
-		try
-		{
-			InputStream input = Minecraft.getMinecraft().getResourceManager().getResource(resource).getInputStream();
-			
-			if(input != null)
-			{
-				input.close();
-				return true;
-			}
-			
-			input = ResourceManager.class.getClassLoader().getResourceAsStream("assets/" + resource.getResourceDomain() + "/" + resource.getResourcePath());
-			
-			if(input != null)
-			{
-				input.close();
-				return true;
-			}
-		}
-		catch(Exception e)
-		{
-		}
+		final List<String> retval = Lists.newArrayList();
+		final String classPath = System.getProperty("java.class.path", ".");
+		final String[] classPathElements = classPath.split(System.getProperty("path.separator"));
 		
-		return false;
+		for(final String element : classPathElements)
+			retval.addAll(getResources(element, pattern));
+		
+		return retval;
 	}
 	
-	public static JsonObject loadResource(ResourceLocation resource)
+	private static Collection<String> getResources(final String element, final Pattern pattern)
+	{
+		final List<String> retval = Lists.newArrayList();
+		final File file = new File(element);
+		
+		if(file.isDirectory())
+			retval.addAll(getResourcesFromDirectory(file, pattern));
+		else
+			retval.addAll(getResourcesFromJarFile(file, pattern));
+		
+		return retval;
+	}
+	
+	private static Collection<String> getResourcesFromJarFile(final File file, final Pattern pattern)
+	{
+		final List<String> retval = Lists.newArrayList();
+		ZipFile zf = null;
+		
+		try
+		{
+			zf = new ZipFile(file);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		final Enumeration<? extends ZipEntry> e = zf.entries();
+		while(e.hasMoreElements())
+		{
+			final ZipEntry ze = e.nextElement();
+			final String fileName = ze.getName();
+			
+			if(pattern.matcher(fileName).matches())
+				retval.add(fileName);
+		}
+		
+		try
+		{
+			zf.close();
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		
+		return retval;
+	}
+	
+	private static Collection<String> getResourcesFromDirectory(final File directory, final Pattern pattern)
+	{
+		final List<String> retval = Lists.newArrayList();
+		final File[] fileList = directory.listFiles();
+		
+		for(final File file : fileList)
+		{
+			if(file.isDirectory())
+				retval.addAll(getResourcesFromDirectory(file, pattern));
+			else
+			{
+				try
+				{
+					final String fileName = file.getCanonicalPath();
+					
+					if(pattern.matcher(fileName).matches())
+						retval.add(fileName);
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		}
+		
+		return retval;
+	}
+	
+	public static JsonObject loadResource(String path)
 	{
 		BufferedReader reader = null;
 		
 		try
 		{
-			reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(resource).getInputStream()));
-			JsonElement element = GSON.fromJson(reader, JsonElement.class);
+			InputStream inputStream = ResourceManager.class.getResourceAsStream(path);
+			
+			if(inputStream == null)
+				return null;
+			
+			reader = new BufferedReader(new InputStreamReader(inputStream));
+			JsonElement element = new Gson().fromJson(reader, JsonElement.class);
 			JsonObject object = element.getAsJsonObject();
 			
 			if(reader != null)
@@ -72,48 +152,13 @@ public class ResourceManager
 				}
 			}
 			
-			return new JsonObject();
+			return null;
 		}
 	}
-	
-	public static JsonObject[] loadResources(ResourceLocation resource)
+
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager)
 	{
-		BufferedReader reader = null;
-		
-		try
-		{
-			reader = new BufferedReader(new InputStreamReader(ResourceManager.class.getClassLoader().getResourceAsStream("assets/" + resource.getResourceDomain() + "/" + resource.getResourcePath())));
-			
-			List<String> files = Lists.newArrayList();
-			
-			String file;
-			while((file = reader.readLine()) != null)
-				files.add(file);
-			
-			JsonObject[] json = new JsonObject[files.size()];
-			
-			for(int i = 0; i < json.length; i++)
-				json[i] = loadResource(new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath() + "/" + files.get(i)));
-			
-			if(reader != null)
-				reader.close();
-			
-			return json;
-		}
-		catch(Exception e)
-		{
-			if(reader != null)
-			{
-				try
-				{
-					reader.close();
-				}
-				catch(Exception e1)
-				{
-				}
-			}
-			
-			return new JsonObject[0];
-		}
+		GuiTinyManual.refreshPageEntries(true);
 	}
 }
