@@ -74,7 +74,7 @@ public class GuiManualPage
 	
 	public static GuiManualPage parse(JsonObject json)
 	{
-		String type = json.get("type").getAsString();
+		String type = json.has("type") ? json.get("type").getAsString() : "text";
 		String id = json.has("id") ? json.get("id").getAsString() : null;
 		
 		switch(type)
