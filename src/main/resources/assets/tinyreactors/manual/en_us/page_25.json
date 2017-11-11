@@ -1,16 +1,17 @@
 {
 	"type":		"text",
+	"id":		"structure_blocks",
 	
 	"lines": [
 		{
-			"text": "Pre-Warming",
+			"text": "Structure Blocks",
 			"border": 20,
 			
-			"color": "0A0A0A"
+			"color": "000000"
 		},
-	
+		
 		{
-			"text": "A reactor is 'Pre-Warming' when it is a valid structure (per the Structure section) and has been pre-warmed by a player. It generates heat based on it's size (4x faster than an active reactor) and does not degrade reactants.",
+			"text": "Structure Blocks are used to complete the reactor structure.  Reactor Casing and Reactor Glass serve to complete the reactor structure and have no direct functionality.",
 			"border": 20,
 			"y": 15,
 			"wrapped": true

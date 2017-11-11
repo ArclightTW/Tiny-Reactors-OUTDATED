@@ -3,16 +3,8 @@
 	
 	"lines": [
 		{
-			"text": "Invalid",
+			"text": "Capacitors, along with Energy Ports, are upgradable via crafting.  A default Capacitor has a maximum transfer rate of 256 RF/t and a capacity of 2,500,000 RF.\nCombining 2 Capacitors in a crafting grid combines the figures, providing a Capacitor with a max transfer rate of 512 RF/t and a capacity of 5,000,000 RF.",
 			"border": 20,
-			
-			"color": "0A0A0A"
-		},
-	
-		{
-			"text": "A reactor is 'Invalid' when it is not a valid structure (per the Structure section).  An invalid reactor cannot be activated or pre-warmed.",
-			"border": 20,
-			"y": 15,
 			"wrapped": true
 		}
 	]

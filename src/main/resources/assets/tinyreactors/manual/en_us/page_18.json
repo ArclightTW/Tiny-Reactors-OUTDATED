@@ -1,0 +1,11 @@
+{
+	"type":		"text",
+	
+	"lines": [
+		{
+			"text": "Energy Ports, along with Capacitors, are upgradable via crafting.  A default Energy Port has a maximum transfer rate of 256 RF/t and a capacity of 250,000 RF.\nCombining 2 Energy Ports in a crafting grid combines the figures, providing an Energy Port with a max transfer rate of 512 RF/t and a capacity of 500,000 RF.",
+			"border": 20,
+			"wrapped": true
+		}
+	]
+}

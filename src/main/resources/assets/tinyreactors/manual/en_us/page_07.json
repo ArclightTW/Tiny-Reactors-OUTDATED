@@ -1,0 +1,19 @@
+{
+	"type":		"text",
+	
+	"lines": [
+		{
+			"text": "Top Face:\n  - Reactor Casing\n  - Reactor Vent",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
+		},
+		
+		{
+			"text": "Top Edge:\n  - Reactor Casing",
+			"border": 20,
+			"y": 42,
+			"wrapped": true
+		}
+	]
+}

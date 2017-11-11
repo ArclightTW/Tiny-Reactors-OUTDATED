@@ -3,68 +3,17 @@
 	
 	"lines": [
 		{
-			"text": "A valid reactor structure must contain the following items;",
+			"text": "Active",
 			"border": 20,
-			"wrapped": true
+			
+			"color": "0A0A0A"
 		},
-		
-		{
-			"text": "A valid reactor structure can contain the following items;",
-			"border": 20,
-			"y": 50,
-			"wrapped": true
-		}
-	],
 	
-	"stacks": [
 		{
-			"icon": "tinyreactors:reactor_controller_1",
-			"tooltip": [
-				"Reactor Controller",
-				"(only 1)"
-			],
-			
-			"x": 15,
-			"y": 45
-		},
-		
-		{
-			"icon": "tinyreactors:reactor_energy_port",
-			"tooltip": [
-				"Reactor Energy Port",
-				"(at least 1)"
-			],
-			
-			"x": 33,
-			"y": 45
-		},
-		
-		{
-			"icon": [
-				"tinyreactors:reactor_vent:0",
-				"tinyreactors:reactor_vent:1",
-				"tinyreactors:reactor_vent:2"
-			],
-			"tooltip": "Reactor Vent",
-			
-			"x": 15,
-			"y": 95
-		},
-		
-		{
-			"icon": "tinyreactors:reactor_heat_sink",
-			"tooltip": "Reactor Heat Sink",
-			
-			"x": 33,
-			"y": 95
-		},
-		
-				{
-			"icon": "tinyreactors:reactor_waste_port",
-			"tooltip": "Reactor Waste Port",
-			
-			"x": 51,
-			"y": 95
+			"text": "A reactor is 'Active' when it is a valid structure (per the Structure section) and has been activated by a player. It generates heat based on it's size and will slowly degrade reactants whilst running.",
+			"border": 20,
+			"y": 15,
+			"wrapped": true
 		}
 	]
 }

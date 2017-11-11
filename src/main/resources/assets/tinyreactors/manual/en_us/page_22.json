@@ -3,7 +3,7 @@
 	
 	"lines": [
 		{
-			"text": "Reactors produce more power the hotter they run.  A reactor running at 1,250C is 100% efficient; reactors running hotter than this generate even more power.\n\nThere are two methods of controlling the heat within a reactor structure; Heat Sinks and Vents.",
+			"text": "Iron Vents cooling rate: 0.01 C/t.\n\nGold Vents cooling rate: 0.02 C/t.\n\nDiamond Vents cooling rate: 0.04 C/t.\n\nA Pre-Warming reactor will ignore any vents in the structure.",
 			"border": 20,
 			"wrapped": true
 		}

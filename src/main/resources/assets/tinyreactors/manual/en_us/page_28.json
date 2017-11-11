@@ -1,19 +1,95 @@
 {
-	"type":		"text",
+	"type":		"crafting",
 	
-	"lines": [
+	"recipes": [
 		{
-			"text": "Disabled (Tier 2 only)",
-			"border": 20,
+			"size": 2,
+			"type": "shapeless",
+			"x": 20,
+			"y": 23,
 			
-			"color": "0A0A0A"
+			"output": {
+				"item": "tinyreactors:capacitor",
+				"nbt": {
+					"limit": 512,
+					"capacity": 5000000
+				}
+			},
+			
+			"inputs": [
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				}
+			]
 		},
-	
+		
 		{
-			"text": "A Tier 2 Reactor Controller can be controlled via redstone; this can be disablled in the Reactor Controller UI.  It also outputs redstone equivalent to it's heat-fill percentage.",
-			"border": 20,
-			"y": 15,
-			"wrapped": true
+			"size": 3,
+			"type": "shapeless",
+			"x": 20,
+			"y": 64,
+			
+			"output": {
+				"item": "tinyreactors:capacitor",
+				"nbt": {
+					"limit": 1536,
+					"capacity": 15000000
+				}
+			},
+			
+			"inputs": [
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 256,
+						"capacity": 2500000
+					}
+				},
+				
+				{
+					"item": "tinyreactors:capacitor",
+					"nbt": {
+						"limit": 512,
+						"capacity": 5000000
+					}
+				}
+			]
 		}
 	]
 }

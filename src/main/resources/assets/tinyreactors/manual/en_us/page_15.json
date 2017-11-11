@@ -3,16 +3,16 @@
 	
 	"lines": [
 		{
-			"text": "Corner Pillar:\n  - Reactor Casing\n  - Reactor Controller\n  - Reactor Energy Port\n  - Reactor Heat Sink\n  - Reactor Waste Port",
+			"text": "Invalid",
+			"border": 20,
+			
+			"color": "0A0A0A"
+		},
+	
+		{
+			"text": "A reactor is 'Invalid' when it is not a valid structure (per the Structure section).  An invalid reactor cannot be activated or pre-warmed.",
 			"border": 20,
 			"y": 15,
-			"wrapped": true
-		},
-		
-		{
-			"text": "Edge Face:\n  - All except Reactor Vent, Capacitor and Reactant Combiner",
-			"border": 20,
-			"y": 69,
 			"wrapped": true
 		}
 	]

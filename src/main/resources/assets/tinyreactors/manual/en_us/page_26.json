@@ -1,16 +1,17 @@
 {
 	"type":		"text",
+	"id":		"capacitor",
 	
 	"lines": [
 		{
-			"text": "Inactive",
+			"text": "Capacitor",
 			"border": 20,
 			
-			"color": "0A0A0A"
+			"color": "000000"
 		},
-	
+		
 		{
-			"text": "A reactor is 'Inactive' when it is a valid structure (per the Structure section) but has not been activated by a player. It drains heat based on it's size and does not degrade reactants.",
+			"text": "Capacitors are the main form of power storage in Tiny Reactors. Energy Ports can output power directly into them and the power can then be distributed.\nCapacitors have a higher capacity than Energy Ports.",
 			"border": 20,
 			"y": 15,
 			"wrapped": true
