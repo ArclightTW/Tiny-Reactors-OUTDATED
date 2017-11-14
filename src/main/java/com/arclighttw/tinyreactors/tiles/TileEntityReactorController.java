@@ -84,103 +84,100 @@ public class TileEntityReactorController extends TileEntityEnergy
 	{
 		super.update();
 		
-		if(!world.isRemote)
+		if(world == null)
+			return;
+		
+		if(multiblock.shouldRefresh())
+			multiblock.checkValidity(world, pos);
+		
+		if(temperature.hasOverheated())
 		{
-			if(meltdownInitiated)
-			{
-				if(meltdownTimer % 40 == 0)
-					world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 2.0F, 1.0F);
-				
-				meltdownTimer--;
-				
-				if(meltdownTimer <= 0)
-				{
-					world.playSound(null, pos, TRSounds.REACTOR_OVERHEAT, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					temperature.overheat();
-					meltdownInitiated = false;
-					return;
-				}
-			}
-			
-			if(temperature.hasOverheated())
-			{
-				temperature.applyCooldownTick();
-				return;
-			}
-			
-			if(!multiblock.isValid())
-			{
-				temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
-				return;
-			}
-			
-			int redstone = world.getBlockState(pos).getWeakPower(world, pos, EnumFacing.NORTH);
-			
-			if(redstone != previousRedstone)
-			{
-				previousRedstone = redstone;
-				sync();
-			}
-			
-			if(tier == EnumControllerTier.I)
-				redstoneMode = EnumRedstoneMode.IGNORE;
-			
-			if(redstoneMode != EnumRedstoneMode.IGNORE)
-			{
-				boolean powered = isPowered();
-				
-				if(powered && redstoneMode == EnumRedstoneMode.DISABLE_ON_REDSTONE)
-					return;
-				
-				if(!powered && redstoneMode == EnumRedstoneMode.ENABLE_ON_REDSTONE)
-					return;
-			}
-			
-			if(isActive() || isWarming())
-			{
-				temperature.modifyHeat(multiblock.getReactorSize() * TEMP_GAIN * (isWarming() ? 4 : 1));
-				
-				soundTimer++;
-				if(soundTimer >= 36)
-				{
-					world.playSound(null, pos, isWarming() ? TRSounds.REACTOR_WARMING : TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					soundTimer = 0;
-				}
-				
-				if(isActive())
-				{
-					energy.receiveEnergy((int)(multiblock.getAvailableYield() * temperature.getEfficiency()), false);
-					float degradedQuality = temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5);
-					
-					if(TRConfig.REACTANT_DEGRADATION)
-					{
-						degradationTimer++;
-						if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
-						{
-							multiblock.degradeReactant(world, degradedQuality);
-							degradationTimer = 0;
-						}
-					}
-				}
-			}
-			else
-			{
-				if(temperature.getCurrentTemperature() > 0)
-					temperature.modifyHeat(multiblock.getReactorSize() * -TEMP_GAIN);
-				
-				soundTimer = 0;
-			}
-			
-			if(getEnergyStored() <= 0)
-				return;
-			
+			temperature.applyCooldownTick();
+			return;
+		}
+		
+		if(getEnergyStored() > 0)
+		{
 			int average = (int)(getEnergyStored() / (float)multiblock.getEnergyPorts().size());
 			
 			for(TileEntityReactorEnergyPort energyPort : multiblock.getEnergyPorts())
 			{
 				int extracted = energyPort.receiveEnergy(average, false);
 				extractEnergy(extracted, false);
+			}			
+		}
+		
+		if(isWarming() || isActive())
+		{
+			boolean disabled = false;
+			
+			if(redstoneMode != EnumRedstoneMode.IGNORE)
+			{
+				if(isPowered() && redstoneMode == EnumRedstoneMode.DISABLE_ON_REDSTONE)
+					disabled = true;
+				
+				if(!isPowered() && redstoneMode == EnumRedstoneMode.ENABLE_ON_REDSTONE)
+					disabled = true;
 			}
+			
+			soundTimer++;
+			if(soundTimer >= 36)
+			{
+				world.playSound(null, pos, isWarming() ? TRSounds.REACTOR_WARMING : TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				soundTimer = 0;
+			}
+			
+			if(isWarming())
+			{
+				temperature.modifyHeat(disabled ? 0 : TEMP_GAIN * multiblock.getReactorSize() * 4);
+				sync();
+			}
+			else
+			{
+				energy.receiveEnergy(multiblock.getAvailableYield(), disabled);
+				temperature.modifyHeat(disabled ? 0 : TEMP_GAIN * multiblock.getReactorSize());
+				
+				if(TRConfig.REACTANT_DEGRADATION)
+				{
+					degradationTimer++;
+					
+					if(degradationTimer >= TRConfig.REACTANT_DEGRADATION_TICK)
+					{
+						multiblock.degradeReactant(world, temperature.getCurrentTemperature() / (TemperatureStorage.BASE_TEMPERATURE_CAP * 5));
+						degradationTimer = 0;
+					}
+				}
+				
+				sync();
+			}
+		}
+		else
+		{
+			temperature.modifyHeat(-TEMP_GAIN * multiblock.getReactorSize());
+			soundTimer = 0;
+		}
+		
+		if(meltdownInitiated)
+		{
+			if(meltdownTimer % 40 == 0)
+				world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 2.0F, 1.0F);
+			
+			meltdownTimer--;
+			
+			if(meltdownTimer <= 0)
+			{
+				world.playSound(null, pos, TRSounds.REACTOR_OVERHEAT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				temperature.overheat();
+				meltdownInitiated = false;
+			}
+		}
+
+		int redstone = world.getBlockState(pos).getWeakPower(world, pos, EnumFacing.NORTH);
+		
+		if(redstone != previousRedstone)
+		{
+			previousRedstone = redstone;
+			sync();
 		}
 	}
 	
