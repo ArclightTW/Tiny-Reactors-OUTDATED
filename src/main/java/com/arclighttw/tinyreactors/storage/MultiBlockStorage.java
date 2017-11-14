@@ -98,7 +98,7 @@ public abstract class MultiBlockStorage
 		end = new BlockPos(x, y, z);
 	}
 	
-	public void checkValidity(World world, BlockPos origin)
+	public void checkValidity(final World world, final BlockPos origin)
 	{
 		if(world == null || !(world instanceof WorldServer))
 			return;
