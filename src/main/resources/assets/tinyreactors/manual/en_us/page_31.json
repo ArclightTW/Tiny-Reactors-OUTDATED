@@ -4,24 +4,24 @@
 	"images": [
 		{
 			"sprite": "textures/gui/reactant_combiner.png",
-			"x": 15,
+			"x": 25,
 			"y": 24,
-			"u": 14,
-			"width": 150,
+			"u": 24,
+			"width": 130,
 			"height": 80
 		}
 	],
 	
 	"lines": [
 		{
-			"text": "Degraded Reactants",
+			"text": "Reactants",
 			"x-alignment": "center",
 			"x": -37,
 			"y": 27
 		},
 			
 		{
-			"text": "Radioactive Ingots",
+			"text": "Radio. Ingots",
 			"x-alignment": "center",
 			"x": 37,
 			"y": 27
