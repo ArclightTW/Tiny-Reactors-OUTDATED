@@ -2,6 +2,8 @@ package com.arclighttw.tinyreactors.client.model;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.arclighttw.tinyreactors.blocks.BlockDegradedReactant;
 import com.arclighttw.tinyreactors.inits.Registry.IRuntimeModel;
 import com.google.common.collect.Lists;
@@ -18,14 +20,14 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 public class ModelBlockDegradedReactant implements IRuntimeModel
 {
 	@Override
-	public IBakedModel createModel(IBakedModel existing)
+	public IBakedModel createModel(final IBakedModel existing)
 	{
 		return new ModelSimpleBaked(existing)
 		{
 			private IBakedModel replacement;
 			
 			@Override
-			public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+			public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
 			{
 				List<BakedQuad> oldQuads = existing.getQuads(state, side, rand);
 				List<BakedQuad> newQuads = Lists.newArrayList();

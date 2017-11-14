@@ -3,6 +3,8 @@ package com.arclighttw.tinyreactors.client.model;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -25,7 +27,7 @@ public class ModelSimpleBaked implements IBakedModel
 	}
 	
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
 	{
 		return existing == null ? Arrays.asList() : existing.getQuads(state, side, rand);
 	}

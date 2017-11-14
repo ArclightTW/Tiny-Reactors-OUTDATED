@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 public class ModelItemDegradedReactant implements IRuntimeModel
 {
-	private IBakedModel createActual(IBakedModel existing, String reactantName)
+	private IBakedModel createActual(final IBakedModel existing, String reactantName)
 	{
 		Block block = null;
 		

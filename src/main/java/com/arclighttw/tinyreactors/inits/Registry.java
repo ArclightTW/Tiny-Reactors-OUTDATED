@@ -292,7 +292,7 @@ public class Registry
 	
 	public static interface IRuntimeModel
 	{
-		IBakedModel createModel(IBakedModel existing);
+		IBakedModel createModel(final IBakedModel existing);
 	}
 	
 	public static class ShapedRecipe extends ShapedOreRecipe
