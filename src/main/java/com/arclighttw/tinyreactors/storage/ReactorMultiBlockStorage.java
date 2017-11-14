@@ -25,6 +25,8 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 {
 	final TileEntityReactorController controller;
 	
+	boolean needsRefresh;
+	
 	int availableYield, maximumYield;
 	int heatSinkCount, reactorSize, prevReactorSize;
 	int degradedItem, wastePortProduced;
@@ -185,46 +187,41 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		if(validReactants.size() == 0)
 			return;
 		
-		boolean hasDegraded = false;
+		BlockPos pos = null;
 		
-		while(!hasDegraded)
+		try
 		{
-			BlockPos pos = null;
+			pos = validReactants.get(degradedItem);
+		}
+		catch(IndexOutOfBoundsException ex)
+		{
+			degradedItem = 0;
+			pos = validReactants.get(degradedItem);
+		}
+		
+		if(pos == null)
+			return;
+		
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if(tile == null)
+		{
+			Block reactant = world.getBlockState(pos).getBlock();
+			world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
 			
-			try
-			{
-				pos = validReactants.get(degradedItem);
-			}
-			catch(IndexOutOfBoundsException e)
-			{
-				degradedItem = 0;
-				pos = validReactants.get(degradedItem);
-			}
+			tile = world.getTileEntity(pos);
 			
-			if(pos == null)
+			if(tile == null || !(tile instanceof TileEntityDegradedReactant))
 				return;
 			
-			TileEntity tile = world.getTileEntity(pos);
-			
-			if(tile == null)
-			{
-				Block reactant = world.getBlockState(pos).getBlock();
-				world.setBlockState(pos, TRBlocks.DEGRADED_REACTANT.getDefaultState());
-				
-				tile = world.getTileEntity(pos);
-				
-				if(tile == null || !(tile instanceof TileEntityDegradedReactant))
-					return;
-				
-				TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
-				degradedReactant.setRepresentedBlock(reactant);
-			}
-			
-			if(tile != null && tile instanceof TileEntityDegradedReactant)
-				hasDegraded = ((TileEntityDegradedReactant)tile).degrade(controller, qualityDegration);
-			
-			degradedItem++;
+			TileEntityDegradedReactant degradedReactant = (TileEntityDegradedReactant)tile;
+			degradedReactant.setRepresentedBlock(reactant);
 		}
+		
+		if(tile != null && tile instanceof TileEntityDegradedReactant)
+			((TileEntityDegradedReactant)tile).degrade(controller, qualityDegration);
+		
+		degradedItem++;
 	}
 	
 	public void produceIngot()
@@ -273,5 +270,10 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	public int getReactorSize()
 	{
 		return prevReactorSize;
+	}
+	
+	public boolean shouldRefresh()
+	{
+		return needsRefresh;
 	}
 }
