@@ -222,6 +222,7 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			((TileEntityDegradedReactant)tile).degrade(controller, qualityDegration);
 		
 		degradedItem++;
+		needsRefresh = true;
 	}
 	
 	public void produceIngot()
@@ -275,5 +276,10 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	public boolean shouldRefresh()
 	{
 		return needsRefresh;
+	}
+	
+	public void markRefreshed()
+	{
+		needsRefresh = false;
 	}
 }

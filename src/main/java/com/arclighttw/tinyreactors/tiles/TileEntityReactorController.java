@@ -44,10 +44,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 		multiblock = new ReactorMultiBlockStorage(this);
 		multiblock.setValidityListener(() -> {
 			if(!multiblock.isValid())
-			{
-				setActive(false);
 				return;
-			}
 			
 			temperature.setHeatSinkCount(multiblock.getHeatSinkCount());
 			sync();
@@ -88,7 +85,10 @@ public class TileEntityReactorController extends TileEntityEnergy
 			return;
 		
 		if(multiblock.shouldRefresh())
+		{
 			multiblock.checkValidity(world, pos);
+			multiblock.markRefreshed();
+		}
 		
 		if(temperature.hasOverheated())
 		{
@@ -136,6 +136,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 			{
 				energy.receiveEnergy(multiblock.getAvailableYield(), disabled);
 				temperature.modifyHeat(disabled ? 0 : TEMP_GAIN * multiblock.getReactorSize());
+				sync();
 				
 				if(TRConfig.REACTANT_DEGRADATION)
 				{
@@ -147,8 +148,6 @@ public class TileEntityReactorController extends TileEntityEnergy
 						degradationTimer = 0;
 					}
 				}
-				
-				sync();
 			}
 		}
 		else
