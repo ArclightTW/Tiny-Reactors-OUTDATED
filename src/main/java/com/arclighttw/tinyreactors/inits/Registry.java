@@ -26,6 +26,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -77,8 +78,11 @@ public class Registry
 		if(block instanceof ITileEntityProvider)
 			registerTileEntity(((ITileEntityProvider)block).createNewTileEntity(null, -1), name);
 		
-		if(block instanceof IModelProvider)
-			registerModel(((IModelProvider)block).createModel(), name, "normal");
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			if(block instanceof IModelProvider)
+				registerModel(((IModelProvider)block).createModel(), name, "normal");
+		}
 		
 		if(BLOCKS.containsKey(block.getRegistryName()))
 		{
@@ -99,8 +103,11 @@ public class Registry
 		
 		item.setRegistryName(new ResourceLocation(Reference.ID, name));
 		
-		if(item instanceof IModelProvider)
-			registerModel(((IModelProvider)item).createModel(), name, "inventory");
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		{
+			if(item instanceof IModelProvider)
+				registerModel(((IModelProvider)item).createModel(), name, "inventory");
+		}
 		
 		if(ITEMS.containsKey(item.getRegistryName()))
 		{

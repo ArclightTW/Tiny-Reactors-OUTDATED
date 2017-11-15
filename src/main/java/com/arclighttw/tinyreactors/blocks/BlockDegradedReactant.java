@@ -32,6 +32,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDegradedReactant extends BlockTiny implements IItemProvider, IModelProvider
 {
@@ -62,6 +64,7 @@ public class BlockDegradedReactant extends BlockTiny implements IItemProvider, I
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IRuntimeModel createModel()
 	{
 		return new ModelBlockDegradedReactant();

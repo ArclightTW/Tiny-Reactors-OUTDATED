@@ -5,6 +5,9 @@ import com.arclighttw.tinyreactors.client.model.ModelItemDegradedReactant;
 import com.arclighttw.tinyreactors.inits.Registry.IModelProvider;
 import com.arclighttw.tinyreactors.inits.Registry.IRuntimeModel;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 public class ItemDegradedReactant extends ItemTinyBlock implements IModelProvider
 {
 	public ItemDegradedReactant(BlockDegradedReactant block)
@@ -13,6 +16,7 @@ public class ItemDegradedReactant extends ItemTinyBlock implements IModelProvide
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IRuntimeModel createModel()
 	{
 		return new ModelItemDegradedReactant();
