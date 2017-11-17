@@ -1,4 +1,8 @@
+# Misc
+
 itemGroup.tinyreactors=微型反应堆
+
+# Blocks
 
 tile.reactor_controller_1.name=反应堆控制器
 tile.reactor_controller_2.name=反应堆控制器
@@ -22,5 +26,9 @@ tile.capacitor.name=电容库
 
 tile.reactant_combiner.name=反应堆聚合器
 
+# Items
+
 item.radioactive_ingot.name=反射性晶锭
+
 item.tiny_manual.name=微型反应堆手册
+item.tiny_wrench.name=微型反应堆扳手
