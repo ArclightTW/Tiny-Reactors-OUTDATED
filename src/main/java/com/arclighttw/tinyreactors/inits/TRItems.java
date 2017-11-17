@@ -5,13 +5,16 @@ import java.util.Locale;
 
 import com.arclighttw.tinyreactors.items.ItemTiny;
 import com.arclighttw.tinyreactors.items.ItemTinyManual;
+import com.arclighttw.tinyreactors.items.ItemTinyWrench;
 
 import net.minecraft.item.Item;
 
 public class TRItems
 {
 	public static Item RADIOACTIVE_INGOT = new ItemTiny("radioactive_ingot");
+	
 	public static Item TINY_MANUAL = new ItemTinyManual();
+	public static Item TINY_WRENCH = new ItemTinyWrench();
 	
 	public static void onRegister()
 	{

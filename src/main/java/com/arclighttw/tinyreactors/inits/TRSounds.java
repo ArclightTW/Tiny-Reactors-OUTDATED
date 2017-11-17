@@ -15,6 +15,8 @@ public class TRSounds
 	public static final SoundEvent REACTOR_WARMING = registerSoundResource("reactor_warming");
 	public static final SoundEvent REACTOR_OVERHEAT = registerSoundResource("reactor_overheat");
 	
+	public static final SoundEvent TINY_WRENCH = registerSoundResource("tiny_wrench");
+	
 	private static SoundEvent registerSoundResource(String name)
 	{
 		return new SoundEvent(new ResourceLocation(Reference.ID, name));

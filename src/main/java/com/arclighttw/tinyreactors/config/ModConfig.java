@@ -68,6 +68,8 @@ public class ModConfig
 		TRConfig.AUDIO_REACTOR_KLAXON = config.getFloat("Reactor Overheat Warning", category, TRConfig.AUDIO_REACTOR_KLAXON, 0F, 5F, TRConfig.AUDIO_REACTOR_KLAXON_LABEL);
 		TRConfig.AUDIO_REACTOR_OVERHEAT = config.getFloat("Reactor Overheat Shutdown", category, TRConfig.AUDIO_REACTOR_OVERHEAT, 0F, 5F, TRConfig.AUDIO_REACTOR_OVERHEAT_LABEL);
 		
+		TRConfig.AUDIO_TINY_WRENCH = config.getFloat("Tiny Wrench", category, TRConfig.AUDIO_TINY_WRENCH, 0F, 5F, TRConfig.AUDIO_TINY_WRENCH_LABEL);
+		
 		ReactorManager.populate();
 		
 		if(config.hasChanged())

@@ -1,4 +1,8 @@
+# Misc
+
 itemGroup.tinyreactors=Tiny Reactors
+
+# Blocks
 
 tile.reactor_controller_1.name=Reactor Controller
 tile.reactor_controller_2.name=Reactor Controller
@@ -22,5 +26,9 @@ tile.capacitor.name=Capacitor
 
 tile.reactant_combiner.name=Reactant Combiner
 
+# Items
+
 item.radioactive_ingot.name=Radioactive Ingot
+
 item.tiny_manual.name=Tiny Manual
+item.tiny_wrench.name=Tiny Wrench

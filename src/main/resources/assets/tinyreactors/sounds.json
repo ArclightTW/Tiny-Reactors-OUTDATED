@@ -37,5 +37,15 @@
 		[
 			"tinyreactors:reactor_overheat"
 		]
+	},
+	
+	"tiny_wrench":
+	{
+		"category": "block",
+		
+		"sounds":
+		[
+			"tinyreactors:tiny_wrench"
+		]
 	}
 }

@@ -61,4 +61,7 @@ public class TRConfig
 	
 	public static float AUDIO_REACTOR_WARMING = 1.0F;
 	public static String AUDIO_REACTOR_WARMING_LABEL = "The volume level of reactor when it is pre-warming.";
+	
+	public static float AUDIO_TINY_WRENCH = 1.0F;
+	public static String AUDIO_TINY_WRENCH_LABEL = "The volume level of the wrench on use.";
 }

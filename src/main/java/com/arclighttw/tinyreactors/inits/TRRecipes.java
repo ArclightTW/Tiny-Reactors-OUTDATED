@@ -121,6 +121,14 @@ public class TRRecipes
 			Items.BOOK, Items.IRON_INGOT, Items.REDSTONE
 	});
 	
+	public static IRecipe TINY_WRENCH = new ShapedRecipe(TRItems.TINY_WRENCH, new Object[] {
+			" C ",
+			" IC",
+			"I  ",
+				Character.valueOf('I'), Items.IRON_INGOT,
+				Character.valueOf('C'), TRBlocks.REACTOR_CASING
+	});
+	
 	public static void onRegister()
 	{
 		try
