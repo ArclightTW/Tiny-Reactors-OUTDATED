@@ -58,6 +58,16 @@ public class ModConfig
 		
 		TRConfig.REACTANT_REGISTRY = config.getStringList("Entries", category, TRConfig.REACTANT_REGISTRY, TRConfig.REACTANT_REGISTRY_LABEL);
 		
+		category = "Audio";
+		config.addCustomCategoryComment(category, "Increase or decrease the audio levels.");
+		
+		
+		TRConfig.AUDIO_REACTOR_WARMING = config.getFloat("Reactor Pre-Warming", category, TRConfig.AUDIO_REACTOR_WARMING, 0F, 5F, TRConfig.AUDIO_REACTOR_WARMING_LABEL);
+		TRConfig.AUDIO_REACTOR_ACTIVE = config.getFloat("Reactor Active", category, TRConfig.AUDIO_REACTOR_ACTIVE, 0F, 5F, TRConfig.AUDIO_REACTOR_ACTIVE_LABEL);
+		
+		TRConfig.AUDIO_REACTOR_KLAXON = config.getFloat("Reactor Overheat Warning", category, TRConfig.AUDIO_REACTOR_KLAXON, 0F, 5F, TRConfig.AUDIO_REACTOR_KLAXON_LABEL);
+		TRConfig.AUDIO_REACTOR_OVERHEAT = config.getFloat("Reactor Overheat Shutdown", category, TRConfig.AUDIO_REACTOR_OVERHEAT, 0F, 5F, TRConfig.AUDIO_REACTOR_OVERHEAT_LABEL);
+		
 		ReactorManager.populate();
 		
 		if(config.hasChanged())

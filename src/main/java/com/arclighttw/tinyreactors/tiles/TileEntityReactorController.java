@@ -123,7 +123,11 @@ public class TileEntityReactorController extends TileEntityEnergy
 			soundTimer++;
 			if(soundTimer >= 36)
 			{
-				world.playSound(null, pos, isWarming() ? TRSounds.REACTOR_WARMING : TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				if(isWarming())
+					world.playSound(null, pos, TRSounds.REACTOR_WARMING, SoundCategory.BLOCKS, 1.0F * TRConfig.AUDIO_REACTOR_WARMING, 1.0F);
+				else
+					world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F * TRConfig.AUDIO_REACTOR_ACTIVE, 1.0F);
+				
 				soundTimer = 0;
 			}
 			
@@ -159,13 +163,13 @@ public class TileEntityReactorController extends TileEntityEnergy
 		if(meltdownInitiated)
 		{
 			if(meltdownTimer % 40 == 0)
-				world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 2.0F, 1.0F);
+				world.playSound(null, pos, TRSounds.REACTOR_KLAXON, SoundCategory.BLOCKS, 2.0F * TRConfig.AUDIO_REACTOR_KLAXON, 1.0F);
 			
 			meltdownTimer--;
 			
 			if(meltdownTimer <= 0)
 			{
-				world.playSound(null, pos, TRSounds.REACTOR_OVERHEAT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(null, pos, TRSounds.REACTOR_OVERHEAT, SoundCategory.BLOCKS, 1.0F * TRConfig.AUDIO_REACTOR_OVERHEAT, 1.0F);
 				temperature.overheat();
 				meltdownInitiated = false;
 			}

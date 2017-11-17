@@ -49,4 +49,16 @@ public class TRConfig
 	
 	public static boolean MANUAL_ON_CRAFT = true;
 	public static String MANUAL_ON_CRAFT_LABEL = "Should players be given a copy of the Tiny Manual when crafting a Tiny Reactors based block?  This is exclusive to 'Manual on Spawn'.";
+	
+	public static float AUDIO_REACTOR_KLAXON = 1.0F;
+	public static String AUDIO_REACTOR_KLAXON_LABEL = "The volume level of the warning sound when a reactor is about to overheat.";
+	
+	public static float AUDIO_REACTOR_OVERHEAT = 1.0F;
+	public static String AUDIO_REACTOR_OVERHEAT_LABEL = "The volume level of the shutdown sound when a reactor overheats.";
+	
+	public static float AUDIO_REACTOR_ACTIVE = 1.0F;
+	public static String AUDIO_REACTOR_ACTIVE_LABEL = "The volume level of reactor when it is running normally.";
+	
+	public static float AUDIO_REACTOR_WARMING = 1.0F;
+	public static String AUDIO_REACTOR_WARMING_LABEL = "The volume level of reactor when it is pre-warming.";
 }
