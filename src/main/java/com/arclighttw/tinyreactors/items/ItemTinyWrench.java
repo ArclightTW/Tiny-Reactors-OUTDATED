@@ -1,5 +1,6 @@
 package com.arclighttw.tinyreactors.items;
 
+import com.arclighttw.tinyreactors.blocks.BlockDegradedReactant;
 import com.arclighttw.tinyreactors.blocks.BlockTiny;
 import com.arclighttw.tinyreactors.config.TRConfig;
 import com.arclighttw.tinyreactors.inits.TRSounds;
@@ -30,7 +31,7 @@ public class ItemTinyWrench extends ItemTiny
 		{
 			Block block = world.getBlockState(pos).getBlock();
 			
-			if(block instanceof BlockTiny)
+			if(block instanceof BlockTiny && !(block instanceof BlockDegradedReactant))
 			{
 				ItemStack itemstack = new ItemStack(block);
 				
