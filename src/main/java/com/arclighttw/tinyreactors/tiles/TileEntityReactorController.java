@@ -262,7 +262,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 			multiblock.onActivate(world);
 			
 			if(world != null)
-				world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(null, pos, TRSounds.REACTOR_ACTIVE, SoundCategory.BLOCKS, 1.0F * TRConfig.AUDIO_REACTOR_ACTIVE, 1.0F);
 		}
 	}
 	
@@ -278,7 +278,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 		sync();
 		
 		if(warming && world != null)
-			world.playSound(null, pos, TRSounds.REACTOR_WARMING, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			world.playSound(null, pos, TRSounds.REACTOR_WARMING, SoundCategory.BLOCKS, 1.0F * TRConfig.AUDIO_REACTOR_WARMING, 1.0F);
 	}
 	
 	public boolean isWarming()
