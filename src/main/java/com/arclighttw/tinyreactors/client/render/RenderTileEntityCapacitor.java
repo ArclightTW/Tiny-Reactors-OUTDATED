@@ -26,7 +26,19 @@ public class RenderTileEntityCapacitor extends TileEntitySpecialRenderer<TileEnt
 			return;
 		
 		IBlockState state = tile.getWorld().getBlockState(tile.getPos());
-		EnumFacing facing = state.getValue(BlockReactorComponentDirectional.FACING);
+		EnumFacing facing = null;
+		
+		try
+		{
+			facing = state.getValue(BlockReactorComponentDirectional.FACING);
+		}
+		catch(IllegalArgumentException ex)
+		{
+			return;
+		}
+		
+		if(facing == null)
+			return;
 		
 		IBlockState neighbor = tile.getWorld().getBlockState(tile.getPos().offset(facing));
 		
