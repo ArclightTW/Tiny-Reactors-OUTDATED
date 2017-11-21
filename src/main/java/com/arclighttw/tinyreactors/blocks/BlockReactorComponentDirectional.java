@@ -18,10 +18,19 @@ public class BlockReactorComponentDirectional extends BlockReactorComponent
 {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
+	protected boolean placeFacing;
+	
 	public BlockReactorComponentDirectional(Material material, String name)
+	{
+		this(material, name, true);
+	}
+	
+	public BlockReactorComponentDirectional(Material material, String name, boolean placeFacing)
 	{
 		super(material, name);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		
+		this.placeFacing = placeFacing;
 	}
 	
 	@Override
@@ -38,28 +47,30 @@ public class BlockReactorComponentDirectional extends BlockReactorComponent
 			EnumFacing facing = (EnumFacing)state.getValue(FACING);
 			
 			if(facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
-				facing = EnumFacing.SOUTH;
+				facing = placeFacing ? EnumFacing.SOUTH : EnumFacing.NORTH;
 			else if(facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
-				facing = EnumFacing.NORTH;
+				facing = placeFacing ? EnumFacing.NORTH : EnumFacing.SOUTH;
 			else if(facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
-				facing = EnumFacing.EAST;
-            	else if(facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
-            		facing = EnumFacing.WEST;
+				facing = placeFacing ? EnumFacing.EAST : EnumFacing.WEST;
+        	else if(facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+        		facing = placeFacing ? EnumFacing.WEST : EnumFacing.EAST;
 			
 			world.setBlockState(pos, state.withProperty(FACING, facing), 2);
-        	}
+    	}
 	}
 	
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		EnumFacing direction = placer.getHorizontalFacing();
+		return getDefaultState().withProperty(FACING, placeFacing ? direction.getOpposite() : direction);
 	}
 	
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
-		world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
+		EnumFacing direction = placer.getHorizontalFacing();
+		world.setBlockState(pos, state.withProperty(FACING, placeFacing ? direction.getOpposite() : direction), 2);
 	}
 	
 	@Override
@@ -95,5 +106,5 @@ public class BlockReactorComponentDirectional extends BlockReactorComponent
 	public BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, new IProperty[] { FACING });
-    	}
+	}
 }
