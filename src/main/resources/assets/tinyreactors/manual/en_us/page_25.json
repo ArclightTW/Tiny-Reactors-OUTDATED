@@ -1,17 +1,17 @@
 {
 	"type":		"text",
-	"id":		"structure_blocks",
+	"id":		"reactor_input_port",
 	
 	"lines": [
 		{
-			"text": "Structure Blocks",
+			"text": "Reactor Input Port",
 			"border": 20,
 			
 			"color": "000000"
 		},
 		
 		{
-			"text": "Structure Blocks are used to complete the reactor structure.  Reactor Casing and Reactor Glass serve to complete the reactor structure and have no direct functionality.",
+			"text": "The Input Port can be used to automatically fill the reactor structure with valid reactants.  Simply place your reactant stockpile in the UI for the input port and, when a space is available, it will be inserted into the reactor.",
 			"border": 20,
 			"y": 15,
 			"wrapped": true

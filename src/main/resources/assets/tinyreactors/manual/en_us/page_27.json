@@ -1,10 +1,19 @@
 {
 	"type":		"text",
+	"id":		"capacitor",
 	
 	"lines": [
 		{
-			"text": "Capacitors, along with Energy Ports, are upgradable via crafting.  A default Capacitor has a maximum transfer rate of 256 RF/t and a capacity of 2,500,000 RF.\nCombining 2 Capacitors in a crafting grid combines the figures, providing a Capacitor with a max transfer rate of 512 RF/t and a capacity of 5,000,000 RF.",
+			"text": "Capacitor",
 			"border": 20,
+			
+			"color": "000000"
+		},
+		
+		{
+			"text": "Capacitors are the main form of power storage in Tiny Reactors. Energy Ports can output power directly into them and the power can then be distributed.\nCapacitors have a higher capacity than Energy Ports.",
+			"border": 20,
+			"y": 15,
 			"wrapped": true
 		}
 	]
