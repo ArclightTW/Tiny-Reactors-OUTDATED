@@ -7,6 +7,7 @@
 			"icon": "tinyreactors:tiny_manual",
 			"link": "structure",
 			"label": "Structure",
+			"page": "04",
 			
 			"x": 40,
 			"y": 20
@@ -16,6 +17,7 @@
 			"icon": "tinyreactors:reactor_controller_1",
 			"link": "reactor_controller",
 			"label": "Controller",
+			"page": "09",
 			
 			"x": 120,
 			"y": 20
@@ -25,6 +27,7 @@
 			"icon": "tinyreactors:reactor_energy_port",
 			"link": "reactor_energy_port",
 			"label": "Energy Port",
+			"page": "17",
 			
 			"x": 40,
 			"y": 50
@@ -34,6 +37,7 @@
 			"icon": "tinyreactors:reactor_heat_sink",
 			"link": "reactor_heat_sink",
 			"label": "Heat Sink",
+			"page": "20",
 			
 			"x": 120,
 			"y": 50
@@ -47,6 +51,7 @@
 			],
 			"link": "reactor_vent",
 			"label": "Vent",
+			"page": "21",
 			
 			"x": 40,
 			"y": 80
@@ -56,6 +61,7 @@
 			"icon": "tinyreactors:reactor_waste_port",
 			"link": "reactor_waste_port",
 			"label": "Waste Port",
+			"page": "23",
 			
 			"x": 120,
 			"y": 80

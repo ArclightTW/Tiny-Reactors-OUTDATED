@@ -3,6 +3,16 @@
 	
 	"stacks": [
 		{
+			"icon": "tinyreactors:reactor_input_port",
+			"link": "reactor_input_port",
+			"label": "Input Port",
+			"page": "25",
+			
+			"x": 40,
+			"y": 20
+		},
+	
+		{
 			"icon": [
 				"tinyreactors:reactor_casing",
 				"tinyreactors:reactor_glass"
@@ -12,8 +22,9 @@
 				"Structure",
 				"Blocks"
 			],
+			"page": "26",
 			
-			"x": 40,
+			"x": 120,
 			"y": 20
 		},
 	
@@ -21,9 +32,10 @@
 			"icon": "tinyreactors:capacitor",
 			"link": "capacitor",
 			"label": "Capacitor",
+			"page": "27",
 			
-			"x": 120,
-			"y": 20
+			"x": 40,
+			"y": 60
 		},
 		
 		{
@@ -33,21 +45,20 @@
 				"Degraded",
 				"Reactant"
 			],
+			"page": "30",
 			
-			"x": 40,
+			"x": 120,
 			"y": 60
 		},
 		
 		{
 			"icon": "tinyreactors:reactant_combiner",
 			"link": "reactant_combiner",
-			"label": [
-				"Reactant",
-				"Combiner"
-			],
+			"label": "Reactant Combiner",
+			"page": "31",
 			
-			"x": 120,
-			"y": 60
+			"x": 80,
+			"y": 90
 		}
 	]
 }
