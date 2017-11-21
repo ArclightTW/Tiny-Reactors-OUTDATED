@@ -9,6 +9,7 @@ import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityDegradedReactant;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
+import com.arclighttw.tinyreactors.tiles.TileEntityReactorInputPort;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorVent;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorWastePort;
 import com.google.common.collect.Lists;
@@ -33,9 +34,11 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	
 	List<TileEntityReactorEnergyPort> energyPorts;
 	List<TileEntityReactorWastePort> wastePorts;
+	List<TileEntityReactorInputPort> inputPorts;
 	List<TileEntityReactorVent> reactorVents;
 	
 	List<BlockPos> validReactants;
+	List<BlockPos> validSpaces;
 	
 	boolean isReactor, hasController;
 	
@@ -90,6 +93,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			
 			if(tile instanceof TileEntityReactorVent)
 				reactorVents.add((TileEntityReactorVent)tile);
+			
+			if(tile instanceof TileEntityReactorInputPort)
+				inputPorts.add((TileEntityReactorInputPort)tile);
 		}
 	}
 	
@@ -99,7 +105,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		reactorSize++;
 		maximumYield += ReactorManager.getMaximumReactantRate();
 		
-		if(state.getBlock() != Blocks.AIR)
+		if(state.getBlock() == Blocks.AIR)
+			validSpaces.add(pos);
+		else
 		{
 			availableYield += ReactorManager.getReactantRate(world, pos, state);
 			validReactants.add(pos);
@@ -120,9 +128,11 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	
 		energyPorts = Lists.newArrayList();
 		wastePorts = Lists.newArrayList();
+		inputPorts = Lists.newArrayList();
 		
 		reactorVents = Lists.newArrayList();
 		validReactants = Lists.newArrayList();
+		validSpaces = Lists.newArrayList();
 	}
 	
 	@Override
@@ -136,6 +146,9 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 			availableYield = 0;
 			maximumYield = 0;
 		}
+		
+		for(TileEntityReactorInputPort port : inputPorts)
+			port.setController(isReactor ? controller : null);
 		
 		setValid(isReactor);
 	}
@@ -248,6 +261,22 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 		waste.produceIngot();
 	}
 	
+	@SuppressWarnings("deprecation")
+	public void insertReactant(World world, Block reactant, int metadata)
+	{
+		for(BlockPos space : validSpaces)
+		{
+			Block block = world.getBlockState(space).getBlock();
+			
+			if(block != Blocks.AIR)
+				continue;
+			
+			world.setBlockState(space, reactant.getStateFromMeta(metadata));
+			validSpaces.remove(space);
+			return;
+		}
+	}
+	
 	public List<TileEntityReactorEnergyPort> getEnergyPorts()
 	{
 		return energyPorts;
@@ -271,6 +300,11 @@ public class ReactorMultiBlockStorage extends MultiBlockStorage
 	public int getReactorSize()
 	{
 		return prevReactorSize;
+	}
+	
+	public boolean hasSpace()
+	{
+		return validSpaces.size() > 0;
 	}
 	
 	public boolean shouldRefresh()
