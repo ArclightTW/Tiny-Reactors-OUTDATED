@@ -17,6 +17,8 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -74,6 +76,11 @@ public class ReactorManager
 		}
 	}
 	
+	public static boolean isReactant(ItemStack itemstack)
+	{
+		return getReactantRate(Block.getBlockFromItem(itemstack.getItem()), itemstack.getItemDamage()) > 0;
+	}
+	
 	public static boolean isReactant(World world, BlockPos pos, IBlockState state)
 	{
 		return getReactantRate(world, pos, state) > 0;
@@ -92,7 +99,8 @@ public class ReactorManager
 				block == TRBlocks.REACTOR_CASING ||
 				block == TRBlocks.REACTOR_GLASS ||
 				block == TRBlocks.REACTOR_HEAT_SINK ||
-				block == TRBlocks.REACTOR_WASTE_PORT;
+				block == TRBlocks.REACTOR_WASTE_PORT ||
+				block == TRBlocks.REACTOR_INPUT_PORT;
 	}
 	
 	public static boolean isValidStructure(Block block)
@@ -101,7 +109,8 @@ public class ReactorManager
 				block instanceof BlockReactorEnergyPort ||
 				block == TRBlocks.REACTOR_CASING ||
 				block == TRBlocks.REACTOR_HEAT_SINK ||
-				block == TRBlocks.REACTOR_WASTE_PORT;
+				block == TRBlocks.REACTOR_WASTE_PORT ||
+				block == TRBlocks.REACTOR_INPUT_PORT;
 	}
 	
 	public static int getReactantRate(World world, BlockPos pos, IBlockState state)
@@ -119,11 +128,7 @@ public class ReactorManager
 			block = reactant.getRepresentedBlock();
 		}
 		
-		if(!REACTANTS.containsKey(block.getRegistryName()))
-			return 0;
-		
-		Reactant reactant = REACTANTS.get(block.getRegistryName());
-		return reactant.metadata == -1 || block.getMetaFromState(state) == reactant.metadata ? reactant.rate : 0;
+		return getReactantRate(block, block.getMetaFromState(state));
 	}
 	
 	public static int getMaximumReactantRate()
@@ -174,6 +179,18 @@ public class ReactorManager
 		
 		for(BlockPos pos : invalid)
 			removeReactor(world, pos);
+	}
+	
+	private static int getReactantRate(Block block, int metadata)
+	{
+		if(block == Blocks.AIR)
+			return 0;
+		
+		if(!REACTANTS.containsKey(block.getRegistryName()))
+			return 0;
+		
+		Reactant reactant = REACTANTS.get(block.getRegistryName());
+		return reactant.metadata == -1 || metadata == reactant.metadata ? reactant.rate : 0;
 	}
 	
 	public static class Reactant
