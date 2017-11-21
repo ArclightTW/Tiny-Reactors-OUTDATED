@@ -77,6 +77,6 @@ public class IconEntry
 		boolean hovered = mouseX - gui.getGuiLeft() >= x && mouseX - gui.getGuiLeft() <= x + 16 && mouseY - gui.getGuiTop() >= y && mouseY - gui.getGuiTop() <= y + 16;
 		
 		for(int i = 0; i < label.size(); i++)
-			fontRenderer.drawString(String.format("%s%s", hovered ? "Â§o" : "", label.get(i)), x + 8 - fontRenderer.getStringWidth(label.get(i)) / 2, y + 18 + ((fontRenderer.FONT_HEIGHT + 1) * i), 0xFFFFFF);
+			fontRenderer.drawString(String.format("%s%s", hovered ? "§o" : "", label.get(i)), x + 8 - fontRenderer.getStringWidth(label.get(i)) / 2, y + 18 + ((fontRenderer.FONT_HEIGHT + 1) * i), 0xFFFFFF);
 	}
 }
