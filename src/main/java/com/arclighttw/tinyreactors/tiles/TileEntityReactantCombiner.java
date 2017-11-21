@@ -70,8 +70,10 @@ public class TileEntityReactantCombiner extends TileEntityEnergy implements IInv
 	}
 	
 	@Override
-	public void updateInternal()
+	public void update()
 	{
+		super.update();
+		
 		if(!processing)
 		{
 			if(!calculated && !processed)
@@ -135,7 +137,7 @@ public class TileEntityReactantCombiner extends TileEntityEnergy implements IInv
 	}
 	
 	@Override
-	public void writeAdditionalNBT(NBTTagCompound compound)
+	public void writeToNBTInternal(NBTTagCompound compound)
 	{
 		compound.setInteger("timer", timer);
 		compound.setBoolean("processing", processing);
@@ -162,7 +164,7 @@ public class TileEntityReactantCombiner extends TileEntityEnergy implements IInv
 	}
 	
 	@Override
-	public void readAdditionalNBT(NBTTagCompound compound)
+	public void readFromNBTInternal(NBTTagCompound compound)
 	{
 		timer = compound.getInteger("timer");
 		processing = compound.getBoolean("processing");

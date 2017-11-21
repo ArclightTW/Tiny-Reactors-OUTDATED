@@ -20,8 +20,10 @@ public class TileEntityCapacitor extends TileEntityEnergy
 	}
 	
 	@Override
-	public void updateInternal()
+	public void update()
 	{
+		super.update();
+		
 		if(world == null || world.isRemote || getEnergyStored() <= 0)
 			return;
 		

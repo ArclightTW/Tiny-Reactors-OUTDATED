@@ -40,8 +40,10 @@ public class TileEntityReactorVent extends TileEntitySync
 	}
 	
 	@Override
-	public void updateInternal()
+	public void update()
 	{
+		super.update();
+		
 		if(controller == null)
 		{
 			onInitialLoad();
@@ -61,8 +63,10 @@ public class TileEntityReactorVent extends TileEntitySync
 	}
 	
 	@Override
-	public void writeToNBTInternal(NBTTagCompound compound)
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
+		super.writeToNBT(compound);
+
 		compound.setInteger("tier", tier != null ? tier.ordinal() : 0);
 		compound.setBoolean("operational", operational);
 		
@@ -74,11 +78,15 @@ public class TileEntityReactorVent extends TileEntitySync
 		}
 		else
 			compound.setString("Empty", "");
+
+		return compound;
 	}
 	
 	@Override
-	public void readFromNBTInternal(NBTTagCompound compound)
+	public void readFromNBT(NBTTagCompound compound)
 	{
+		super.readFromNBT(compound);
+		
 		tier = EnumVentTier.values()[compound.getInteger("tier")];
 		operational = compound.getBoolean("operational");
 		
