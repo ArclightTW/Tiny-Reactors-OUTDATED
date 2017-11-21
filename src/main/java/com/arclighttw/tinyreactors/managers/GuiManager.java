@@ -3,14 +3,17 @@ package com.arclighttw.tinyreactors.managers;
 import com.arclighttw.tinyreactors.client.gui.GuiReactantCombiner;
 import com.arclighttw.tinyreactors.client.gui.GuiReactorController;
 import com.arclighttw.tinyreactors.client.gui.GuiReactorEnergyPort;
+import com.arclighttw.tinyreactors.client.gui.GuiReactorInputPort;
 import com.arclighttw.tinyreactors.client.gui.GuiTinyManual;
 import com.arclighttw.tinyreactors.container.ContainerReactantCombiner;
 import com.arclighttw.tinyreactors.container.ContainerReactorController;
 import com.arclighttw.tinyreactors.container.ContainerReactorEnergyPort;
+import com.arclighttw.tinyreactors.container.ContainerReactorInputPort;
 import com.arclighttw.tinyreactors.container.ContainerTinyManual;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactantCombiner;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
+import com.arclighttw.tinyreactors.tiles.TileEntityReactorInputPort;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +25,8 @@ public class GuiManager implements IGuiHandler
 {
 	public static final int REACTOR_CONTROLLER = 0;
 	public static final int REACTOR_ENERGY_PORT = 1;
+	public static final int REACTOR_INPUT_PORT = 4;
+	
 	public static final int REACTANT_COMBINER = 2;
 	
 	public static final int TINY_MANUAL = 3;
@@ -39,6 +44,10 @@ public class GuiManager implements IGuiHandler
 		case REACTOR_ENERGY_PORT:
 			if(tile != null && tile instanceof TileEntityReactorEnergyPort)
 				return new GuiReactorEnergyPort((TileEntityReactorEnergyPort)tile, player.inventory);
+		case REACTOR_INPUT_PORT:
+			if(tile != null && tile instanceof TileEntityReactorInputPort)
+				return new GuiReactorInputPort((TileEntityReactorInputPort)tile, player.inventory);
+		
 		case REACTANT_COMBINER:
 			if(tile != null && tile instanceof TileEntityReactantCombiner)
 				return new GuiReactantCombiner((TileEntityReactantCombiner)tile, player.inventory);
@@ -63,6 +72,10 @@ public class GuiManager implements IGuiHandler
 		case REACTOR_ENERGY_PORT:
 			if(tile != null && tile instanceof TileEntityReactorEnergyPort)
 				return new ContainerReactorEnergyPort((TileEntityReactorEnergyPort)tile, player.inventory);
+		case REACTOR_INPUT_PORT:
+			if(tile != null && tile instanceof TileEntityReactorInputPort)
+				return new ContainerReactorInputPort((TileEntityReactorInputPort)tile, player.inventory);
+			
 		case REACTANT_COMBINER:
 			if(tile != null && tile instanceof TileEntityReactantCombiner)
 				return new ContainerReactantCombiner((TileEntityReactantCombiner)tile, player.inventory);

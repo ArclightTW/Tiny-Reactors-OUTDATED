@@ -19,6 +19,7 @@ tile.reactor_vent.1.name=Gold Reactor Vent
 tile.reactor_vent.2.name=Diamond Reactor Vent
 
 tile.reactor_waste_port.name=Reactor Waste Port
+tile.reactor_input_port.name=Reactor Input Port
 
 tile.degraded_reactant.name=Degraded Reactant
 

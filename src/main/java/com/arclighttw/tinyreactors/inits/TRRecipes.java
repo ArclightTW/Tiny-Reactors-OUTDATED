@@ -129,6 +129,15 @@ public class TRRecipes
 				Character.valueOf('C'), TRBlocks.REACTOR_CASING
 	});
 	
+	public static IRecipe REACTOR_INPUT_PORT = new ShapedRecipe(TRBlocks.REACTOR_INPUT_PORT, new Object[] {
+			"CBC",
+			"I I",
+			"CBC",
+				Character.valueOf('C'), TRBlocks.REACTOR_CASING,
+				Character.valueOf('B'), Blocks.IRON_BARS,
+				Character.valueOf('I'), Items.IRON_INGOT
+	});
+	
 	public static void onRegister()
 	{
 		try
