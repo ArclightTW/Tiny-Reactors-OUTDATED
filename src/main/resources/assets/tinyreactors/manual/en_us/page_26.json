@@ -1,17 +1,17 @@
 {
 	"type":		"text",
-	"id":		"capacitor",
+	"id":		"structure_blocks",
 	
 	"lines": [
 		{
-			"text": "Capacitor",
+			"text": "Structure Blocks",
 			"border": 20,
 			
 			"color": "000000"
 		},
 		
 		{
-			"text": "Capacitors are the main form of power storage in Tiny Reactors. Energy Ports can output power directly into them and the power can then be distributed.\nCapacitors have a higher capacity than Energy Ports.",
+			"text": "Structure Blocks are used to complete the reactor structure.  Reactor Casing and Reactor Glass serve to complete the reactor structure and have no direct functionality.",
 			"border": 20,
 			"y": 15,
 			"wrapped": true

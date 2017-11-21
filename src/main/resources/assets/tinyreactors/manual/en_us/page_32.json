@@ -1,4 +1,44 @@
 {
-	"type":		"cover",
-	"cover":		"back"
+	"type": 		"image",
+
+	"images": [
+		{
+			"sprite": "textures/gui/reactant_combiner.png",
+			"x": 25,
+			"y": 24,
+			"u": 24,
+			"width": 130,
+			"height": 80
+		}
+	],
+	
+	"lines": [
+		{
+			"text": "Reactants",
+			"x-alignment": "center",
+			"x": -37,
+			"y": 27
+		},
+			
+		{
+			"text": "Radio. Ingots",
+			"x-alignment": "center",
+			"x": 37,
+			"y": 27
+		},
+		
+		{
+			"text": "Output",
+			"x-alignment": "center",
+			"x": 0,
+			"y": 95
+		},
+		
+		{
+			"text": "Progress",
+			"x-alignment": "center",
+			"x": 0,
+			"y": 50
+		}
+	]
 }

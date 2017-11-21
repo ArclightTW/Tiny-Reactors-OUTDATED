@@ -14,11 +14,23 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage
 	
 	public TileEntityEnergy()
 	{
-		this(new EnergyStorageRF(0));
+		this(0);
+	}
+	
+	public TileEntityEnergy(int size)
+	{
+		this(size, new EnergyStorageRF(0));
 	}
 	
 	public TileEntityEnergy(EnergyStorageRF energy)
 	{
+		this(0, energy);
+	}
+	
+	public TileEntityEnergy(int size, EnergyStorageRF energy)
+	{
+		super(size);
+		
 		energy.setValidityListener(() -> {
 			sync();
 		});
@@ -67,21 +79,17 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage
 	}
 	
 	@Override
-	public final NBTTagCompound writeToNBT(NBTTagCompound compound)
+	public final void writeToNBTInternal(NBTTagCompound compound)
 	{
-		super.writeToNBT(compound);
 		energy.writeToNBT(compound);
-		writeToNBTInternal(compound);
-		
-		return compound;
+		writeAdditionalNBT(compound);
 	}
 	
 	@Override
-	public final void readFromNBT(NBTTagCompound compound)
+	public final void readFromNBTInternal(NBTTagCompound compound)
 	{
-		super.readFromNBT(compound);
 		energy.readFromNBT(compound);
-		readFromNBTInternal(compound);
+		readAdditionalNBT(compound);
 	}
 	
 	@Override
@@ -103,14 +111,6 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage
 		return super.getCapability(capability, facing);
 	}
 	
-	public void writeToNBTInternal(NBTTagCompound compound)
-	{
-	}
-	
-	public void readFromNBTInternal(NBTTagCompound compound)
-	{
-	}
-	
 	public EnergyStorageRF getEnergyStorage()
 	{
 		return energy;
@@ -129,5 +129,13 @@ public class TileEntityEnergy extends TileEntitySync implements IEnergyStorage
 		}
 		
 		return maxPower > 0;
+	}
+	
+	public void writeAdditionalNBT(NBTTagCompound compound)
+	{
+	}
+	
+	public void readAdditionalNBT(NBTTagCompound compound)
+	{
 	}
 }

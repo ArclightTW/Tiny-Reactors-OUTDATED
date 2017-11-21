@@ -105,22 +105,16 @@ public class TileEntityDegradedReactant extends TileEntitySync
 	}
 	
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	public void writeToNBTInternal(NBTTagCompound compound)
 	{
-		super.writeToNBT(compound);
-		
 		compound.setString("representedBlock", getRepresentedBlock().getRegistryName().toString());
 		compound.setFloat("quality", quality);
 		compound.setInteger("ingotCount", ingotCount);
-		
-		return compound;
 	}
 	
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
+	public void readFromNBTInternal(NBTTagCompound compound)
 	{
-		super.readFromNBT(compound);
-		
 		representedBlock = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("representedBlock")));
 		quality = compound.getFloat("quality");
 		ingotCount = compound.getInteger("ingotCount");

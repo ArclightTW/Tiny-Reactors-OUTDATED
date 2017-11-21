@@ -77,10 +77,8 @@ public class TileEntityReactorController extends TileEntityEnergy
 	}
 	
 	@Override
-	public void update()
+	public void updateInternal()
 	{
-		super.update();
-		
 		if(world == null)
 			return;
 		
@@ -203,7 +201,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 	}
 	
 	@Override
-	public void writeToNBTInternal(NBTTagCompound compound)
+	public void writeAdditionalNBT(NBTTagCompound compound)
 	{
 		multiblock.writeToNBT(compound);
 		temperature.writeToNBT(compound);
@@ -216,7 +214,7 @@ public class TileEntityReactorController extends TileEntityEnergy
 	}
 	
 	@Override
-	public void readFromNBTInternal(NBTTagCompound compound)
+	public void readAdditionalNBT(NBTTagCompound compound)
 	{
 		multiblock.readFromNBT(compound);
 		temperature.readFromNBT(compound);
