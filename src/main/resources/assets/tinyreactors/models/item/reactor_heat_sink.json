@@ -1,9 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "particle": "tinyreactors:blocks/reactor_heat_sink",
-    		"front": "tinyreactors:blocks/reactor_heat_sink",
-        "top": "tinyreactors:blocks/reactor_heat_sink",
-		"side": "tinyreactors:blocks/reactor_heat_sink"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "particle": "tinyreactors:blocks/gold_reactor_vent",
-    		"front": "tinyreactors:blocks/gold_reactor_vent",
-        "top": "tinyreactors:blocks/gold_reactor_vent_closed",
-		"side": "tinyreactors:blocks/gold_reactor_vent"
-    }
-}
