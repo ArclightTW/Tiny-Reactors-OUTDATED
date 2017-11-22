@@ -1,12 +1,15 @@
 package com.arclighttw.tinyreactors.items;
 
 import com.arclighttw.tinyreactors.blocks.BlockTiny;
+import com.arclighttw.tinyreactors.lib.nbt.IStorableContents;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -25,17 +28,24 @@ public class ItemTinyWrench extends ItemTiny
 	{
 		if(!world.isRemote && player.isSneaking())
 		{
-			Block block = world.getBlockState(pos).getBlock();
+			IBlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
 			
 			if(block instanceof BlockTiny)
 			{
 				ItemStack itemstack = new ItemStack(block);
-				// TODO: Apply ItemStack information
+				
+				if(block instanceof IStorableContents)
+				{
+					NBTTagCompound compound = ((IStorableContents)block).saveContents(world, pos, state);
+					itemstack.setTagCompound(compound);
+				}
 				
 				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemstack);
 				world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}
 		}
-		return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
+		
+		return EnumActionResult.SUCCESS;
 	}
 }

@@ -6,14 +6,18 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import com.arclighttw.tinyreactors.lib.EnumFormatting;
+import com.arclighttw.tinyreactors.lib.nbt.IStorableContents;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -77,5 +81,12 @@ public class BlockTiny extends Block implements ITileEntityProvider
 				tooltip.add(additional);
 			}
 		}
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	{
+		if(state.getBlock() instanceof IStorableContents)
+			((IStorableContents)state.getBlock()).loadContents(world, pos, state);
 	}
 }
