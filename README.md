@@ -21,4 +21,4 @@ This branch is a direct continuation of _Tiny Reactors_ and will, hopefully in t
 
 # About
 
-
+__Tiny Reactors__ is a Minecraft mod developed for Minecraft 1.12+.  Versions 0.5.0+ have been developed specifically for Minecraft 1.12.2.  It is a power generation mod that can either be used passively or actively, depending on several configuration settings modifiable by the mod user via the configuration file or in-game Mod Options.
