@@ -1,6 +1,5 @@
 package com.arclighttw.tinyreactors.tiles;
 
-import com.arclighttw.tinyreactors.inits.TRBlocks;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 
 import net.minecraft.block.Block;
@@ -17,6 +16,9 @@ public class TileEntityReactorInputPort extends TileEntitySync
 	public TileEntityReactorInputPort()
 	{
 		super(9);
+		inventory.setInsertionLogic((inv, slot, stack) -> {
+			return ReactorManager.isReactant(stack);
+		});
 	}
 	
 	@Override
@@ -43,24 +45,24 @@ public class TileEntityReactorInputPort extends TileEntitySync
 		if(!controller.getMultiblock().hasSpace())
 			return;
 		
-		for(int i = 0; i < getSizeInventory(); i++)
+		for(int i = 0; i < inventory.getSlots(); i++)
 		{
-			ItemStack stack = getStackInSlot(i);
+			ItemStack itemstack = inventory.getStackInSlot(i);
 			
-			if(stack == ItemStack.EMPTY)
+			if(itemstack == ItemStack.EMPTY)
 				continue;
 			
-			if(!ReactorManager.isReactant(stack))
+			if(!ReactorManager.isReactant(itemstack))
 				continue;
 			
-			controller.getMultiblock().insertReactant(world, Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
+			controller.getMultiblock().insertReactant(world, Block.getBlockFromItem(itemstack.getItem()), itemstack.getItemDamage());
 			
-			stack.setCount(stack.getCount() - 1);
+			itemstack.setCount(itemstack.getCount() - 1);
 			
-			if(stack.getCount() <= 0)
-				stack = ItemStack.EMPTY;
+			if(itemstack.getCount() <= 0)
+				itemstack = ItemStack.EMPTY;
 			
-			setInventorySlotContents(i, stack);
+			inventory.setStackInSlot(i, itemstack);
 			return;
 		}
 	}
@@ -88,12 +90,6 @@ public class TileEntityReactorInputPort extends TileEntitySync
 			int z = compound.getInteger("controllerZ");
 			controllerPos = new BlockPos(x, y, z);
 		}
-	}
-	
-	@Override
-	public String getName()
-	{
-		return TRBlocks.REACTOR_INPUT_PORT.getLocalizedName();
 	}
 	
 	public void setController(TileEntityReactorController controller)
