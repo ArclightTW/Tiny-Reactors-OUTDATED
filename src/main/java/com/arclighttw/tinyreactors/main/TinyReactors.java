@@ -3,6 +3,10 @@ package com.arclighttw.tinyreactors.main;
 import java.io.File;
 
 import com.arclighttw.tinyreactors.config.ModConfig;
+import com.arclighttw.tinyreactors.inits.TRBlocks;
+import com.arclighttw.tinyreactors.inits.TRItems;
+import com.arclighttw.tinyreactors.inits.TRRecipes;
+import com.arclighttw.tinyreactors.inits.TRSounds;
 import com.arclighttw.tinyreactors.lib.registry.ModRegistry;
 import com.arclighttw.tinyreactors.proxy.CommonProxy;
 
@@ -24,9 +28,14 @@ public class TinyReactors extends ModRegistry
 	@Mod.EventHandler
 	public void onPreInitialization(FMLPreInitializationEvent event)
 	{
-		proxy.onPreInitialization(event);
-		
 		ModConfig.onPreInitialization(new File(event.getModConfigurationDirectory(), "tinyreactors.cfg"));
+		
+		register(TRBlocks.class);
+		register(TRItems.class);
+		register(TRRecipes.class);
+		register(TRSounds.class);
+		
+		proxy.onPreInitialization(event);
 	}
 	
 	@Mod.EventHandler
