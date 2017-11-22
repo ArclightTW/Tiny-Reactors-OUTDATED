@@ -1,0 +1,54 @@
+# Blocks
+
+tile.reactor_casing.name=Reactor Casing
+tile.reactor_glass.name=Reactor Glass
+
+tile.reactor_controller.name=Reactor Controller
+tile.reactor_controller.desc=Only 1 Controller per Reactor Structure.
+
+tile.reactor_energy_port.name=Reactor Energy Port
+tile.reactor_energy_port.desc=At least 1 Energy Port per Reactor Structure.
+
+tile.reactor_heat_sink.name=Reactor Heat Sink
+tile.reactor_heat_sink.desc=Increase the Reactor Structure's temperature limit by 500°C.
+
+tile.reactor_vent.name=Reactor Vent
+tile.reactor_vent.desc=Cool the Reactor Structure by releasing excess heat.
+
+tile.reactor_input_port.name=Reactor Input Port
+tile.reactor_input_port.desc=Automatically fill the Reactor Structure with reactants.
+
+tile.reactor_waste_port.name=Reactor Waste Port
+tile.reactor_waste_port.desc=Produce Radioactive Ingots to repair degraded reactants.
+
+tile.capacitor.name=Capacitor
+tile.capacitor.desc=An external battery box to store generated RF.
+
+tile.reactant_combiner.name=Reactant Combiner
+tile.reactant_combiner.desc=Combine degraded reactants and Radioactive Ingots to replenish their quality.
+
+tile.degraded_reactant.name=Degraded Reactant
+
+# Items
+
+item.tiny_manual.name=Tiny Manual
+item.tiny_manual.desc=An in-depth walkthrough building a valid Reactor Structure.
+
+item.tiny_wrench.name=Tiny Wrench
+item.tiny_wrench.desc=Shift-click a Tiny Reactors block to pick it up, retaining all contents.
+
+item.radioactive_ingot.name=Radioactive Ingot
+item.radioactive_ingot.desc=Combine degraded reactants with these in a Reactant Combiner to replenish their quality.
+
+item.cooling_component.name=Cooling Component
+item.cooling_component.desc=Useful in several crafting recipes.
+
+# Tooltips
+
+tooltip.tinyreactors.additional=Press Shift for additional information.
+
+tooltip.tinyreactors.positions=Valid Positions:
+tooltip.tinyreactors.positions.everywhere=Everywhere
+tooltip.tinyreactors.positions.walls=External Walls
+tooltip.tinyreactors.positions.pillars=Corner Pillars
+tooltip.tinyreactors.positions.roof=Roof Interior

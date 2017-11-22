@@ -1,0 +1,10 @@
+{
+	"parent": "block/orientable",
+	
+	"textures": {
+		"front": "tinyreactors:blocks/reactor_casing",
+		
+		"top": "tinyreactors:blocks/reactor_casing",
+		"side": "tinyreactors:blocks/reactor_casing"
+	}
+}
