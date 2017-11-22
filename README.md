@@ -1,3 +1,5 @@
+__N.B. This branch is due to be deprecated in favour of v1.0.  Things in this branch are broken beyond repair.__
+
 # Tiny Reactors
 Build a tiny reactor... Or a massive one!
 
