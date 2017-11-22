@@ -1,4 +1,4 @@
-package com.arclighttw.tinyreactors.lib.items;
+package com.arclighttw.tinyreactors.lib.utils;
 
 import net.minecraft.item.ItemBlock;
 

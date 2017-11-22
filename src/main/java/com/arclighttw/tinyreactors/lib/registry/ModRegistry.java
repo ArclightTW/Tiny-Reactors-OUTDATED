@@ -3,8 +3,8 @@ package com.arclighttw.tinyreactors.lib.registry;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-import com.arclighttw.tinyreactors.lib.items.IItemProvider;
 import com.arclighttw.tinyreactors.lib.models.IModelProvider;
+import com.arclighttw.tinyreactors.lib.utils.IItemProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -17,13 +17,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ModRegistry
 {
-	private final InternalRegistry registry;
-	
-	public ModRegistry()
-	{
-		registry = new InternalRegistry();
-	}
-	
 	public void register(Class<?> clazz)
 	{
 		try
@@ -46,14 +39,15 @@ public class ModRegistry
 					register((SoundEvent)obj, name);
 			}
 		}
-		catch(IllegalAccessException e)
+		catch(IllegalAccessException ex)
 		{
+			ex.printStackTrace();
 		}
 	}
 	
 	private void register(Block block, String name)
 	{
-		registry.registerBlock(block, name);
+		InternalRegistry.registerBlock(block, name);
 		
 		ItemBlock item;
 		
@@ -65,33 +59,33 @@ public class ModRegistry
 		register(item, name);
 		
 		if(block instanceof ITileEntityProvider)
-			registry.registerTileEntity(((ITileEntityProvider)block).createNewTileEntity(null, -1), name);
+			InternalRegistry.registerTileEntity(((ITileEntityProvider)block).createNewTileEntity(null, -1), name);
 		
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
 			if(block instanceof IModelProvider)
-				registry.registerModel(((IModelProvider)block).createModel(), name, "normal");
+				InternalRegistry.registerModel(((IModelProvider)block).createModel(), name, "normal");
 		}
 	}
 	
 	private void register(Item item, String name)
 	{
-		registry.registerItem(item, name);
+		InternalRegistry.registerItem(item, name);
 		
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		{
 			if(item instanceof IModelProvider)
-				registry.registerModel(((IModelProvider)item).createModel(), name, "inventory");
+				InternalRegistry.registerModel(((IModelProvider)item).createModel(), name, "inventory");
 		}
 	}
 	
 	private void register(IRecipe recipe, String name)
 	{
-		registry.registerRecipe(recipe, name);
+		InternalRegistry.registerRecipe(recipe, name);
 	}
 	
 	private void register(SoundEvent sound, String name)
 	{
-		registry.registerSound(sound, name);
+		InternalRegistry.registerSound(sound, name);
 	}
 }
