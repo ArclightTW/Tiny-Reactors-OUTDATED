@@ -87,6 +87,6 @@ public class BlockTiny extends Block implements ITileEntityProvider
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
 		if(state.getBlock() instanceof IStorableContents)
-			((IStorableContents)state.getBlock()).loadContents(world, pos, state);
+			((IStorableContents)state.getBlock()).loadContents(stack, world, pos, state);
 	}
 }
