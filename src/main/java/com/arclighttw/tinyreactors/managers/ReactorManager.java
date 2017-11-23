@@ -34,11 +34,6 @@ public class ReactorManager
 			CONTROLLERS.add(pos);
 	}
 	
-	public static void removeReactor(BlockPos pos)
-	{
-		CONTROLLERS.remove(pos);
-	}
-	
 	public static void validateAll(World world, BlockPos added, IBlockState addedBlock, BlockPos removed)
 	{
 		List<BlockPos> remove = Lists.newArrayList();
@@ -64,5 +59,10 @@ public class ReactorManager
 		
 		((TileEntityReactorController)tile).validateController(added, addedBlock, removed);
 		return true;
+	}
+	
+	private static void removeReactor(BlockPos pos)
+	{
+		CONTROLLERS.remove(pos);
 	}
 }

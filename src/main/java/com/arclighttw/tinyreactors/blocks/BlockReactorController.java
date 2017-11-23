@@ -1,14 +1,19 @@
 package com.arclighttw.tinyreactors.blocks;
 
 import com.arclighttw.tinyreactors.lib.nbt.IStorableContents;
+import com.arclighttw.tinyreactors.main.TinyReactors;
+import com.arclighttw.tinyreactors.managers.GuiHandler;
 import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -27,9 +32,35 @@ public class BlockReactorController extends BlockReactorComponent implements ISt
 	}
 	
 	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if(!world.isRemote)
+		{
+			// TODO: Remove unnecessary code.
+			if(player.isSneaking())
+			{
+				TileEntityReactorController controller = (TileEntityReactorController)world.getTileEntity(pos);
+				controller.setActive(!controller.isActive());
+			}
+			else
+				player.openGui(TinyReactors.instance, GuiHandler.REACTOR_CONTROLLER, world, pos.getX(), pos.getY(), pos.getZ());
+		}
+		
+		return true;
+	}
+	
+	@Override
 	public NBTTagCompound saveContents(World world, BlockPos pos, IBlockState state)
 	{
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if(tile == null || !(tile instanceof TileEntityReactorController))
+			return null;
+		
+		TileEntityReactorController controller = (TileEntityReactorController)tile;
+		
 		NBTTagCompound compound = new NBTTagCompound();
+		controller.writeToNBT(compound);
 		return compound;
 	}
 	
@@ -39,7 +70,13 @@ public class BlockReactorController extends BlockReactorComponent implements ISt
 		if(!itemstack.hasTagCompound())
 			return;
 		
-		NBTTagCompound compound = itemstack.getTagCompound();
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if(tile == null || !(tile instanceof TileEntityReactorController))
+			return;
+		
+		TileEntityReactorController controller = (TileEntityReactorController)tile;
+		controller.readFromNBT(itemstack.getTagCompound());
 	}
 	
 	@Override
@@ -47,12 +84,5 @@ public class BlockReactorController extends BlockReactorComponent implements ISt
 	{
 		ReactorManager.addReactor(snapshot);
 		super.onReactorComponentPlaced(world, snapshot);
-	}
-	
-	@Override
-	public void onReactorComponentRemoved(World world, BlockPos pos)
-	{
-		ReactorManager.removeReactor(pos);
-		super.onReactorComponentRemoved(world, pos);
 	}
 }

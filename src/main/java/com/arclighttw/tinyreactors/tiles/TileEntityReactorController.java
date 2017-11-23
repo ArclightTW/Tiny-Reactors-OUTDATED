@@ -6,17 +6,24 @@ import com.arclighttw.tinyreactors.managers.ReactorManager;
 import com.arclighttw.tinyreactors.storage.MultiblockStructureReactor;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityReactorController extends TileEntity
+public class TileEntityReactorController extends TileEntity implements ITickable
 {
-	private MultiblockStructureReactor structure;
+	private final MultiblockStructureReactor structure;
+	
+	private boolean active;
 	
 	public TileEntityReactorController()
 	{
-		structure = new MultiblockStructureReactor();
+		structure = new MultiblockStructureReactor(1000000, 2500);
+		structure.setEnergyListener((energy) -> {
+			// TODO: Do something when energy value changes.
+		});
 		structure.setValidityListener((valid) -> {
 			// TODO: Valid/Invalid Reactor should perform some form of action.
 		});
@@ -34,11 +41,17 @@ public class TileEntityReactorController extends TileEntity
 		structure.addRoofInteriorBlock(TRBlocks.REACTOR_VENT);
 		
 		structure.addBaseBlock(TRBlocks.REACTOR_CASING);
+		
+		structure.addInternalBlock(Blocks.COAL_ORE);
 	}
 	
-	public boolean validateController(BlockPos added, IBlockState addedBlock, BlockPos removed)
+	@Override
+	public void update()
 	{
-		return structure.validate(getWorld(), getPos(), added, addedBlock, removed);
+		if(!active)
+			return;
+		
+		structure.getEnergy().receiveEnergy(structure.getAvailableYield(), false);
 	}
 	
 	@Override
@@ -46,6 +59,8 @@ public class TileEntityReactorController extends TileEntity
 	{
 		super.writeToNBT(compound);
 		NBTHelper.writeToNBT(compound, "structure", structure);
+		
+		compound.setBoolean("active", active);
 		return compound;
 	}
 	
@@ -55,6 +70,31 @@ public class TileEntityReactorController extends TileEntity
 		super.readFromNBT(compound);
 		NBTHelper.readFromNBT(compound, "structure", structure);
 		
+		setActive(compound.getBoolean("active"));
+
 		ReactorManager.addReactor(pos, this);
+	}
+	
+	public void setActive(boolean active)
+	{
+		if(!structure.isValid())
+			active = false;
+		
+		this.active = active;
+	}
+	
+	public boolean validateController(BlockPos added, IBlockState addedBlock, BlockPos removed)
+	{
+		return structure.validate(getWorld(), getPos(), added, addedBlock, removed);
+	}
+	
+	public boolean isActive()
+	{
+		return active;
+	}
+	
+	public MultiblockStructureReactor getStructure()
+	{
+		return structure;
 	}
 }
