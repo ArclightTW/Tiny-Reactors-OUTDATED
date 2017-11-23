@@ -47,11 +47,25 @@ item.cooling_component.desc=Useful in several crafting recipes.
 
 tooltip.tinyreactors.additional=Press Shift for additional information.
 
-tooltip.tinyreactors.positions=Valid Positions:
+tooltip.tinyreactors.positions=Valid Positions
 tooltip.tinyreactors.positions.everywhere=Everywhere
 tooltip.tinyreactors.positions.walls=External Walls
 tooltip.tinyreactors.positions.pillars=Corner Pillars
 tooltip.tinyreactors.positions.roof=Roof Interior
+
+# Gui
+
+gui.tinyreactors.energy.current=Energy
+gui.tinyreactors.energy.capacity=Capacity
+
+gui.tinyreactors.temperature.current=Temperature
+gui.tinyreactors.temperature.limit=Limit
+
+gui.tinyreactors.controller.active=Running...
+gui.tinyreactors.controller.inactive=Disabled
+gui.tinyreactors.controller.invalid=Invalid Structure
+gui.tinyreactors.controller.producing=Producing
+gui.tinyreactors.controller.multiplier=Multiplier
 
 # Buttons
 
