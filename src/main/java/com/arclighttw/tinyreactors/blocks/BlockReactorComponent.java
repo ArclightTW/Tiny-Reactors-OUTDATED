@@ -44,7 +44,7 @@ public class BlockReactorComponent extends BlockTiny implements IReactorComponen
 	
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
 		{
-			tooltip.add(TranslationHelper.translate("tooltip.tinyreactors.positions"));
+			tooltip.add(TranslationHelper.translate("tooltip.tinyreactors.positions") + ":");
 			
 			if(additionalTooltip != null)
 				for(String line : additionalTooltip)
