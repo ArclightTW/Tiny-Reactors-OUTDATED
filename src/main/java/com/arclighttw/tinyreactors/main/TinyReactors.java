@@ -8,6 +8,7 @@ import com.arclighttw.tinyreactors.inits.TRItems;
 import com.arclighttw.tinyreactors.inits.TRRecipes;
 import com.arclighttw.tinyreactors.inits.TRSounds;
 import com.arclighttw.tinyreactors.lib.registry.ModRegistry;
+import com.arclighttw.tinyreactors.managers.GuiHandler;
 import com.arclighttw.tinyreactors.proxy.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MINECRAFT, dependencies = Reference.DEPENDENCIES, guiFactory = Reference.GUI_FACTORY)
 public class TinyReactors extends ModRegistry
@@ -42,6 +44,8 @@ public class TinyReactors extends ModRegistry
 	public void onInitialization(FMLInitializationEvent event)
 	{
 		proxy.onInitialization(event);
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 	
 	@Mod.EventHandler
