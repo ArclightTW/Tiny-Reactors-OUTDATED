@@ -10,9 +10,6 @@ public class ContainerReactorEnergyPort extends Container
 {
 	private final TileEntityReactorEnergyPort energyPort;
 	
-	private int energy;
-	private int capacity;
-	
 	public ContainerReactorEnergyPort(EntityPlayer player, TileEntityReactorEnergyPort energyPort)
 	{
 		this.energyPort = energyPort;
@@ -27,15 +24,9 @@ public class ContainerReactorEnergyPort extends Container
 		
 		for(IContainerListener listener : listeners)
 		{
-			if(energy != energyPort.getEnergy().getEnergyStored())
-				listener.sendWindowProperty(this, 0, energyPort.getEnergy().getEnergyStored());
-			
-			if(capacity != energyPort.getEnergy().getMaxEnergyStored())
-				listener.sendWindowProperty(this, 1, energyPort.getEnergy().getMaxEnergyStored());
+			listener.sendWindowProperty(this, 0, energyPort.getEnergy().getEnergyStored());
+			listener.sendWindowProperty(this, 1, energyPort.getEnergy().getMaxEnergyStored());
 		}
-		
-		energy = energyPort.getEnergy().getEnergyStored();
-		capacity = energyPort.getEnergy().getMaxEnergyStored();
 	}
 	
 	@Override

@@ -28,6 +28,7 @@ public class ContainerReactorController extends Container
 			listener.sendWindowProperty(this, 1, controller.getStructure().getEnergy().getMaxEnergyStored());
 			listener.sendWindowProperty(this, 2, controller.isActive() ? 1 : 0);
 			listener.sendWindowProperty(this, 3, controller.getStructure().isValid() ? 1 : 0);
+			listener.sendWindowProperty(this, 4, controller.getStructure().getAvailableYield());
 		}
 	}
 	
@@ -48,6 +49,9 @@ public class ContainerReactorController extends Container
 			break;
 		case 3:
 			controller.getStructure().setValid(data == 1);
+			break;
+		case 4:
+			controller.getStructure().setAvailableYield(data);
 			break;
 		}
 	}
