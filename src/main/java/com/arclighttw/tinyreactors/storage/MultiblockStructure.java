@@ -1,10 +1,13 @@
 package com.arclighttw.tinyreactors.storage;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import com.arclighttw.tinyreactors.helpers.NBTHelper;
 import com.arclighttw.tinyreactors.lib.nbt.INBTSerializable;
+import com.google.common.collect.Lists;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,10 +17,39 @@ import net.minecraft.world.World;
 
 public class MultiblockStructure  implements INBTSerializable
 {
-	private BlockPos start, end;
-	private boolean isValid;
+	protected BlockPos start, end;
+	protected boolean isValid;
 	
 	private Consumer<Boolean> listener;
+	
+	private List<Block> baseCorners;
+	private List<Block> baseEdges;
+	private List<Block> baseInteriors;
+	
+	private List<Block> roofCorners;
+	private List<Block> roofEdges;
+	private List<Block> roofInteriors;
+	
+	private List<Block> wallCorners;
+	private List<Block> walls;
+	
+	private List<Block> internalBlocks;
+	
+	public MultiblockStructure()
+	{
+		baseCorners = Lists.newArrayList();
+		baseEdges = Lists.newArrayList();
+		baseInteriors = Lists.newArrayList();
+		
+		roofCorners = Lists.newArrayList();
+		roofEdges = Lists.newArrayList();
+		roofInteriors = Lists.newArrayList();
+		
+		wallCorners = Lists.newArrayList();
+		walls = Lists.newArrayList();
+		
+		internalBlocks = Lists.newArrayList();
+	}
 	
 	@SuppressWarnings("unchecked")
 	public <T extends MultiblockStructure> T setValidityListener(Consumer<Boolean> listener)
@@ -95,7 +127,7 @@ public class MultiblockStructure  implements INBTSerializable
 		// Minimum valid reactor height is 3
 		if(yStart - yEnd < 2)
 		{
-			setValid(false);
+			setValid(world, origin, false);
 			return false;
 		}
 		
@@ -116,7 +148,7 @@ public class MultiblockStructure  implements INBTSerializable
 		
 		if(currentDirection == null)
 		{
-			setValid(false);
+			setValid(world, origin, false);
 			return false;
 		}
 		
@@ -176,7 +208,7 @@ public class MultiblockStructure  implements INBTSerializable
 		// Only one wall has been built of the structure
 		if(!directionChanged)
 		{
-			setValid(false);
+			setValid(world, origin, false);
 			return false;
 		}
 		
@@ -225,7 +257,7 @@ public class MultiblockStructure  implements INBTSerializable
 						// Air blocks are not permitted anywhere in the roof
 						if(currentState.getBlock() == Blocks.AIR)
 						{
-							setValid(false);
+							setValid(world, origin, false);
 							return false;
 						}
 						
@@ -234,7 +266,7 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(!isValidRoofCorner(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -243,7 +275,7 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(!isValidRoofEdge(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -252,7 +284,7 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(!isValidRoofInterior(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -263,7 +295,7 @@ public class MultiblockStructure  implements INBTSerializable
 						// Air blocks are not permitted anywhere in the base
 						if(currentState.getBlock() == Blocks.AIR)
 						{
-							setValid(false);
+							setValid(world, origin, false);
 							return false;
 						}
 						
@@ -272,7 +304,7 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(!isValidBaseCorner(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -281,7 +313,7 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(!isValidBaseEdge(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -290,7 +322,7 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(!isValidBaseInterior(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -303,13 +335,13 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(currentState.getBlock() == Blocks.AIR)
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 							
 							if(!isValidWallCorner(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -318,13 +350,13 @@ public class MultiblockStructure  implements INBTSerializable
 						{
 							if(currentState.getBlock() == Blocks.AIR)
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 							
 							if(!isValidWall(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -338,7 +370,7 @@ public class MultiblockStructure  implements INBTSerializable
 							
 							if(!isValidInternalBlock(world, currentPos, currentState))
 							{
-								setValid(false);
+								setValid(world, origin, false);
 								return false;
 							}
 						}
@@ -347,7 +379,7 @@ public class MultiblockStructure  implements INBTSerializable
 			}
 		}
 
-		onReactorValidated(world);
+		onReactorValidated(world, origin);
 		return isValid;
 	}
 	
@@ -360,7 +392,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidWall(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return walls.contains(state.getBlock());
 	}
 	
 	/**
@@ -372,7 +404,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidWallCorner(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return wallCorners.contains(state.getBlock());
 	}
 	
 	/**
@@ -384,7 +416,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidRoofCorner(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return roofCorners.contains(state.getBlock());
 	}
 	
 	/**
@@ -396,7 +428,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidRoofEdge(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return roofEdges.contains(state.getBlock());
 	}
 	
 	/**
@@ -408,7 +440,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidRoofInterior(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return roofInteriors.contains(state.getBlock());
 	}
 	
 	/**
@@ -420,7 +452,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidBaseCorner(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return baseCorners.contains(state.getBlock());
 	}
 	
 	/**
@@ -432,7 +464,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidBaseEdge(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return baseEdges.contains(state.getBlock());
 	}
 	
 	/**
@@ -444,7 +476,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidBaseInterior(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return baseInteriors.contains(state.getBlock());
 	}
 	
 	/**
@@ -456,7 +488,7 @@ public class MultiblockStructure  implements INBTSerializable
 	 */
 	public boolean isValidInternalBlock(World world, BlockPos pos, IBlockState state)
 	{
-		return false;
+		return internalBlocks.contains(state.getBlock());
 	}
 
 	/**
@@ -500,17 +532,34 @@ public class MultiblockStructure  implements INBTSerializable
 	 * Called after a reactor is identified as valid.
 	 * @param world
 	 */
-	public void onReactorValidated(World world)
+	public void onReactorValidated(World world, BlockPos origin)
 	{
-		setValid(true);
+		setValid(world, origin, true);
 	}
 	
+	/**
+	 * Called when setValid is triggered.
+	 */
+	public boolean onValidityChanged(World world, BlockPos origin, boolean valid)
+	{
+		return valid;
+	}
+	
+	public final void setValid(World world, BlockPos origin, boolean valid)
+	{
+		isValid = onValidityChanged(world, origin, valid);
+		
+		if(listener != null)
+			listener.accept(isValid);
+	}
+	
+	@Deprecated
 	public final void setValid(boolean valid)
 	{
 		isValid = valid;
 		
 		if(listener != null)
-			listener.accept(valid);
+			listener.accept(isValid);
 	}
 	
 	public final BlockPos getStart()
@@ -528,7 +577,78 @@ public class MultiblockStructure  implements INBTSerializable
 		return isValid;
 	}
 	
-	public final IBlockState modifyState(World world, BlockPos pos, BlockPos added, IBlockState addedBlock, BlockPos removed)
+	public void addBaseCornerBlock(Block block)
+	{
+		baseCorners.add(block);
+	}
+	
+	public void addBaseEdgeBlock(Block block)
+	{
+		baseEdges.add(block);
+	}
+	
+	public void addBaseInteriorBlock(Block block)
+	{
+		baseInteriors.add(block);
+	}
+	
+	public void addBaseBlock(Block block)
+	{
+		addBaseCornerBlock(block);
+		addBaseEdgeBlock(block);
+		addBaseInteriorBlock(block);
+	}
+	
+	public void addRoofCornerBlock(Block block)
+	{
+		roofCorners.add(block);
+	}
+	
+	public void addRoofEdgeBlock(Block block)
+	{
+		roofEdges.add(block);
+	}
+	
+	public void addRoofInteriorBlock(Block block)
+	{
+		roofInteriors.add(block);
+	}
+	
+	public void addRoofBlock(Block block)
+	{
+		addRoofCornerBlock(block);
+		addRoofEdgeBlock(block);
+		addRoofInteriorBlock(block);
+	}
+	
+	public void addWallCornerBlock(Block block)
+	{
+		wallCorners.add(block);
+	}
+	
+	public void addWallBlock(Block block)
+	{
+		walls.add(block);
+	}
+	
+	public void addInternalBlock(Block block)
+	{
+		internalBlocks.add(block);
+	}
+	
+	public void addAccessibleStructureBlock(Block block)
+	{
+		addRoofCornerBlock(block);
+		addRoofEdgeBlock(block);
+		
+		addBaseCornerBlock(block);
+		addBaseEdgeBlock(block);
+		
+		addWallCornerBlock(block);
+		addWallBlock(block);
+	}
+	
+	private final IBlockState modifyState(World world, BlockPos pos, BlockPos added, IBlockState addedBlock, BlockPos removed)
 	{
 		IBlockState state;
 		
@@ -542,7 +662,7 @@ public class MultiblockStructure  implements INBTSerializable
 		return state;
 	}
 	
-	public final boolean areEqual(BlockPos left, BlockPos right)
+	private final boolean areEqual(BlockPos left, BlockPos right)
 	{
 		if(left == null && right == null)
 			return true;

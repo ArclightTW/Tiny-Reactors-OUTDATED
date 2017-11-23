@@ -1,198 +1,151 @@
 package com.arclighttw.tinyreactors.storage;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
+import com.arclighttw.tinyreactors.helpers.NBTHelper;
+import com.arclighttw.tinyreactors.inits.TRBlocks;
+import com.arclighttw.tinyreactors.lib.reactor.IReactorComponent;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class MultiblockStructureReactor extends MultiblockStructure
 {
-	private List<Block> baseCorners;
-	private List<Block> baseEdges;
-	private List<Block> baseInteriors;
+	private List<BlockPos> controllers;
 	
-	private List<Block> roofCorners;
-	private List<Block> roofEdges;
-	private List<Block> roofInteriors;
+	private Map<BlockPos, IReactorComponent> energyPorts;
+	private Map<BlockPos, IReactorComponent> inputPorts;
+	private Map<BlockPos, IReactorComponent> wastePorts;
 	
-	private List<Block> wallCorners;
-	private List<Block> walls;
+	private Map<BlockPos, IReactorComponent> vents;
 	
-	private List<Block> internalBlocks;
+	private EnergyStorage energy;
+	private TemperatureStorage temperature;
 	
-	public MultiblockStructureReactor()
+	private int availableYield;
+	
+	public MultiblockStructureReactor(int energyCapacity, int temperatureLimit)
 	{
-		baseCorners = Lists.newArrayList();
-		baseEdges = Lists.newArrayList();
-		baseInteriors = Lists.newArrayList();
-		
-		roofCorners = Lists.newArrayList();
-		roofEdges = Lists.newArrayList();
-		roofInteriors = Lists.newArrayList();
-		
-		wallCorners = Lists.newArrayList();
-		walls = Lists.newArrayList();
-		
-		internalBlocks = Lists.newArrayList();
+		energy = new EnergyStorage(energyCapacity);
+		temperature = new TemperatureStorage(temperatureLimit);
 	}
 	
 	@Override
 	public void onPreCalculation(World world)
 	{
-		// TODO Auto-generated method stub
+		controllers = Lists.newArrayList();
+		
+		energyPorts = Maps.newConcurrentMap();
+		inputPorts = Maps.newConcurrentMap();
+		wastePorts = Maps.newConcurrentMap();
+		
+		vents = Maps.newConcurrentMap();
+		
+		availableYield = 0;
 	}
 	
 	@Override
-	public void onReactorValidated(World world)
+	public boolean onValidityChanged(World world, BlockPos origin, boolean valid)
 	{
-		setValid(true);
-		// TODO Auto-generated method stub
+		if(valid)
+		{
+			if(controllers.size() > 0)
+				valid = false;
+			
+			if(energyPorts.size() == 0)
+				valid = false;
+		}
+		
+		if(energyPorts != null)
+			for(Map.Entry<BlockPos, IReactorComponent> energyPort : energyPorts.entrySet())
+				energyPort.getValue().onStructureValidityChanged(world, energyPort.getKey(), origin, valid);
+		
+		if(inputPorts != null)
+			for(Map.Entry<BlockPos, IReactorComponent> inputPort : inputPorts.entrySet())
+				inputPort.getValue().onStructureValidityChanged(world, inputPort.getKey(), origin, valid);
+		
+		if(wastePorts != null)
+			for(Map.Entry<BlockPos, IReactorComponent> wastePort : wastePorts.entrySet())
+				wastePort.getValue().onStructureValidityChanged(world, wastePort.getKey(), origin, valid);
+		
+		if(vents != null)
+			for(Map.Entry<BlockPos, IReactorComponent> vent : vents.entrySet())
+				vent.getValue().onStructureValidityChanged(world, vent.getKey(), origin, valid);
+		
+		return valid;
 	}
 	
 	@Override
 	public void onBlockDetected(World world, BlockPos pos, IBlockState state)
 	{
-		// TODO Auto-generated method stub
+		Block block = state.getBlock();
+		
+		if(block == TRBlocks.REACTOR_ENERGY_PORT && block instanceof IReactorComponent)
+			energyPorts.put(pos, (IReactorComponent)block);
+		
+		if(block == TRBlocks.REACTOR_INPUT_PORT && block instanceof IReactorComponent)
+			inputPorts.put(pos, (IReactorComponent)block);
+		
+		if(block == TRBlocks.REACTOR_WASTE_PORT && block instanceof IReactorComponent)
+			wastePorts.put(pos, (IReactorComponent)block);
+		
+		if(block == TRBlocks.REACTOR_VENT && block instanceof IReactorComponent)
+			vents.put(pos, (IReactorComponent)block);
 	}
 	
 	@Override
 	public void onInternalBlockDetected(World world, BlockPos pos, IBlockState state)
 	{
-		// TODO Auto-generated method stub
-	}
-	
-	@Override
-	public boolean isAirPermitted()
-	{
-		return true;
-	}
-	
-	@Override
-	public boolean isValidInternalBlock(World world, BlockPos pos, IBlockState state)
-	{
-		return internalBlocks.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidBaseCorner(World world, BlockPos pos, IBlockState state)
-	{
-		return baseCorners.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidBaseEdge(World world, BlockPos pos, IBlockState state)
-	{
-		return baseEdges.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidBaseInterior(World world, BlockPos pos, IBlockState state)
-	{
-		return baseInteriors.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidRoofCorner(World world, BlockPos pos, IBlockState state)
-	{
-		return roofCorners.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidRoofEdge(World world, BlockPos pos, IBlockState state)
-	{
-		return roofEdges.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidRoofInterior(World world, BlockPos pos, IBlockState state)
-	{
-		return roofInteriors.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidWallCorner(World world, BlockPos pos, IBlockState state)
-	{
-		return wallCorners.contains(state.getBlock());
-	}
-	
-	@Override
-	public boolean isValidWall(World world, BlockPos pos, IBlockState state)
-	{
-		return walls.contains(state.getBlock());
-	}
-	
-	public void addBaseCornerBlock(Block block)
-	{
-		baseCorners.add(block);
-	}
-	
-	public void addBaseEdgeBlock(Block block)
-	{
-		baseEdges.add(block);
-	}
-	
-	public void addBaseInteriorBlock(Block block)
-	{
-		baseInteriors.add(block);
-	}
-	
-	public void addBaseBlock(Block block)
-	{
-		addBaseCornerBlock(block);
-		addBaseEdgeBlock(block);
-		addBaseInteriorBlock(block);
-	}
-	
-	public void addRoofCornerBlock(Block block)
-	{
-		roofCorners.add(block);
-	}
-	
-	public void addRoofEdgeBlock(Block block)
-	{
-		roofEdges.add(block);
-	}
-	
-	public void addRoofInteriorBlock(Block block)
-	{
-		roofInteriors.add(block);
-	}
-	
-	public void addRoofBlock(Block block)
-	{
-		addRoofCornerBlock(block);
-		addRoofEdgeBlock(block);
-		addRoofInteriorBlock(block);
-	}
-	
-	public void addWallCornerBlock(Block block)
-	{
-		wallCorners.add(block);
-	}
-	
-	public void addWallBlock(Block block)
-	{
-		walls.add(block);
-	}
-	
-	public void addInternalBlock(Block block)
-	{
-		internalBlocks.add(block);
-	}
-	
-	public void addAccessibleStructureBlock(Block block)
-	{
-		addRoofCornerBlock(block);
-		addRoofEdgeBlock(block);
+		if(state.getBlock() == Blocks.AIR)
+			return;
 		
-		addBaseCornerBlock(block);
-		addBaseEdgeBlock(block);
+		// TODO: Set proper yield values (this is so wrong).
+		availableYield += 64;
+	}
+	
+	@Override
+	public void serialize(NBTTagCompound compound)
+	{
+		super.serialize(compound);
+		NBTHelper.writeToNBT(compound, "energy", energy);
 		
-		addWallCornerBlock(block);
-		addWallBlock(block);
+		compound.setInteger("availableYield", availableYield);
+	}
+	
+	@Override
+	public void deserialize(NBTTagCompound compound)
+	{
+		super.deserialize(compound);
+		NBTHelper.readFromNBT(compound, "energy", energy);
+		
+		availableYield = compound.getInteger("availableYield");
+	}
+	
+	public void setEnergyListener(Consumer<Integer> listener)
+	{
+		energy.setValueListener(listener);
+	}
+	
+	public EnergyStorage getEnergy()
+	{
+		return energy;
+	}
+	
+	public TemperatureStorage getTemperature()
+	{
+		return temperature;
+	}
+	
+	public int getAvailableYield()
+	{
+		return availableYield;
 	}
 }
