@@ -17,6 +17,7 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 	private final MultiblockStructureReactor structure;
 	
 	private boolean active;
+	private boolean warming;
 	
 	public TileEntityReactorController()
 	{
@@ -51,14 +52,20 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 	@Override
 	public void update()
 	{
-		if(!active)
+		if(active)
 		{
-			structure.getTemperature().extractHeat(structure.getHeatProduced(), false);
+			structure.getEnergy().receiveEnergy(structure.getEnergyProduced(), false);
+			structure.getTemperature().receiveHeat(structure.getHeatProduced(), false);
 			return;
 		}
 		
-		structure.getEnergy().receiveEnergy(structure.getEnergyProduced(), false);
-		structure.getTemperature().receiveHeat(structure.getHeatProduced(), false);
+		if(warming)
+		{
+			structure.getTemperature().receiveHeat(structure.getHeatProduced() * 4, false);
+			return;
+		}
+
+		structure.getTemperature().extractHeat(structure.getHeatProduced(), false);
 	}
 	
 	@Override
@@ -68,6 +75,8 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 		NBTHelper.writeToNBT(compound, "structure", structure);
 		
 		compound.setBoolean("active", active);
+		compound.setBoolean("warming", warming);
+		
 		return compound;
 	}
 	
@@ -78,26 +87,40 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 		NBTHelper.readFromNBT(compound, "structure", structure);
 		
 		setActive(compound.getBoolean("active"));
+		setWarming(compound.getBoolean("warming"));
 
 		ReactorManager.addReactor(pos, this);
 	}
 	
 	public void setActive(boolean active)
 	{
-		if(!structure.isValid())
+		if(!structure.isValid() || warming)
 			active = false;
 		
 		this.active = active;
+	}
+
+	public boolean isActive()
+	{
+		return active;
+	}
+	
+	public void setWarming(boolean warming)
+	{
+		if(!structure.isValid() || active)
+			warming = false;
+		
+		this.warming = warming;
+	}
+	
+	public boolean isWarming()
+	{
+		return warming;
 	}
 	
 	public boolean validateController(BlockPos added, IBlockState addedBlock, BlockPos removed)
 	{
 		return structure.validate(getWorld(), getPos(), added, addedBlock, removed);
-	}
-	
-	public boolean isActive()
-	{
-		return active;
 	}
 	
 	public MultiblockStructureReactor getStructure()

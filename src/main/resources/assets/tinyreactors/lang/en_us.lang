@@ -62,8 +62,10 @@ gui.tinyreactors.temperature.current=Temperature
 gui.tinyreactors.temperature.limit=Limit
 
 gui.tinyreactors.controller.active=Running...
+gui.tinyreactors.controller.warming = Warming
 gui.tinyreactors.controller.inactive=Disabled
 gui.tinyreactors.controller.invalid=Invalid Structure
+
 gui.tinyreactors.controller.producing=Producing
 gui.tinyreactors.controller.multiplier=Multiplier
 
@@ -72,3 +74,7 @@ gui.tinyreactors.controller.multiplier=Multiplier
 button.tinyreactors.reactor.activate=Activate
 button.tinyreactors.reactor.deactivate=Deactivate
 button.tinyreactors.reactor.cannotActivate=Cannot Activate
+
+button.tinyreactors.reactor.warm=Start Warming
+button.tinyreactors.reactor.dewarm=Stop Warming
+button.tinyreactors.reactor.cannotWarm=Cannot Warm

@@ -23,7 +23,7 @@ public class GuiReactorController extends GuiContainerBase
 	
 	private final TileEntityReactorController controller;
 	
-	private GuiButtonToggleable buttonActivate;
+	private GuiButtonToggleable buttonActivate, buttonWarming;
 	
 	public GuiReactorController(EntityPlayer player, TileEntityReactorController controller)
 	{
@@ -47,6 +47,16 @@ public class GuiReactorController extends GuiContainerBase
 					((SMessageReactorController)message).setActive(false);
 				})
 		}).setDisabledTooltip("button.tinyreactors.reactor.cannotActivate"));
+		
+		addButton(buttonWarming = new GuiButtonToggleable(this, 1, guiLeft + 20, guiTop + 60, 12, 12, new TextureMapping[] {
+				// Enabled (On) , Disabled (Off), Hovered (On)
+				new TextureMapping(TEXTURE, 212, 56, 200, 78, 212, 67).setEnabledTooltip("button.tinyreactors.reactor.warm").setActionListener((message) -> {
+					((SMessageReactorController)message).setWarming(true);
+				}),
+				new TextureMapping(TEXTURE, 200, 56, 200, 78, 200, 67).setEnabledTooltip("button.tinyreactors.reactor.dewarm").setActionListener((message) -> {
+					((SMessageReactorController)message).setWarming(false);
+				})
+		}).setDisabledTooltip("button.tinyreactors.reactor.cannotWarm"));
 	}
 	
 	@Override
@@ -60,7 +70,8 @@ public class GuiReactorController extends GuiContainerBase
 	@Override
 	public void updateScreen()
 	{
-		buttonActivate.setButton(controller.getStructure().isValid(), controller.isActive() ? 1 : 0);
+		buttonActivate.setButton(controller.getStructure().isValid() && !controller.isWarming(), controller.isActive() ? 1 : 0);
+		buttonWarming.setButton(controller.getStructure().isValid() && !controller.isActive(), controller.isWarming() ? 1 : 0);
 	}
 	
 	@Override
@@ -82,17 +93,17 @@ public class GuiReactorController extends GuiContainerBase
 	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		UIHelper.smallFontRenderer.drawString(TranslationHelper.translate(
-				String.format("gui.tinyreactors.controller.%s", controller.getStructure().isValid() ? (controller.isActive() ? "active" : "inactive") : "invalid")
+				String.format("gui.tinyreactors.controller.%s", controller.getStructure().isValid() ? (controller.isActive() ? "active" : controller.isWarming() ? "warming" : "inactive") : "invalid")
 			), 8, 8, 0xFFFFFF);
 		
 		if(controller.isActive())
 		{
 			UIHelper.smallFontRenderer.drawString(String.format(
-					"%s: %,.2f x", TranslationHelper.translate("gui.tinyreactors.controller.multiplier"), controller.getStructure().getTemperature().getMultiplier()
+					"%s: %,d RF/t", TranslationHelper.translate("gui.tinyreactors.controller.producing"), controller.getStructure().getEnergyProduced()
 				), 8, 16, 0xFFFFFF);
 			
 			UIHelper.smallFontRenderer.drawString(String.format(
-					"%s: %,d RF/t", TranslationHelper.translate("gui.tinyreactors.controller.producing"), controller.getStructure().getEnergyProduced()
+					"%s: %,.2f x", TranslationHelper.translate("gui.tinyreactors.controller.multiplier"), controller.getStructure().getTemperature().getMultiplier()
 				), 8, 24, 0xFFFFFF);
 		}
 		

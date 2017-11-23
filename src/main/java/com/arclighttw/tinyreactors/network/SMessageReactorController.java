@@ -16,6 +16,7 @@ public class SMessageReactorController extends NetworkMessage
 {
 	private BlockPos pos;
 	private boolean active;
+	private boolean warming;
 	
 	public SMessageReactorController(TileEntityReactorController controller)
 	{
@@ -27,11 +28,17 @@ public class SMessageReactorController extends NetworkMessage
 		this.active = active;
 	}
 	
+	public void setWarming(boolean warming)
+	{
+		this.warming = warming;
+	}
+	
 	@Override
 	public void writeToNBT(NBTTagCompound compound)
 	{
 		NBTHelper.Serializer.blockPos(compound, "pos", pos);
 		compound.setBoolean("active", active);
+		compound.setBoolean("warming", warming);
 	}
 	
 	@Override
@@ -39,6 +46,7 @@ public class SMessageReactorController extends NetworkMessage
 	{
 		pos = NBTHelper.Deserializer.blockPos(compound, "pos");
 		active = compound.getBoolean("active");
+		warming = compound.getBoolean("warming");
 	}
 	
 	public SMessageReactorController() {}
@@ -54,6 +62,7 @@ public class SMessageReactorController extends NetworkMessage
 			{
 				TileEntityReactorController controller = (TileEntityReactorController)tile;
 				controller.setActive(message.active);
+				controller.setWarming(message.warming);
 			}
 			
 			return null;

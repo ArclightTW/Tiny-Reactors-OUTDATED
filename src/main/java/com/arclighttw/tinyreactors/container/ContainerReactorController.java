@@ -31,10 +31,11 @@ public class ContainerReactorController extends Container
 			listener.sendWindowProperty(this, 3, (int)(controller.getStructure().getTemperature().getMaxTemperature() * 100));
 
 			listener.sendWindowProperty(this, 4, controller.isActive() ? 1 : 0);
-			listener.sendWindowProperty(this, 5, controller.getStructure().isValid() ? 1 : 0);
+			listener.sendWindowProperty(this, 5, controller.isWarming() ? 1 : 0);
+			listener.sendWindowProperty(this, 6, controller.getStructure().isValid() ? 1 : 0);
 			
-			listener.sendWindowProperty(this, 6, controller.getStructure().getAvailableYield());
-			listener.sendWindowProperty(this, 7, (int)(controller.getStructure().getHeatProduced() * 100));
+			listener.sendWindowProperty(this, 7, controller.getStructure().getAvailableYield());
+			listener.sendWindowProperty(this, 8, (int)(controller.getStructure().getHeatProduced() * 100));
 		}
 	}
 	
@@ -60,12 +61,15 @@ public class ContainerReactorController extends Container
 			controller.setActive(data == 1);
 			break;
 		case 5:
-			controller.getStructure().setValid(data == 1);
+			controller.setWarming(data == 1);
 			break;
 		case 6:
-			controller.getStructure().setAvailableYield(data);
+			controller.getStructure().setValid(data == 1);
 			break;
 		case 7:
+			controller.getStructure().setAvailableYield(data);
+			break;
+		case 8:
 			controller.getStructure().setHeatProduced((double)(data / 100.0));
 			break;
 		}
