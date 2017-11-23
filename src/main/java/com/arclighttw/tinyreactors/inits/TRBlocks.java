@@ -2,6 +2,7 @@ package com.arclighttw.tinyreactors.inits;
 
 import com.arclighttw.tinyreactors.blocks.BlockReactorComponent;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
+import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -15,8 +16,7 @@ public class TRBlocks
 	
 	public static final Block REACTOR_CONTROLLER	= new BlockReactorController("reactor_controller")
 															.setAdditionalTooltip("tooltip.tinyreactors.positions.walls", "tooltip.tinyreactors.positions.pillars");
-	// TODO: new BlockReactorEnergyPort();
-	public static final Block REACTOR_ENERGY_PORT	= new BlockReactorComponent("reactor_energy_port", Material.IRON)
+	public static final Block REACTOR_ENERGY_PORT	= new BlockReactorEnergyPort("reactor_energy_port")
 															.setAdditionalTooltip("tooltip.tinyreactors.positions.walls", "tooltip.tinyreactors.positions.pillars");
 	
 	// TODO: new BlockReactorHeatSink();

@@ -15,4 +15,6 @@ public interface IReactorComponent
 	default void onReactorComponentRemoved(World world, BlockPos pos) {
 		ReactorManager.validateAll(world, null, null, pos);
 	}
+	
+	void onStructureValidityChanged(World world, BlockPos pos, BlockPos origin, boolean isValid);
 }
