@@ -21,12 +21,15 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 	public TileEntityReactorController()
 	{
 		structure = new MultiblockStructureReactor(1000000, 2500);
+		// TODO: ARE THESE NEEDED?
+		// {
 		structure.setEnergyListener((energy) -> {
 			// TODO: Do something when energy value changes.
 		});
 		structure.setValidityListener((valid) -> {
 			// TODO: Valid/Invalid Reactor should perform some form of action.
 		});
+		// }
 		
 		structure.addAccessibleStructureBlock(TRBlocks.REACTOR_CASING);
 		structure.addAccessibleStructureBlock(TRBlocks.REACTOR_CONTROLLER);
@@ -49,9 +52,13 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 	public void update()
 	{
 		if(!active)
+		{
+			structure.getTemperature().extractHeat(structure.getHeatProduced(), false);
 			return;
+		}
 		
 		structure.getEnergy().receiveEnergy(structure.getEnergyProduced(), false);
+		structure.getTemperature().receiveHeat(structure.getHeatProduced(), false);
 	}
 	
 	@Override

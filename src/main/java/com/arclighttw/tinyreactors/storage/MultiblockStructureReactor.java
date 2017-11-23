@@ -31,6 +31,7 @@ public class MultiblockStructureReactor extends MultiblockStructure
 	private TemperatureStorage temperature;
 	
 	private int availableYield;
+	private double heatProduced;
 	
 	public MultiblockStructureReactor(int energyCapacity, int temperatureLimit)
 	{
@@ -50,6 +51,7 @@ public class MultiblockStructureReactor extends MultiblockStructure
 		vents = Maps.newConcurrentMap();
 		
 		availableYield = 0;
+		heatProduced = 0;
 	}
 	
 	@Override
@@ -109,6 +111,7 @@ public class MultiblockStructureReactor extends MultiblockStructure
 		
 		// TODO: Set proper yield values (this is so wrong).
 		availableYield += 64;
+		heatProduced += 0.01;
 	}
 	
 	@Override
@@ -116,8 +119,10 @@ public class MultiblockStructureReactor extends MultiblockStructure
 	{
 		super.serialize(compound);
 		NBTHelper.writeToNBT(compound, "energy", energy);
+		NBTHelper.writeToNBT(compound, "temperature", temperature);
 		
 		compound.setInteger("availableYield", availableYield);
+		compound.setDouble("heatProduced", heatProduced);
 	}
 	
 	@Override
@@ -125,8 +130,10 @@ public class MultiblockStructureReactor extends MultiblockStructure
 	{
 		super.deserialize(compound);
 		NBTHelper.readFromNBT(compound, "energy", energy);
+		NBTHelper.readFromNBT(compound, "temperature", temperature);
 		
 		availableYield = compound.getInteger("availableYield");
+		heatProduced = compound.getDouble("heatProduced");
 	}
 	
 	public void setEnergyListener(Consumer<Integer> listener)
@@ -157,5 +164,15 @@ public class MultiblockStructureReactor extends MultiblockStructure
 	public int getEnergyProduced()
 	{
 		return (int)(availableYield * temperature.getMultiplier());
+	}
+	
+	public void setHeatProduced(double temperatureYield)
+	{
+		this.heatProduced = temperatureYield;
+	}
+	
+	public double getHeatProduced()
+	{
+		return heatProduced;
 	}
 }

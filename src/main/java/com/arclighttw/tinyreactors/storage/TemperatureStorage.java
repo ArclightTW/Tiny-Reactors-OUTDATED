@@ -1,7 +1,5 @@
 package com.arclighttw.tinyreactors.storage;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.function.Consumer;
 
 import com.arclighttw.tinyreactors.lib.nbt.INBTSerializable;
@@ -10,8 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TemperatureStorage implements INBTSerializable
 {
-	protected BigDecimal temperature;
-	protected BigDecimal limit;
+	protected double temperature;
+	protected double limit;
 	
 	private Consumer<Double> valueListener;
 	
@@ -22,8 +20,8 @@ public class TemperatureStorage implements INBTSerializable
 	
 	public TemperatureStorage(double limit)
 	{
-		this.temperature = createBigDecimal(0.0);
-		this.limit = createBigDecimal(limit);
+		this.temperature = 0.0;
+		this.limit = limit;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -36,42 +34,42 @@ public class TemperatureStorage implements INBTSerializable
 	@Override
 	public void serialize(NBTTagCompound compound)
 	{
-		compound.setDouble("temperature", temperature.doubleValue());
-		compound.setDouble("limit", limit.doubleValue());
+		compound.setDouble("temperature", temperature);
+		compound.setDouble("limit", limit);
 	}
 	
 	@Override
 	public void deserialize(NBTTagCompound compound)
 	{
-		temperature = createBigDecimal(compound.getDouble("temperature"));
-		limit = createBigDecimal(compound.getDouble("limit"));
+		temperature = compound.getDouble("temperature");
+		limit = compound.getDouble("limit");
 		
 		onValueChanged();
 	}
 	
 	public double getMultiplier()
 	{
-		double midTemp = limit.doubleValue() / 2;
+		double midTemp = limit / 2;
 		
-		if(temperature.doubleValue() < midTemp)
+		if(temperature < midTemp)
 		{
-			double rate = temperature.doubleValue() / midTemp;
+			double rate = temperature / midTemp;
 			return 0.5 + (rate / 2.0);
 		}
 		else
 		{
-			double rate = temperature.doubleValue() / limit.doubleValue();
-			return 1.0 + rate;
+			double rate = temperature / limit;
+			return 0.5 + rate;
 		}
 	}
 	
 	public double receiveHeat(double maxReceive, boolean simulate)
 	{
-		double received = Math.min(limit.doubleValue() - temperature.doubleValue(), maxReceive);
-		
+		double received = Math.min(limit - temperature, maxReceive);
+
 		if(!simulate)
 		{
-			temperature.add(new BigDecimal(received));
+			temperature += received;
 			onValueChanged();
 		}
 		
@@ -80,11 +78,11 @@ public class TemperatureStorage implements INBTSerializable
 
 	public double extractHeat(double maxExtract, boolean simulate)
 	{
-		double extracted = Math.min(temperature.doubleValue(), maxExtract);
+		double extracted = Math.min(temperature, maxExtract);
 		
 		if(!simulate)
 		{
-			temperature.subtract(new BigDecimal(extracted));
+			temperature -= extracted;
 			onValueChanged();
 		}
 		
@@ -93,32 +91,27 @@ public class TemperatureStorage implements INBTSerializable
 
 	public double getCurrentTemperature()
 	{
-		return temperature.doubleValue();
+		return temperature;
 	}
 
 	public double getMaxTemperature()
 	{
-		return limit.doubleValue();
+		return limit;
 	}
 	
 	public void setCurrentTemperature(double temperature)
 	{
-		this.temperature = createBigDecimal(temperature);
+		this.temperature = temperature;
 	}
 	
 	public void setMaxTemperature(double limit)
 	{
-		this.limit = createBigDecimal(limit);
+		this.limit = limit;
 	}
 	
 	private void onValueChanged()
 	{
 		if(valueListener != null)
 			valueListener.accept(getCurrentTemperature());
-	}
-	
-	private BigDecimal createBigDecimal(double value)
-	{
-		return new BigDecimal(value).setScale(2, RoundingMode.CEILING);
 	}
 }
