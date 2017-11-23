@@ -49,6 +49,22 @@ public class TemperatureStorage implements INBTSerializable
 		onValueChanged();
 	}
 	
+	public double getMultiplier()
+	{
+		double midTemp = limit.doubleValue() / 2;
+		
+		if(temperature.doubleValue() < midTemp)
+		{
+			double rate = temperature.doubleValue() / midTemp;
+			return 0.5 + (rate / 2.0);
+		}
+		else
+		{
+			double rate = temperature.doubleValue() / limit.doubleValue();
+			return 1.0 + rate;
+		}
+	}
+	
 	public double receiveHeat(double maxReceive, boolean simulate)
 	{
 		double received = Math.min(limit.doubleValue() - temperature.doubleValue(), maxReceive);

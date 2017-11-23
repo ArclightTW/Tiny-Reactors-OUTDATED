@@ -51,7 +51,7 @@ public class TileEntityReactorController extends TileEntity implements ITickable
 		if(!active)
 			return;
 		
-		structure.getEnergy().receiveEnergy(structure.getAvailableYield(), false);
+		structure.getEnergy().receiveEnergy(structure.getEnergyProduced(), false);
 	}
 	
 	@Override

@@ -144,8 +144,18 @@ public class MultiblockStructureReactor extends MultiblockStructure
 		return temperature;
 	}
 	
+	public void setAvailableYield(int availableYield)
+	{
+		this.availableYield = availableYield;
+	}
+	
 	public int getAvailableYield()
 	{
 		return availableYield;
+	}
+	
+	public int getEnergyProduced()
+	{
+		return (int)(availableYield * temperature.getMultiplier());
 	}
 }
