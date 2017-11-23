@@ -35,16 +35,7 @@ public class BlockReactorController extends BlockReactorComponent implements ISt
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if(!world.isRemote)
-		{
-			// TODO: Remove unnecessary code.
-			if(player.isSneaking())
-			{
-				TileEntityReactorController controller = (TileEntityReactorController)world.getTileEntity(pos);
-				controller.setActive(!controller.isActive());
-			}
-			else
-				player.openGui(TinyReactors.instance, GuiHandler.REACTOR_CONTROLLER, world, pos.getX(), pos.getY(), pos.getZ());
-		}
+			player.openGui(TinyReactors.instance, GuiHandler.REACTOR_CONTROLLER, world, pos.getX(), pos.getY(), pos.getZ());
 		
 		return true;
 	}
