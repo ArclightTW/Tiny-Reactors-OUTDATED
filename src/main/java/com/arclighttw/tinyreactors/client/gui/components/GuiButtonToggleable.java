@@ -2,19 +2,23 @@ package com.arclighttw.tinyreactors.client.gui.components;
 
 import java.util.List;
 
+import com.arclighttw.tinyreactors.client.gui.GuiContainerBase;
 import com.arclighttw.tinyreactors.helpers.TranslationHelper;
+import com.arclighttw.tinyreactors.helpers.UIHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiButtonToggleable extends GuiButtonImage
 {
+	private final GuiContainerBase gui;
 	private final TextureMapping[] states;
 	private int state;
 	
-	public GuiButtonToggleable(int id, int x, int y, int width, int height, TextureMapping... states)
+	public GuiButtonToggleable(GuiContainerBase gui, int id, int x, int y, int width, int height, TextureMapping... states)
 	{
 		super(id, x, y, null, -1, -1, width, height);
+		this.gui = gui;
 		this.states = states;
 	}
 	
@@ -66,8 +70,10 @@ public class GuiButtonToggleable extends GuiButtonImage
 			return;
 		}
 		
-		for(String line : tooltip)
-			Minecraft.getMinecraft().currentScreen.drawHoveringText(TranslationHelper.translate(line), mouseX, mouseY);
+		for(int i = 0; i < tooltip.size(); i++)
+			tooltip.set(i, TranslationHelper.translate(tooltip.get(i)));
+		
+		UIHelper.drawHoveringText(gui, tooltip, mouseX, mouseY);
 	}
 	
 	public void setButton(boolean enabled, int state)
