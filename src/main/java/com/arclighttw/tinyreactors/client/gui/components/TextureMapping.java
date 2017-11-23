@@ -2,8 +2,10 @@ package com.arclighttw.tinyreactors.client.gui.components;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TextureMapping
 {
@@ -20,6 +22,8 @@ public class TextureMapping
 	private final ResourceLocation hoveredTexture;
 	private final int hoveredU;
 	private final int hoveredV;
+	
+	private Consumer<IMessage> actionListener;
 	
 	public TextureMapping(ResourceLocation texture, int u, int v)
 	{
@@ -73,6 +77,19 @@ public class TextureMapping
 	{
 		disabledTooltip = tooltip;
 		return (T)this;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends TextureMapping> T setActionListener(Consumer<IMessage> listener)
+	{
+		actionListener = listener;
+		return (T)this;
+	}
+	
+	public void actionPerformed(IMessage message)
+	{
+		if(actionListener != null)
+			actionListener.accept(message);
 	}
 	
 	public ResourceLocation getEnabledTexture()

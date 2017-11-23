@@ -9,6 +9,8 @@ import com.arclighttw.tinyreactors.container.ContainerReactorController;
 import com.arclighttw.tinyreactors.helpers.TranslationHelper;
 import com.arclighttw.tinyreactors.helpers.UIHelper;
 import com.arclighttw.tinyreactors.main.Reference;
+import com.arclighttw.tinyreactors.main.TinyReactors;
+import com.arclighttw.tinyreactors.network.SMessageReactorController;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 
 import net.minecraft.client.gui.GuiButton;
@@ -38,19 +40,21 @@ public class GuiReactorController extends GuiContainerBase
 		super.initGui();
 		
 		addButton(buttonActivate = new GuiButtonToggleable(this, 0, guiLeft + 8, guiTop + 60, 12, 12, new TextureMapping[] {
-				new TextureMapping(TEXTURE, 189, 56, 177, 78, 189, 67).setEnabledTooltip("button.tinyreactors.reactor.activate"),
-				new TextureMapping(TEXTURE, 177, 56, 177, 78, 177, 67).setEnabledTooltip("button.tinyreactors.reactor.deactivate")
+				new TextureMapping(TEXTURE, 189, 56, 177, 78, 189, 67).setEnabledTooltip("button.tinyreactors.reactor.activate").setActionListener((message) -> {
+					((SMessageReactorController)message).setActive(true);
+				}),
+				new TextureMapping(TEXTURE, 177, 56, 177, 78, 177, 67).setEnabledTooltip("button.tinyreactors.reactor.deactivate").setActionListener((message) -> {
+					((SMessageReactorController)message).setActive(false);
+				})
 		}).setDisabledTooltip("button.tinyreactors.reactor.cannotActivate"));
 	}
 	
 	@Override
 	public void actionPerformed(GuiButton button) throws IOException
 	{
-		switch(button.id)
-		{
-		case 0:
-			break;
-		}
+		SMessageReactorController message = new SMessageReactorController(controller);
+		((GuiButtonToggleable)button).actionPerformed(message);
+		TinyReactors.instance.network.sendToServer(message);
 	}
 	
 	@Override

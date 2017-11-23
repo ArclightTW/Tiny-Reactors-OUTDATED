@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.arclighttw.tinyreactors.lib.models.IModelProvider;
 import com.arclighttw.tinyreactors.lib.utils.IItemProvider;
+import com.arclighttw.tinyreactors.main.Reference;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -13,10 +14,19 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ModRegistry
 {
+	public SimpleNetworkWrapper network;
+	
+	public ModRegistry()
+	{
+		network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
+	}
+	
 	public void register(Class<?> clazz)
 	{
 		try

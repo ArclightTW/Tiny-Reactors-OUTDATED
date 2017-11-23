@@ -8,6 +8,7 @@ import com.arclighttw.tinyreactors.helpers.UIHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class GuiButtonToggleable extends GuiButtonImage
 {
@@ -74,6 +75,17 @@ public class GuiButtonToggleable extends GuiButtonImage
 			tooltip.set(i, TranslationHelper.translate(tooltip.get(i)));
 		
 		UIHelper.drawHoveringText(gui, tooltip, mouseX, mouseY);
+	}
+	
+	public void actionPerformed(IMessage message)
+	{
+		if(states.length == 0)
+			return;
+		
+		if(state >= states.length)
+			state = 0;
+		
+		states[state].actionPerformed(message);
 	}
 	
 	public void setButton(boolean enabled, int state)
