@@ -2,35 +2,35 @@ package com.arclighttw.tinyreactors.lib;
 
 public enum EnumFormatting
 {
-	BLACK("ง0"),
+	BLACK("ยง0"),
 	
-	DARK_BLUE("ง1"),
-	DARK_GREEN("ง2"),
-	DARK_AQUA("ง#"),
-	DARK_RED("ง4"),
-	DARK_PURPLE("ง5"),
+	DARK_BLUE("ยง1"),
+	DARK_GREEN("ยง2"),
+	DARK_AQUA("ยง3"),
+	DARK_RED("ยง4"),
+	DARK_PURPLE("ยง5"),
 	
-	GOLD("ง6"),
-	GRAY("ง7"),
+	GOLD("ยง6"),
+	GRAY("ยง7"),
 	
-	DARK_GRAY("ง8"),
+	DARK_GRAY("ยง8"),
 	
-	BLUE("ง9"),
-	GREEN("งa"),
-	AQUA("งb"),
-	RED("งc"),
+	BLUE("ยง9"),
+	GREEN("ยงa"),
+	AQUA("ยงb"),
+	RED("ยงc"),
 	
-	LIGHT_PURPLE("งd"),
+	LIGHT_PURPLE("ยงd"),
 	
-	YELLOW("งe"),
-	WHITE("งf"),
+	YELLOW("ยงe"),
+	WHITE("ยงf"),
 	
-	OBFUSCATED("งk"),
-	BOLD("งl"),
-	STRIKETHROUGH("งm"),
-	UNDERLINE("งn"),
-	ITALIC("งo"),
-	RESET("งr");
+	OBFUSCATED("ยงk"),
+	BOLD("ยงl"),
+	STRIKETHROUGH("ยงm"),
+	UNDERLINE("ยงn"),
+	ITALIC("ยงo"),
+	RESET("ยงr");
 	
 	private String code;
 	

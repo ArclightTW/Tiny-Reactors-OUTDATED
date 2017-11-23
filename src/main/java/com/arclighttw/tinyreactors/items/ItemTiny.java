@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import com.arclighttw.tinyreactors.helpers.TranslationHelper;
 import com.arclighttw.tinyreactors.lib.EnumFormatting;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,10 +47,10 @@ public class ItemTiny extends Item
 	{
 		if(standardTooltip != null)
 			for(String line : standardTooltip)
-				tooltip.add(new TextComponentTranslation(line).getFormattedText());
+				tooltip.add(TranslationHelper.translate(line));
 		else
 		{
-			String additional = new TextComponentTranslation(getUnlocalizedName() + ".desc").getFormattedText();
+			String additional = TranslationHelper.translate(getUnlocalizedName() + ".desc");
 			if(!(getUnlocalizedName() + ".desc").equals(additional))
 				tooltip.add(additional);
 		}
@@ -59,10 +59,10 @@ public class ItemTiny extends Item
 		{
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
 				for(String line : additionalTooltip)
-					tooltip.add(new TextComponentTranslation(line).getFormattedText());
+					tooltip.add(TranslationHelper.translate(line));
 			else
 			{
-				String additional = new TextComponentTranslation("tooltip.tinyreactors.additional").getFormattedText();
+				String additional = TranslationHelper.translate("tooltip.tinyreactors.additional");
 				additional = String.format(additional.replace("Shift", "%s<Shift>%s"), EnumFormatting.AQUA, EnumFormatting.GRAY);
 				tooltip.add(additional);
 			}
