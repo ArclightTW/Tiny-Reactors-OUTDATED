@@ -6,11 +6,10 @@ import com.arclighttw.tinyreactors.container.ContainerReactorEnergyPort;
 import com.arclighttw.tinyreactors.main.Reference;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorEnergyPort;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiReactorEnergyPort extends GuiContainer
+public class GuiReactorEnergyPort extends GuiContainerBase
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.ID, "textures/gui/reactor_energy_port.png");
 	

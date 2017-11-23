@@ -6,15 +6,16 @@ import java.util.Arrays;
 import com.arclighttw.tinyreactors.client.gui.components.GuiButtonToggleable;
 import com.arclighttw.tinyreactors.client.gui.components.TextureMapping;
 import com.arclighttw.tinyreactors.container.ContainerReactorController;
+import com.arclighttw.tinyreactors.helpers.TranslationHelper;
+import com.arclighttw.tinyreactors.helpers.UIHelper;
 import com.arclighttw.tinyreactors.main.Reference;
 import com.arclighttw.tinyreactors.tiles.TileEntityReactorController;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiReactorController extends GuiContainer
+public class GuiReactorController extends GuiContainerBase
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.ID, "textures/gui/reactor_controller.png");
 	
@@ -36,7 +37,7 @@ public class GuiReactorController extends GuiContainer
 	{
 		super.initGui();
 		
-		addButton(buttonActivate = new GuiButtonToggleable(0, guiLeft + 8, guiTop + 60, 12, 12, new TextureMapping[] {
+		addButton(buttonActivate = new GuiButtonToggleable(this, 0, guiLeft + 8, guiTop + 60, 12, 12, new TextureMapping[] {
 				new TextureMapping(TEXTURE, 189, 56, 177, 78, 189, 67).setEnabledTooltip("button.tinyreactors.reactor.activate"),
 				new TextureMapping(TEXTURE, 177, 56, 177, 78, 177, 67).setEnabledTooltip("button.tinyreactors.reactor.deactivate")
 		}).setDisabledTooltip("button.tinyreactors.reactor.cannotActivate"));
@@ -45,6 +46,11 @@ public class GuiReactorController extends GuiContainer
 	@Override
 	public void actionPerformed(GuiButton button) throws IOException
 	{
+		switch(button.id)
+		{
+		case 0:
+			break;
+		}
 	}
 	
 	@Override
@@ -71,6 +77,21 @@ public class GuiReactorController extends GuiContainer
 	@Override
 	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
+		UIHelper.smallFontRenderer.drawString(TranslationHelper.translate(
+				String.format("gui.tinyreactors.controller.%s", controller.getStructure().isValid() ? (controller.isActive() ? "active" : "inactive") : "invalid")
+			), 8, 8, 0xFFFFFF);
+		
+		if(controller.isActive())
+		{
+			UIHelper.smallFontRenderer.drawString(String.format(
+					"%s: %,.2f x", TranslationHelper.translate("gui.tinyreactors.controller.multiplier"), controller.getStructure().getTemperature().getMultiplier()
+				), 8, 16, 0xFFFFFF);
+			
+			UIHelper.smallFontRenderer.drawString(String.format(
+					"%s: %,d RF/t", TranslationHelper.translate("gui.tinyreactors.controller.producing"), controller.getStructure().getEnergyProduced()
+				), 8, 24, 0xFFFFFF);
+		}
+		
 		for(GuiButton button : buttonList)
 		{
 			if(button.isMouseOver())
@@ -79,14 +100,14 @@ public class GuiReactorController extends GuiContainer
 		
 		if(mouseX >= guiLeft + 133 && mouseX <= guiLeft + 133 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 8 + 64)
 			drawHoveringText(Arrays.asList(
-					String.format("Temperature: %,.1fÂ°C", controller.getStructure().getTemperature().getCurrentTemperature()),
-					String.format("Limit: %,.1fÂ°C", controller.getStructure().getTemperature().getMaxTemperature())
+					String.format("%s: %,.1f°C", TranslationHelper.translate("gui.tinyreactors.temperature.current"), controller.getStructure().getTemperature().getCurrentTemperature()),
+					String.format("%s: %,.1f°C", TranslationHelper.translate("gui.tinyreactors.temperature.limit"), controller.getStructure().getTemperature().getMaxTemperature())
 				), mouseX - guiLeft, mouseY - guiTop);
 		
 		if(mouseX >= guiLeft + 153 && mouseX <= guiLeft + 153 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 12 + 60)
 			drawHoveringText(Arrays.asList(
-					String.format("Energy: %,d RF", controller.getStructure().getEnergy().getEnergyStored()),
-					String.format("Capacity: %,d RF", controller.getStructure().getEnergy().getMaxEnergyStored())
+					String.format("%s: %,d RF", TranslationHelper.translate("gui.tinyreactors.energy.current"), controller.getStructure().getEnergy().getEnergyStored()),
+					String.format("%s: %,d RF", TranslationHelper.translate("gui.tinyreactors.energy.capacity"), controller.getStructure().getEnergy().getMaxEnergyStored())
 				), mouseX - guiLeft, mouseY - guiTop);
 	}
 }
