@@ -1,7 +1,6 @@
 package com.arclighttw.tinyreactors.storage;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.arclighttw.tinyreactors.helpers.NBTHelper;
 import com.arclighttw.tinyreactors.lib.nbt.INBTSerializable;
@@ -19,8 +18,6 @@ public class MultiblockStructure  implements INBTSerializable
 {
 	protected BlockPos start, end;
 	protected boolean isValid;
-	
-	private Consumer<Boolean> listener;
 	
 	private List<Block> baseCorners;
 	private List<Block> baseEdges;
@@ -49,13 +46,6 @@ public class MultiblockStructure  implements INBTSerializable
 		walls = Lists.newArrayList();
 		
 		internalBlocks = Lists.newArrayList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T extends MultiblockStructure> T setValidityListener(Consumer<Boolean> listener)
-	{
-		this.listener = listener;
-		return (T)this;
 	}
 	
 	@Override
@@ -227,11 +217,28 @@ public class MultiblockStructure  implements INBTSerializable
 			z3 = currentPos.getZ();
 		}
 		
-		xStart = Math.min(Math.min(xStart, x1), Math.min(x2, x3));
-		xEnd = Math.max(Math.max(xStart, x1), Math.max(x2, x3));
+		int x4 = xStart, z4 = zStart;
+		currentPos = new BlockPos(xStart, yStart, zStart);
+		currentDirection = currentDirection.getOpposite();
 		
-		zStart = Math.min(Math.min(zStart, z1), Math.min(z2, z3));
-		zEnd = Math.max(Math.max(zStart, z1), Math.max(z2, z3));
+		// Navigate same edge as above in opposite direction
+		while(true)
+		{
+			currentPos = currentPos.offset(currentDirection);
+			currentState = modifyState(world, currentPos, added, addedBlock, removed);
+			
+			if(!isValidWall(world, currentPos, currentState))
+				break;
+			
+			x4 = currentPos.getX();
+			z4 = currentPos.getZ();
+		}
+		
+		xStart = Math.min(xStart, Math.min(Math.min(x1, x2), Math.min(x3, x4)));
+		xEnd = Math.max(xStart, Math.max(Math.max(x1, x2), Math.max(x3, x4)));
+		
+		zStart = Math.min(zStart, Math.min(Math.min(z1, z2), Math.min(z3, z4)));
+		zEnd = Math.max(zStart, Math.max(Math.max(z1, z2), Math.max(z3, z4)));
 		
 		// Start > bottom-left corner
 		start = new BlockPos(xStart, yEnd, zStart);
@@ -548,18 +555,12 @@ public class MultiblockStructure  implements INBTSerializable
 	public final void setValid(World world, BlockPos origin, boolean valid)
 	{
 		isValid = onValidityChanged(world, origin, valid);
-		
-		if(listener != null)
-			listener.accept(isValid);
 	}
 	
 	@Deprecated
 	public final void setValid(boolean valid)
 	{
 		isValid = valid;
-		
-		if(listener != null)
-			listener.accept(isValid);
 	}
 	
 	public final BlockPos getStart()

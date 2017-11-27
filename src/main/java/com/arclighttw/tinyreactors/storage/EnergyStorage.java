@@ -1,7 +1,5 @@
 package com.arclighttw.tinyreactors.storage;
 
-import java.util.function.Consumer;
-
 import com.arclighttw.tinyreactors.lib.nbt.INBTSerializable;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +15,6 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable
 	
 	protected long currentExtract;
 	protected long currentReceive;
-	
-	private Consumer<Integer> valueListener;
 	
 	public EnergyStorage()
 	{
@@ -57,23 +53,13 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable
 		this.maxReceive = currentReceive = maxReceive;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T extends EnergyStorage> T setValueListener(Consumer<Integer> listener)
-	{
-		valueListener = listener;
-		return (T)this;
-	}
-
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate)
 	{
 		long received = Math.min(capacity - energy, Math.min(currentReceive, maxReceive));
 		
 		if(!simulate)
-		{
 			energy += received;
-			onValueChanged();
-		}
 		
 		return Integer.valueOf((int)received);
 	}
@@ -84,10 +70,7 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable
 		long extracted = Math.min(energy, Math.min(currentExtract, maxExtract));
 		
 		if(!simulate)
-		{
 			energy -= extracted;
-			onValueChanged();
-		}
 		
 		return Integer.valueOf((int)extracted);
 	}
@@ -140,8 +123,6 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable
 		
 		currentExtract = compound.getLong("currentExtract");
 		currentReceive = compound.getLong("currentReceive");
-		
-		onValueChanged();
 	}
 	
 	public int extractEnergy(boolean simulate)
@@ -159,9 +140,67 @@ public class EnergyStorage implements IEnergyStorage, INBTSerializable
 		this.capacity = Long.valueOf((long)capacity);
 	}
 	
-	private void onValueChanged()
+	public void setCurrentExtract(long currentExtract)
 	{
-		if(valueListener != null)
-			valueListener.accept(getEnergyStored());
+		if(currentExtract < 0)
+			currentExtract = 0;
+		
+		if(currentExtract > maxExtract)
+			currentExtract = maxExtract;
+		
+		this.currentExtract = currentExtract;
+	}
+	
+	public long getCurrentExtract()
+	{
+		return currentExtract;
+	}
+	
+	public void setMaxExtract(long maxExtract)
+	{
+		if(maxExtract < 0)
+			maxExtract = 0;
+		
+		if(currentExtract > maxExtract)
+			setCurrentExtract(maxExtract);
+		
+		this.maxExtract = maxExtract;
+	}
+	
+	public long getMaxExtract()
+	{
+		return maxExtract;
+	}
+	
+	public void setCurrentReceive(long currentReceive)
+	{
+		if(currentReceive < 0)
+			currentReceive = 0;
+		
+		if(currentReceive > maxReceive)
+			currentReceive = maxReceive;
+		
+		this.currentReceive = currentReceive;
+	}
+	
+	public long getCurrentReceive()
+	{
+		return currentReceive;
+	}
+	
+	public void setMaxReceive(long maxReceive)
+	{
+		if(maxReceive < 0)
+			maxReceive = 0;
+		
+		if(currentReceive > maxReceive)
+			setCurrentReceive(maxReceive);
+		
+		this.maxReceive = maxReceive;
+	}
+	
+	public long getMaxReceive()
+	{
+		return maxReceive;
 	}
 }

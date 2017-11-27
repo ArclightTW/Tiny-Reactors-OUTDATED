@@ -1,7 +1,5 @@
 package com.arclighttw.tinyreactors.storage;
 
-import java.util.function.Consumer;
-
 import com.arclighttw.tinyreactors.lib.nbt.INBTSerializable;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,8 +8,6 @@ public class TemperatureStorage implements INBTSerializable
 {
 	protected double temperature;
 	protected double limit;
-	
-	private Consumer<Double> valueListener;
 	
 	public TemperatureStorage()
 	{
@@ -22,13 +18,6 @@ public class TemperatureStorage implements INBTSerializable
 	{
 		this.temperature = 0.0;
 		this.limit = limit;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T extends TemperatureStorage> T setValueListener(Consumer<Double> listener)
-	{
-		valueListener = listener;
-		return (T)this;
 	}
 
 	@Override
@@ -43,8 +32,6 @@ public class TemperatureStorage implements INBTSerializable
 	{
 		temperature = compound.getDouble("temperature");
 		limit = compound.getDouble("limit");
-		
-		onValueChanged();
 	}
 	
 	public double getMultiplier()
@@ -68,10 +55,7 @@ public class TemperatureStorage implements INBTSerializable
 		double received = Math.min(limit - temperature, maxReceive);
 
 		if(!simulate)
-		{
 			temperature += received;
-			onValueChanged();
-		}
 		
 		return received;
 	}
@@ -81,10 +65,7 @@ public class TemperatureStorage implements INBTSerializable
 		double extracted = Math.min(temperature, maxExtract);
 		
 		if(!simulate)
-		{
 			temperature -= extracted;
-			onValueChanged();
-		}
 		
 		return extracted;
 	}
@@ -107,11 +88,5 @@ public class TemperatureStorage implements INBTSerializable
 	public void setMaxTemperature(double limit)
 	{
 		this.limit = limit;
-	}
-	
-	private void onValueChanged()
-	{
-		if(valueListener != null)
-			valueListener.accept(getCurrentTemperature());
 	}
 }
