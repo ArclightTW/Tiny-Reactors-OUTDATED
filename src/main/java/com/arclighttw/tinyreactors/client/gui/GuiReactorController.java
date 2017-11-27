@@ -100,10 +100,30 @@ public class GuiReactorController extends GuiContainerBase
 		{
 			UIHelper.smallFontRenderer.drawString(String.format(
 					"%s: %,d RF/t", TranslationHelper.translate("gui.tinyreactors.controller.producing"), controller.getStructure().getEnergyProduced()
-				), 8, 16, 0xFFFFFF);
+				), 8, 24, 0xFFFFFF);
 			
 			UIHelper.smallFontRenderer.drawString(String.format(
 					"%s: %,.2f x", TranslationHelper.translate("gui.tinyreactors.controller.multiplier"), controller.getStructure().getTemperature().getMultiplier()
+				), 8, 32, 0xFFFFFF);
+			
+			UIHelper.smallFontRenderer.drawString(String.format(
+					"%s: %,.2f C/t", TranslationHelper.translate("gui.tinyreactors.controller.heating"), controller.getStructure().getHeatProduced()
+				), 8, 40, 0xFFFFFF);
+		}
+		else if(controller.isWarming())
+		{
+			UIHelper.smallFontRenderer.drawString(String.format(
+					"%s: %,.2f x", TranslationHelper.translate("gui.tinyreactors.controller.multiplier"), controller.getStructure().getTemperature().getMultiplier()
+				), 8, 24, 0xFFFFFF);
+			
+			UIHelper.smallFontRenderer.drawString(String.format(
+					"%s: %,.2f C/t", TranslationHelper.translate("gui.tinyreactors.controller.heating"), (controller.getStructure().getHeatProduced() * 4)
+				), 8, 32, 0xFFFFFF);
+		}
+		else if(controller.getStructure().getTemperature().getCurrentTemperature() > 0)
+		{
+			UIHelper.smallFontRenderer.drawString(String.format(
+					"%s: %,.2f C/t", TranslationHelper.translate("gui.tinyreactors.controller.cooling"), controller.getStructure().getHeatProduced()
 				), 8, 24, 0xFFFFFF);
 		}
 		
@@ -115,8 +135,8 @@ public class GuiReactorController extends GuiContainerBase
 		
 		if(mouseX >= guiLeft + 133 && mouseX <= guiLeft + 133 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 8 + 64)
 			drawHoveringText(Arrays.asList(
-					String.format("%s: %,.1f°C", TranslationHelper.translate("gui.tinyreactors.temperature.current"), controller.getStructure().getTemperature().getCurrentTemperature()),
-					String.format("%s: %,.1f°C", TranslationHelper.translate("gui.tinyreactors.temperature.limit"), controller.getStructure().getTemperature().getMaxTemperature())
+					String.format("%s: %,.1f C", TranslationHelper.translate("gui.tinyreactors.temperature.current"), controller.getStructure().getTemperature().getCurrentTemperature()),
+					String.format("%s: %,.1f C", TranslationHelper.translate("gui.tinyreactors.temperature.limit"), controller.getStructure().getTemperature().getMaxTemperature())
 				), mouseX - guiLeft, mouseY - guiTop);
 		
 		if(mouseX >= guiLeft + 153 && mouseX <= guiLeft + 153 + 16 && mouseY >= guiTop + 8 && mouseY <= guiTop + 12 + 60)
