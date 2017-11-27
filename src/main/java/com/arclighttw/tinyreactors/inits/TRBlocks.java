@@ -3,6 +3,7 @@ package com.arclighttw.tinyreactors.inits;
 import com.arclighttw.tinyreactors.blocks.BlockReactorComponent;
 import com.arclighttw.tinyreactors.blocks.BlockReactorController;
 import com.arclighttw.tinyreactors.blocks.BlockReactorEnergyPort;
+import com.arclighttw.tinyreactors.blocks.BlockReactorGlass;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -11,7 +12,7 @@ public class TRBlocks
 {
 	public static final Block REACTOR_CASING		= new BlockReactorComponent("reactor_casing", Material.IRON)
 															.setAdditionalTooltip("tooltip.tinyreactors.positions.everywhere");
-	public static final Block REACTOR_GLASS		= new BlockReactorComponent("reactor_glass", Material.GLASS)
+	public static final Block REACTOR_GLASS		= new BlockReactorGlass("reactor_glass")
 															.setAdditionalTooltip("tooltip.tinyreactors.positions.walls");
 	
 	public static final Block REACTOR_CONTROLLER	= new BlockReactorController("reactor_controller")
