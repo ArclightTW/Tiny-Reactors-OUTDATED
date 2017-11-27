@@ -2,7 +2,6 @@ package com.arclighttw.tinyreactors.storage;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import com.arclighttw.tinyreactors.helpers.NBTHelper;
 import com.arclighttw.tinyreactors.inits.TRBlocks;
@@ -106,12 +105,14 @@ public class MultiblockStructureReactor extends MultiblockStructure
 	@Override
 	public void onInternalBlockDetected(World world, BlockPos pos, IBlockState state)
 	{
+		// TODO: 1x Vent offsets 1x Internal Block
+		heatProduced += 0.01;
+		
 		if(state.getBlock() == Blocks.AIR)
 			return;
 		
 		// TODO: Set proper yield values (this is so wrong).
 		availableYield += 64;
-		heatProduced += 0.01;
 	}
 	
 	@Override
@@ -134,11 +135,6 @@ public class MultiblockStructureReactor extends MultiblockStructure
 		
 		availableYield = compound.getInteger("availableYield");
 		heatProduced = compound.getDouble("heatProduced");
-	}
-	
-	public void setEnergyListener(Consumer<Integer> listener)
-	{
-		energy.setValueListener(listener);
 	}
 	
 	public EnergyStorage getEnergy()
