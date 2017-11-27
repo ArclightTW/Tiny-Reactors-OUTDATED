@@ -10,6 +10,7 @@ import com.arclighttw.tinyreactors.inits.TRSounds;
 import com.arclighttw.tinyreactors.lib.registry.ModRegistry;
 import com.arclighttw.tinyreactors.managers.GuiHandler;
 import com.arclighttw.tinyreactors.network.SMessageReactorController;
+import com.arclighttw.tinyreactors.network.SMessageReactorEnergyPort;
 import com.arclighttw.tinyreactors.proxy.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
@@ -48,6 +49,7 @@ public class TinyReactors extends ModRegistry
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		network.registerMessage(SMessageReactorController.Handler.class, SMessageReactorController.class, 0, Side.SERVER);
+		network.registerMessage(SMessageReactorEnergyPort.Handler.class, SMessageReactorEnergyPort.class, 1, Side.SERVER);
 		
 		proxy.onInitialization(event);
 	}

@@ -26,6 +26,11 @@ public class ContainerReactorEnergyPort extends Container
 		{
 			listener.sendWindowProperty(this, 0, energyPort.getEnergy().getEnergyStored());
 			listener.sendWindowProperty(this, 1, energyPort.getEnergy().getMaxEnergyStored());
+			
+			listener.sendWindowProperty(this, 2, Integer.valueOf((int)energyPort.getEnergy().getCurrentReceive()));
+			listener.sendWindowProperty(this, 3, Integer.valueOf((int)energyPort.getEnergy().getMaxReceive()));
+			listener.sendWindowProperty(this, 4, Integer.valueOf((int)energyPort.getEnergy().getCurrentExtract()));
+			listener.sendWindowProperty(this, 5, Integer.valueOf((int)energyPort.getEnergy().getMaxExtract()));
 		}
 	}
 	
@@ -39,6 +44,18 @@ public class ContainerReactorEnergyPort extends Container
 			break;
 		case 1:
 			energyPort.getEnergy().setMaxEnergyStored(data);
+			break;
+		case 2:
+			energyPort.getEnergy().setCurrentReceive(Long.valueOf((long)data));
+			break;
+		case 3:
+			energyPort.getEnergy().setMaxReceive(Long.valueOf((long)data));
+			break;
+		case 4:
+			energyPort.getEnergy().setCurrentExtract(Long.valueOf((long)data));
+			break;
+		case 5:
+			energyPort.getEnergy().setMaxExtract(Long.valueOf((long)data));
 			break;
 		}
 	}
