@@ -20,7 +20,12 @@ public class BlockReactorComponent extends BlockTiny implements IReactorComponen
 {
 	public BlockReactorComponent(String name, Material material)
 	{
-		super(name, material);
+		this(name, material, DirectionalType.NONE);
+	}
+	
+	public BlockReactorComponent(String name, Material material, DirectionalType directional)
+	{
+		super(name, material, directional);
 	}
 	
 	@Override

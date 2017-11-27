@@ -20,7 +20,7 @@ public class BlockReactorEnergyPort extends BlockReactorComponent implements ISt
 {
 	public BlockReactorEnergyPort(String name)
 	{
-		super(name, Material.IRON);
+		super(name, Material.IRON, DirectionalType.FACING_TOWARD);
 	}
 	
 	@Override

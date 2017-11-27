@@ -22,7 +22,7 @@ public class BlockReactorController extends BlockReactorComponent implements ISt
 {
 	public BlockReactorController(String name)
 	{
-		super(name, Material.IRON);
+		super(name, Material.IRON, DirectionalType.FACING_TOWARD);
 	}
 	
 	@Override

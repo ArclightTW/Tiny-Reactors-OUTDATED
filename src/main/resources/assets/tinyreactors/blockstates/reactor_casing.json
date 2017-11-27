@@ -1,7 +1,20 @@
 {
 	"forge_marker": 1,
 	
+	"defaults": {
+		"model": "tinyreactors:reactor_casing"
+	},
+	
 	"variants": {
-		"normal": { "model": "tinyreactors:reactor_casing" }
+		"facing": {
+			"up": { "y": 0 },
+			"down": { "y": 0 },
+		
+			"north": { "y": 0 },
+			"south": { "y": 0 },
+			
+			"east": { "y": 0 },
+			"west": { "y": 0 }
+		}
 	}
 }

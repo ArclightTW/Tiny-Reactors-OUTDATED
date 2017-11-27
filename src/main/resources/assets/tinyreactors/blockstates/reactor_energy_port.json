@@ -1,7 +1,20 @@
 {
 	"forge_marker": 1,
 	
+	"defaults": {
+		"model": "tinyreactors:reactor_energy_port"
+	},
+	
 	"variants": {
-		"normal": { "model": "tinyreactors:reactor_energy_port" }
+		"facing": {
+			"up": { "y": 0 },
+			"down": { "y": 0 },
+			
+			"north": { "y": 0 },
+			"south": { "y": 180 },
+			
+			"east": { "y": 90 },
+			"west": { "y": 270 }
+		}
 	}
 }
